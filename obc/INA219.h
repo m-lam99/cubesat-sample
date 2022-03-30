@@ -75,9 +75,9 @@ class INA219:protected I2CDevice{
             MODE = 0
         };
 
-        INA219(unsigned int I2CBus, unsigned int I2CAddress);
         int writeRegister(unsigned int registerAddress, uint16_t value);
         uint16_t readRegister(unsigned int registerAddress);
+        INA219(unsigned int I2CBus, unsigned int I2CAddress);
         void configure(int voltage_range, int gain, int bus_adc, int shunt_adc);
         float determineCurrentLSB(float max_expected_amps, float max_possible_amps);
     private:
