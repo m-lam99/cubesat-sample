@@ -36,7 +36,7 @@ using namespace std;
 
 #define HEX(x) setw(2) << setfill('0') << hex << (int)(x)
 
-
+namespace exploringBB{
 /**
  * Constructor for the I2CDevice class. It requires the bus number and device number. The constructor
  * opens a file handle to the I2C device, which is destroyed when the destructor is called
@@ -169,3 +169,5 @@ void I2CDevice::close(){
 I2CDevice::~I2CDevice() {
 	if(file!=-1) this->close();
 }
+
+}//namespace exploringBB

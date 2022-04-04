@@ -9,6 +9,8 @@
 #include "GPIO.h"
 #include "I2C.h"
 
+using namespace exploringBB;
+
 void testGPIO(){
    GPIO outGPIO(59), inGPIO(46);
 
