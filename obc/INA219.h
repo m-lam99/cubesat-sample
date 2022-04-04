@@ -4,9 +4,13 @@
 #include "I2C.h"
 #include <cstdint>
 
+// Need to change for different devices
 #define INA219_ADDRESS 0x40
 
 #define CURRENT_LSB_FACTOR 32770
+#define SHUNT_MV_LSB 0.01
+#define BUS_MV_LSB 4
+#define R_SHUNT 0.1
 
 class INA219:protected I2CDevice{
     
@@ -79,7 +83,12 @@ class INA219:protected I2CDevice{
         uint16_t readRegister(unsigned int registerAddress);
         INA219(unsigned int I2CBus, unsigned int I2CAddress);
         void configure(int voltage_range, int gain, int bus_adc, int shunt_adc);
+        float shuntVoltage();
+        float busVoltage();
+        void calibrate(int bus_volts_max, float max_expected_amps, float max_possible_amps);
         float determineCurrentLSB(float max_expected_amps, float max_possible_amps);
+        float current();
+        float power();
     private:
         unsigned int I2CBus, I2CAddress;
         float min_device_current_lsb_;

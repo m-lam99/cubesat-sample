@@ -52,8 +52,72 @@ void INA219::configure(int voltage_range, int gain, int bus_adc, int shunt_adc){
 	writeRegister(REGISTERS::CONFIG, calibration);
 }
 
+float INA219::shuntVoltage(){
+   uint16_t shunt_voltage_bits = readRegister(REGISTERS::SHUNTVOLTAGE);
+   float shunt_voltage;
+   switch (gain_){
+   case 1:
+      if ((shunt_voltage_bits >> 12) & 0b1111){
+         shunt_voltage = -(~(shunt_voltage_bits & 0xfff)+1)*SHUNT_MV_LSB;
+      } else {
+         shunt_voltage = shunt_voltage_bits*SHUNT_MV_LSB;
+      }
+      break;
+   
+   case 2:
+      if ((shunt_voltage_bits >> 13) & 0b111){
+         shunt_voltage = -(~(shunt_voltage_bits & 0x1fff)+1)*SHUNT_MV_LSB;
+      } else {
+         shunt_voltage = shunt_voltage_bits*SHUNT_MV_LSB;
+      }
+      break;
+
+   case 4:
+      if ((shunt_voltage_bits >> 14) & 0b11){
+         shunt_voltage = -(~(shunt_voltage_bits & 0x3fff)+1)*SHUNT_MV_LSB;
+      } else {
+         shunt_voltage = shunt_voltage_bits*SHUNT_MV_LSB;
+      }
+      break;
+
+   case 8:
+      if ((shunt_voltage_bits >> 15)){
+         shunt_voltage = -(~(shunt_voltage_bits & 0x7fff)+1)*SHUNT_MV_LSB;
+      } else {
+         shunt_voltage = shunt_voltage_bits*SHUNT_MV_LSB;
+      }
+      break;
+   default:
+      break;
+   }
+}
+
+float INA219::busVoltage(){
+   uint16_t bus_voltage_bits = readRegister(REGISTERS::BUSVOLTAGE);
+   if (bus_voltage_bits & 0b1){
+      std::cout << "Error: Power or Current out of range" << std::endl;
+   }
+   else {
+      return bus_voltage_bits >> 3;
+   }
+}
+
+void INA219::calibrate(int bus_volts_max, float max_expected_amps, float max_possible_amps){
+   float shunt_voltage = shuntVoltage();
+   current_lsb_ = determineCurrentLSB(max_expected_amps, max_possible_amps);
+   uint16_t cal = trunc(0.04096/current_lsb_*R_SHUNT);
+   writeRegister(REGISTERS::CALIBRATION, cal);
+
+   power_lsb_ = 20*current_lsb_;
+   uint16_t current = (shunt_voltage*cal)/4096; 
+   writeRegister(REGISTERS::CURRENT, current);
+
+   uint16_t power = (current*busVoltage())/5000;
+   writeRegister(REGISTERS::POWER, power);
+}
+
 float INA219::determineCurrentLSB(float max_expected_amps, float max_possible_amps){
-    float current_lsb;
+   float current_lsb;
 
 	float nearest = roundf(max_possible_amps * 1000.0) / 1000.0;
 	if (max_expected_amps > nearest) {
@@ -72,4 +136,17 @@ float INA219::determineCurrentLSB(float max_expected_amps, float max_possible_am
 		current_lsb = min_device_current_lsb_;
 	}
 	return current_lsb;
+}
+
+float INA219::current(){
+   int16_t current = (int16_t)readRegister(REGISTERS::CURRENT);
+   if (current > 32767){
+      current -= 65536;
+   }
+   return current*current_lsb_*1000.0;
+}
+
+float INA219::power(){
+   int16_t power = (int16_t)readRegister(REGISTERS::POWER);
+   return power*power_lsb_*1000.0;
 }
