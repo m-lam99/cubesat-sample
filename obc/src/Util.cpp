@@ -29,6 +29,8 @@
 
 using namespace std;
 
+namespace exploringBB{
+
 /**
  * Helper write function that writes a single string value to a file in the path provided
  * @param path The sysfs path of the file to be modified
@@ -37,7 +39,7 @@ using namespace std;
  * @return
  */
 
-int Util::write(string path, string filename, string value){
+int write(string path, string filename, string value){
     ofstream fs;
     fs.open((path + filename).c_str());
     if (!fs.is_open()){
@@ -54,7 +56,7 @@ int Util::write(string path, string filename, string value){
  * @param filename Filename The file to be written to in that path
  * @return
  */
-string Util::read(string path, string filename){
+string read(string path, string filename){
     ifstream fs;
     
     fs.open((path + filename).c_str());
@@ -75,9 +77,10 @@ string Util::read(string path, string filename){
  * @param value The int value to be written to the file
  * @return
  */
-int Util::write(string path, string filename, int value){
+int write(string path, string filename, int value){
     stringstream s;
     s << value;
     return write(path,filename,s.str());
 }
 
+}

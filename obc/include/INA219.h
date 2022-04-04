@@ -12,6 +12,8 @@
 #define BUS_MV_LSB 4
 #define R_SHUNT 0.1
 
+using namespace exploringBB;
+
 class INA219:protected I2CDevice{
     
     public:

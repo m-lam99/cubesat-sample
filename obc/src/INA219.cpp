@@ -3,6 +3,8 @@
 #include <iostream>
 #include <unistd.h>
 
+using namespace exploringBB;
+
 int INA219::writeRegister(unsigned int registerAddress, uint16_t value){
    unsigned char buffer[3];
    buffer[0] = registerAddress;
