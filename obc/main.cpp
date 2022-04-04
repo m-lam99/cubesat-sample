@@ -8,6 +8,7 @@
 #include <unistd.h> //for usleep
 #include "GPIO.h"
 #include "I2C.h"
+#include "INA219.h"
 
 using namespace exploringBB;
 
@@ -35,12 +36,15 @@ void testGPIO(){
    outGPIO.streamClose();
 }
 
-void testI2C(){
-   
-   
+void testINA219(){
+   INA219 sensor(1, INA219_ADDRESS);
+   sensor.configure(INA219::VOLTAGE_RANGE::FSR_32, INA219::PGA_GAIN::GAIN_8_320MV, 0, 0);
+   uint16_t value = sensor.readRegister(INA219::REGISTERS::CONFIG);
+   std::cout << value << std::endl;
 }
 
 int main(){
+   testINA219();
 
    return 0;
 }
