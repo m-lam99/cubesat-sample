@@ -6,11 +6,24 @@
 
 #include <iostream>
 #include <unistd.h> //for usleep
+#include <fstream>
+#include <sstream>
 #include "GPIO.h"
 #include "I2C.h"
 #include "INA219.h"
 
 using namespace exploringBB;
+#define LDR_PATH "/sys/bus/iio/devices/iio:device0/in_voltage"
+
+int readAnalog(int number){
+   std::stringstream ss;
+   ss << LDR_PATH << number << "_raw";
+   std::fstream fs;
+   fs.open(ss.str().c_str(), std::fstream::in);
+   fs >> number;
+   fs.close();
+   return number;
+}
 
 void testGPIO(){
    GPIO outGPIO(59), inGPIO(46);
@@ -60,7 +73,7 @@ void testINA219(){
 }
 
 int main(){
-   testINA219();
+   // testINA219();
    // GPIO outGPIO(59), inGPIO(46);
 
    // // Basic Output - Flash the LED 10 times, once per second
@@ -82,6 +95,14 @@ int main(){
    //    outGPIO.streamWrite(LOW);
    // }
    // outGPIO.streamClose();
+   
+   std::cout << "The value on the ADC is:" << std::endl;
+   // for(int i=0; i<1000; i++){
+   int value = readAnalog(0);
+   std::cout << "  = " << value << "/4095    " << std::endl;
+   usleep(50000);
+   // }
+
 
    return 0;
 }
