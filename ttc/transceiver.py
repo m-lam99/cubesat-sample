@@ -23,11 +23,11 @@ DEFAULT_HOST_BAUD = 19200  # bps
 DEFAULT_RF_BAUD = 9600  # bps
 TIMEOUT = 2  # s
 PORT = "/dev/ttyS0"
-WRITE_WAIT_TIME = 0.05  # s
-RECEIVE_WAIT_TIME = 0.05  # s
+WRITE_WAIT_TIME = 0.2  # s
+RECEIVE_WAIT_TIME = 0.2  # s
 FIRMWARE = [0x23, 0x56, 0x31, 0x2E, 0x30, 0x31]
 
-ser = serial.Serial(
+_ser = serial.Serial(
     PORT,
     baudrate=DEFAULT_HOST_BAUD,
     parity=serial.PARITY_NONE,
@@ -43,7 +43,7 @@ def send_command(data: list):
         data: Command and data to be sent to the transceiver
     """
     try:
-        ser.write(data)
+        _ser.write(data)
         sleep(WRITE_WAIT_TIME)
     except RuntimeError:
         print(f"Data ({data}) did not send")
@@ -56,15 +56,15 @@ def receive_data() -> list:
         Data from the transceiver
     """
     while True:
-        received_data: list = ser.read()
+        received_data: list = _ser.read()
         sleep(RECEIVE_WAIT_TIME)
         if len(received_data) == 0:
             print("Timeout!")
         else:
             break
 
-    data_left = ser.inWaiting()
-    received_data += ser.read(data_left)
+    data_left = _ser.inWaiting()
+    received_data += _ser.read(data_left)
     return received_data
 
 
@@ -76,13 +76,13 @@ def setup_transceiver(error_checking: bool = False):
     """
 
     # Setting mode to send/receive
-    send_command(CMD_OPERATING_MODE + MODE_READY)
+    send_command(CMD_OPERATING_MODE + [MODE_READY])
 
     # Setting host baud rate
-    send_command(CMD_HOST_BAUD_RATE + MODE_HOST_BAUD_19200)
+    send_command(CMD_HOST_BAUD_RATE + [MODE_HOST_BAUD_19200])
 
     # Setting RF baud rate
-    send_command(CMD_RF_BAUD_RATE + MODE_RF_BAUD_9600)
+    send_command(CMD_RF_BAUD_RATE + [MODE_RF_BAUD_9600])
 
     if error_checking:
         send_command(CMD_DATA_ERROR_CHECKING + [0x01])
@@ -98,6 +98,7 @@ def test_transceiver() -> bool:
 
     send_command(CMD_FIRMWARE_VERSION)
     firmware_version = receive_data()
+    print(firmware_version)
 
     if firmware_version == FIRMWARE:
         result = True
