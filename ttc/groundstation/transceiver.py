@@ -107,7 +107,7 @@ def test_transceiver() -> bool:
     return result
 
 
-def trasmit_message(data: list, channel: int = 0):
+def transmit_message(data: list, channel: int = 0):
     """Transmit message using the transceiver
 
     Args:
