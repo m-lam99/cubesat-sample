@@ -25,7 +25,7 @@ TIMEOUT = 2  # s
 PORT = "/dev/ttyS0"
 WRITE_WAIT_TIME = 0.2  # s
 RECEIVE_WAIT_TIME = 0.2  # s
-FIRMWARE = [0x23, 0x56, 0x31, 0x2E, 0x30, 0x31]
+FIRMWARE = b"#V1.01"
 
 _ser = serial.Serial(
     PORT,
@@ -49,13 +49,14 @@ def send_command(data: list):
         print(f"Data ({data}) did not send")
 
 
-def receive_data() -> list:
+def receive_data(packet_size: int, channel: int = 0) -> list:
     """Receive data from the transceiver
 
     Returns:
         Data from the transceiver
     """
     while True:
+        send_command(CMD_RECEIVE_MODE_CONFIG + [channel] + [packet_size])
         received_data: list = _ser.read()
         sleep(RECEIVE_WAIT_TIME)
         if len(received_data) == 0:
@@ -97,10 +98,25 @@ def test_transceiver() -> bool:
     result = False
 
     send_command(CMD_FIRMWARE_VERSION)
-    firmware_version = receive_data()
+    firmware_version = receive_data(6)
     print(firmware_version)
 
     if firmware_version == FIRMWARE:
         result = True
 
     return result
+
+
+def trasmit_message(data: list, channel: int = 0):
+    """Transmit message using the transceiver
+
+    Args:
+        data: Data to be sent via the transceiver
+    """
+
+    if channel < 0 or channel > 15:
+        ValueError(f"Invalid channel for transmission: {channel}")
+
+    full_message = CMD_TRANSMIT_MODE_CONFIG + [channel] + [len(data)] + data
+
+    send_command(full_message)
