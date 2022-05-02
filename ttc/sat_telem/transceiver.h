@@ -1,14 +1,14 @@
 #include <string.h>
 
-class transceiver
+class Transceiver
 {
 
 public:
-    transceiver();
-    void send_command(int data[]);
-    void receieve_data(int packet_size, int channel);
-    bool test_transceiver(void);
-    void transmit_message(void);
+    Transceiver();
+    void SendCommand(int data[]);
+    void ReceiveData(int packet_size, int channel);
+    bool TestTransceiver(void);
+    void TransmitMessage(void);
 
 private:
     const int CMD_OPERATING_MODE[3] = {0x41, 0x54, 0x4D};
