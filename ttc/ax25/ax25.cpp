@@ -153,6 +153,8 @@ ByteArray* stuffBits(unsigned char* bytes, int nbytes) {
     unsigned char* newPayload = new unsigned char[newByteCounter+1];
     memcpy(newPayload, newBytes, newByteCounter);
 
+    delete newBytes;
+
     ByteArray* r = new ByteArray{
         newByteCounter+1,
         newPayload
@@ -325,7 +327,7 @@ Message* decode(ByteArray* frame, int receiveState) {
 
     unsigned char destExtraByte = frame->bytes[6];
     int commandResponse = (destExtraByte & 0b10000000)>>7;
-    int dataType = ((destExtraByte & 0b00011110)>>1) - 15;
+    int dataType = ((destExtraByte & 0b00011110)>>1) - 14;
     if (commandResponse > 1) {
         std::cout<<"Frame failed command/response check\n";
         return NULL;
@@ -352,7 +354,7 @@ Message* decode(ByteArray* frame, int receiveState) {
 
         sendSequence = (controlByte & 0b00001110)>>1;
     } else {
-        unsigned char uFrameCheck = controlByte & 0b00000010;
+        unsigned char uFrameCheck = (controlByte & 0b00000010) >> 1;
         if (uFrameCheck==1) {
             // Unnumbered frame
             controlType=2;
@@ -362,6 +364,8 @@ Message* decode(ByteArray* frame, int receiveState) {
     int npayload = frame->nbytes-18;
     unsigned char* payload = new unsigned char[npayload];
     memcpy(payload,&frame->bytes[16],npayload);
+
+    delete frame->bytes;
 
     Message* m = new Message{
         srcaddr,
@@ -431,6 +435,7 @@ Message* searchForMessage(unsigned char* stream, int nstream, int receiveState) 
                     }
 
                     std::cout<<"Successfully validated frame\n";
+                    delete frame;
                     return m;
                 } else {
                     startFlagFound = 1;
@@ -456,6 +461,7 @@ Message* searchForMessage(unsigned char* stream, int nstream, int receiveState) 
         }
     }
     // No frame found
+    delete frame;
     return NULL;
 }
 
@@ -463,6 +469,7 @@ int main() {
     // This is a sample use case, showing how the interface with the functions
     // should be developed
     // NOTE: all messaging is done with unsigned char, representing 1 byte
+    
     std::cout<<"Sending:\n";
     std::string benchmarkMsg = "The quick brown fox jumps over the lazy dog";
     std::cout << benchmarkMsg << '\n';
@@ -484,7 +491,7 @@ int main() {
         destaddr,
         1,
         1,
-        0,
+        2,
         sendState,
         receiveState,
         nmsg,
@@ -517,8 +524,6 @@ int main() {
         receiveState%=SEQUENCE_MOD;
     }
 
-    std::cout<<retrievedMsg->sendSequence<<'\n';
-
     std::cout<<"\nDecoded:\n";
     std::cout<<"Source: ";
     printList(retrievedMsg->source,6);
@@ -526,10 +531,17 @@ int main() {
     printList(retrievedMsg->destination,6);
     std::cout<<"Data Type (0=WOD, 1=Science): "<< int(retrievedMsg->dataType) << '\n';
     std::cout<<"Command(1)/Response(0) Type : "<< int(retrievedMsg->commandResponse) << '\n';
-    std::cout<<"Control Type (0=Info, 1=Unnumbered): "<< int(retrievedMsg->controlType) << '\n';
+    std::cout<<"Control Type (0=Info, 2=Unnumbered): "<< int(retrievedMsg->controlType) << '\n';
     std::cout<<"Sequence Nos (Send, Receive): "<< int(retrievedMsg->sendSequence) << ',' << int(retrievedMsg->receiveSequence) << '\n';
     std::cout<<"PAYLOAD: ";
     printList(retrievedMsg->payload, retrievedMsg->npayload);
+
+    delete retrievedMsg->payload;
+    delete retrievedMsg->source;
+    delete retrievedMsg->destination;
+    delete retrievedMsg;
+    delete encodedMsg->bytes;
+    delete encodedMsg;
 
     return 0;
 }
