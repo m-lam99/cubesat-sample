@@ -10,6 +10,25 @@ struct ByteArray {
 };
 
 struct Message {
+    /*
+    Params:
+    payload: array of bytes in message
+    npayload: number of bytes in payload
+    source: max 6 chars
+    destination: max 6 chars
+    dataType: 0 -> WOD, 1 -> Science
+    commandResponse: 0 -> response, 1 -> command
+    controlType: 0 -> Information, 1 -> Supervisory, 2 -> Unnumbered
+                    Supervisory is not implemented
+    sendSequence: int between 0 and 7
+                    Not applicable to Unnumbered control types
+                    This counter must be stored and updated by the host application
+                    Iterated upon successful transmission of Information frames
+    receiveSequence: int between 0 and 7
+                        Not applicable to Unnumbered control types
+                        This counter must be stored and updated by the host application
+                        Iterated upon successful retrieval of Information frames
+    */
     unsigned char* source;
     unsigned char* destination;
     int dataType;
@@ -71,12 +90,6 @@ unsigned char swapByteOrder(unsigned char b)
 /*
     THE GUTS OF THE THING
 */
-
-int sendMessage(ByteArray* msg) {
-    // returns 1 on success, 0 on failure
-    // TODO: interface with transceiver module
-    return 1;
-}
 
 unsigned short crc16(unsigned char *payload, int npayload)
 {
@@ -192,45 +205,25 @@ ByteArray* unstuffBits(ByteArray* message) {
     return message;
 }
 
-ByteArray* encode(
-    unsigned char* payload,
-    int npayload,
-    int dataType,
-    int commandResponse,
-    int controlType,
-    int sendSequence,
-    int receiveSequence
-    ) {
+ByteArray* encode(Message* message) {
     /*
-        Params:
-        payload: array of bytes to send
-        npayload: number of bytes in payload
-        dataType: 0 -> WOD, 1 -> Science
-        commandResponse: 0 -> response, 1 -> command
-        controlType: 0 -> Information, 1 -> Supervisory, 2 -> Unnumbered
-                     Supervisory is not implemented
-        sendSequence: int between 0 and 7
-                      Not applicable to Unnumbered control types
-                      This counter must be stored and updated by the host application
-                      Iterated upon successful transmission of Information frames
-        receiveSequence: int between 0 and 7
-                         Not applicable to Unnumbered control types
-                         This counter must be stored and updated by the host application
-                         Iterated upon successful retrieval of Information frames
-
-        Returns: pointer to the encoded message. This will need to be freed after usage
-
         Note: current implementation does not check for max payload size of 255
         Per the CDR, all our messages should be far less than this limit
     */
 
     // first some constants
     unsigned char flag = 0x7e; // message initialiser flag
-    // Note: will need to be flipped on OBC code
-    unsigned char destaddr[6] = {'N','I','C','E',' ',' '};
-    unsigned char srcaddr[6] = {'U','S','Y','D','G','S'};
     unsigned char repeaterMask = 0b01100000;
 
+    unsigned char* destaddr = message->destination;
+    unsigned char* srcaddr = message->source;
+    int dataType = message->dataType;
+    int controlType = message->controlType;
+    int commandResponse = message->commandResponse;
+    int sendSequence = message->sendSequence;
+    int receiveSequence = message->receiveSequence;
+    int npayload = message->npayload;
+    unsigned char* payload = message->payload;
 
     // build address header
     unsigned char address[14];
@@ -347,7 +340,7 @@ Message* decode(ByteArray* frame, int receiveState) {
     unsigned char iFrameCheck = controlByte & 0b00000001;
     int receiveSequence=-1;
     int sendSequence=-1;
-    if (controlByte==0) {
+    if (iFrameCheck==0) {
         // Information frame
         controlType=0;
 
@@ -385,10 +378,19 @@ Message* decode(ByteArray* frame, int receiveState) {
     return m;
 }
 
+// FUNCTIONS TO INTERFACE WITH TRANSCEIVER
+
+int sendMessage(ByteArray* msg) {
+    // returns 1 on success, 0 on failure
+    // TODO: interface with transceiver module
+    return 1;
+}
+
 Message* searchForMessage(unsigned char* stream, int nstream, int receiveState) {
     // We will need to implement something like this that is constantly listening
     // to radio transmissions. It finds the data between two `0x7e` start/end flags
     // In reality this will probably be a stream of data not just a long string
+    // TODO: interface with transceiver module
     unsigned char flag = 0x7e;
     unsigned char window = 0b00000000; // moving byte of data throughout the stream
     int maxFrameLength = 1+14+2+1+255+4+1; // max length of payload + overhead
@@ -465,19 +467,32 @@ int main() {
     std::string benchmarkMsg = "The quick brown fox jumps over the lazy dog";
     std::cout << benchmarkMsg << '\n';
 
+    // Note: will need to be flipped on OBC code
+    unsigned char destaddr[6] = {'N','I','C','E',' ',' '};
+    unsigned char srcaddr[6] = {'U','S','Y','D','G','S'};
+    int sendState = 0;
+    int receiveState = 0;
+
     // conv string to list of bytes
     int nmsg = benchmarkMsg.size();
     unsigned char msg[nmsg];
     for(int i = 0; i < nmsg; i++)
         msg[i] = (unsigned char)(benchmarkMsg[i]);
 
-    // printList(msg, nmsg);
-    // printListHex(msg, nmsg);
+    Message sampleMessage = {
+        srcaddr,
+        destaddr,
+        1,
+        1,
+        0,
+        sendState,
+        receiveState,
+        nmsg,
+        msg
+    };
 
     // Do the messaging
-    int sendState = 0;
-    int receiveState = 0;
-    ByteArray* encodedMsg = encode(msg, nmsg, 1, 1, 0, sendState, receiveState);
+    ByteArray* encodedMsg = encode(&sampleMessage);
     if (encodedMsg != NULL) {
         int success = sendMessage(encodedMsg);
         if (success == 1) {
@@ -510,8 +525,8 @@ int main() {
     std::cout<<"Destination: ";
     printList(retrievedMsg->destination,6);
     std::cout<<"Data Type (0=WOD, 1=Science): "<< int(retrievedMsg->dataType) << '\n';
-    std::cout<<"Command(1)/Response(0) Type : "<< int(retrievedMsg->dataType) << '\n';
-    std::cout<<"Control Type (0=Info, 1=Unnumbered): "<< int(retrievedMsg->dataType) << '\n';
+    std::cout<<"Command(1)/Response(0) Type : "<< int(retrievedMsg->commandResponse) << '\n';
+    std::cout<<"Control Type (0=Info, 1=Unnumbered): "<< int(retrievedMsg->controlType) << '\n';
     std::cout<<"Sequence Nos (Send, Receive): "<< int(retrievedMsg->sendSequence) << ',' << int(retrievedMsg->receiveSequence) << '\n';
     std::cout<<"PAYLOAD: ";
     printList(retrievedMsg->payload, retrievedMsg->npayload);
