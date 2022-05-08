@@ -545,3 +545,41 @@ int main() {
 
     return 0;
 }
+
+// Python bindings
+extern "C" {
+    ByteArray* ByteArray_new(
+        unsigned char* bytes,
+        int nbytes){
+            return new ByteArray{
+                nbytes,
+                bytes
+            };
+        }
+
+    Message* Message_new(
+        unsigned char* source,
+        unsigned char* destination,
+        int dataType,
+        int commandResponse,
+        int controlType,
+        int sendSequence,
+        int receiveSequence,
+        int npayload,
+        unsigned char* payload
+    ){ 
+        return new Message{
+            source,
+            destination,
+            dataType,
+            commandResponse,
+            controlType,
+            sendSequence,
+            receiveSequence,
+            npayload,
+            payload
+        }; 
+    }
+
+    ByteArray* _encode(Message* message) { return encode(message); }
+}
