@@ -483,8 +483,9 @@ int main() {
     // conv string to list of bytes
     int nmsg = benchmarkMsg.size();
     unsigned char msg[nmsg];
-    for(int i = 0; i < nmsg; i++)
+    for(int i = 0; i < nmsg; i++) {
         msg[i] = (unsigned char)(benchmarkMsg[i]);
+    }
 
     Message sampleMessage = {
         srcaddr,
@@ -557,6 +558,8 @@ extern "C" {
             };
         }
 
+    void ByteArray_del(ByteArray* b){ delete b->bytes; delete b; }
+
     Message* Message_new(
         unsigned char* source,
         unsigned char* destination,
@@ -581,5 +584,19 @@ extern "C" {
         }; 
     }
 
+    void Message_del(Message* m){ delete m->source; delete m->destination; delete m->payload; delete m; }
+
     ByteArray* _encode(Message* message) { return encode(message); }
+
+    Message* _searchForMessage(unsigned char* stream, int nstream, int receiveState) {
+        return searchForMessage(stream, nstream, receiveState);
+    }    
+
+    int ByteArray_getnbytes(ByteArray* b) { return b->nbytes; }
+    unsigned char* ByteArray_getbytes(ByteArray* b) { return b->bytes; }
+
+    int Message_getnpayload(Message* m) { return m->npayload; }
+    unsigned char* Message_getpayload(Message* m) { return m->payload; }
+
+
 }
