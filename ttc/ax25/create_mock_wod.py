@@ -1,9 +1,19 @@
 import math
 import random
 from matplotlib import pyplot as plt
-import datetime
 import pickle
 import bindings
+
+# FORMAT:
+# time: 4 bytes, int
+# mode: 1 byte, int
+# ...: 1 byte, int
+# ...: 1 byte, int
+# ...: 1 byte, int
+# ...: 1 byte, int
+# ...: 1 byte, int
+# ...: 1 byte, int
+# ...: 1 byte, int
 
 times = range(0,24*60*60, 30)
 
@@ -36,7 +46,7 @@ for _ in range(7): # 7 1-byte
 for d in data:
     plt.plot(d)
 
-ref_t = (datetime.datetime.now() - datetime.datetime(year=2000, month=1, day=1)).total_seconds()
+ref_t = 705438821
 msgs = []
 send_seq = 0
 for i,t in enumerate(times):
