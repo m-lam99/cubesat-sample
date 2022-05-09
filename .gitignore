@@ -130,3 +130,6 @@ dmypy.json
 .pyre/
 
 *.exe
+# Build files
+*.o
+*.d
