@@ -109,7 +109,7 @@ int I2CDevice::write(unsigned char value){
  * @param registerAddress the address to read from
  * @return the byte value at the register address.
  */
-uint16_t I2CDevice::readRegister(unsigned int registerAddress){
+uint8_t I2CDevice::readRegister(unsigned int registerAddress){
    this->write(registerAddress);
    unsigned char buffer[1];
    if(::read(this->file, buffer, 1)!=1){

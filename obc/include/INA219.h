@@ -1,3 +1,6 @@
+// Class for INA219 Current Sensor
+// EAP Subsystem for NICE
+
 #ifndef INA219_H
 #define INA219_H
 
@@ -82,7 +85,7 @@ class INA219:protected I2CDevice{
         };
 
         int writeRegister(unsigned int registerAddress, uint16_t value);
-        uint16_t readRegister(unsigned int registerAddress);
+        uint16_t readRegisters(unsigned int registerAddress);
         INA219(unsigned int I2CBus, unsigned int I2CAddress);
         void configure(int voltage_range, int gain, int bus_adc, int shunt_adc);
         float shuntVoltage();
