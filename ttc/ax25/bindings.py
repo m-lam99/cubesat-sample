@@ -1,6 +1,9 @@
 import ctypes
 ax25 = ctypes.cdll.LoadLibrary('./ax25.so')
 
+ax25.ByteArray_getbytes.restype = ctypes.POINTER(ctypes.c_ubyte)
+ax25.Message_getpayload.restype = ctypes.POINTER(ctypes.c_ubyte)
+
 class ByteArray:
     def __init__(self, ls):
         # ls: a list of ints, 0-255
@@ -33,7 +36,15 @@ class Message:
                             This counter must be stored and updated by the host application
                             Iterated upon successful retrieval of Information frames  
         """  
+        assert len(source) <= 6
+        assert len(destination) <= 6
+        
         sz = len(payload)
+        if sz > 16:
+            print("[WARNING] python bindings do not support payloads >16 bytes. Truncating to 16 :)")
+            sz = 16
+            payload = payload[:16]
+            
         c_payload = (ctypes.c_ubyte * sz)()
         for i,n in enumerate(payload):
             assert type(n) == int
@@ -59,17 +70,34 @@ class Message:
             ctypes.c_int(sz),
             c_payload
         )
-    
-    
-m = Message(
-    [ord(c) for c in "The quick brown fox jumps over the lazy dog"],
-    "NICE",
-    "USYDGS",
-    1,
-    1,
-    2,
-    0,
-    0
-)
 
-ax25._encode(m)
+if __name__ == '__main__':
+    # sample usage
+    payload = "The quick brown fox jumps over the lazy dog"
+        
+    m = Message(
+        [ord(m) for m in payload],
+        "USYDGS",
+        "NICE",
+        1,
+        1,
+        2,
+        0,
+        0
+    )
+
+    b = ax25._encode(m.obj)
+    nbytes = ax25.ByteArray_getnbytes(b)
+    _bytes = ax25.ByteArray_getbytes(b)
+    encoded_msg = [_bytes[i] for i in range(nbytes)]
+    print([hex(m) for m in encoded_msg])
+
+    decoded_msg = ax25._searchForMessage(_bytes, nbytes, 0)
+    nbytes = ax25.Message_getnpayload(decoded_msg)
+    _bytes = ax25.Message_getpayload(decoded_msg)
+    decoded_payload = [_bytes[i] for i in range(nbytes)]
+    print([chr(m) for m in decoded_payload])
+
+    ax25.ByteArray_del(b)
+    ax25.Message_del(m.obj)
+    ax25.Message_del(decoded_msg.obj)
