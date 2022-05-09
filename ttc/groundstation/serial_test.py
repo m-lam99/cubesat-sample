@@ -4,7 +4,6 @@ from transceiver import (
     setup_transceiver,
     test_transceiver,
     receive_data,
-    send_command,
     transmit_message,
 )
 
