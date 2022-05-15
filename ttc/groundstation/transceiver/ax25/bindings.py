@@ -7,17 +7,19 @@ ax25 = ctypes.cdll.LoadLibrary('./transceiver/ax25/ax25.so')
 ax25.ByteArray_getbytes.restype = ctypes.POINTER(ctypes.c_ubyte)
 ax25.Message_getpayload.restype = ctypes.POINTER(ctypes.c_ubyte)
 
+
 class ByteArray:
     def __init__(self, ls):
         # ls: a list of ints, 0-255
         sz = len(ls)
         array = (ctypes.c_ubyte * sz)()
-        for i,n in enumerate(ls):
+        for i, n in enumerate(ls):
             assert type(n) == int
             assert n >= 0
             assert n <= 255
             array[i] = n
         self.obj = ax25.ByteArray_new(ctypes.c_int(sz), array)
+
 
 class Message:
     def __init__(self, payload, source, destination, data_type, command_response, control_type, send_sequence, receive_sequence):
@@ -38,23 +40,24 @@ class Message:
                             Not applicable to Unnumbered control types
                             This counter must be stored and updated by the host application
                             Iterated upon successful retrieval of Information frames  
-        """  
+        """
         assert len(source) <= 6
         assert len(destination) <= 6
-            
+
         sz, c_payload = list_to_bytes(payload)
-        if sz > 16  :
-            print("[WARNING] python bindings do not support payloads >16 bytes. Truncating to 16 :)")
+        if sz > 16:
+            print(
+                "[WARNING] python bindings do not support payloads >16 bytes. Truncating to 16 :)")
             sz = 16
             payload = payload[:16]
 
         c_src = (ctypes.c_ubyte * 6)()
-        for i,n in enumerate(source.ljust(6, ' ')):
+        for i, n in enumerate(source.ljust(6, ' ')):
             c_src[i] = ord(n)
         c_dest = (ctypes.c_ubyte * 6)()
-        for i,n in enumerate(destination.ljust(6, ' ')):
+        for i, n in enumerate(destination.ljust(6, ' ')):
             c_dest[i] = ord(n)
-            
+
         self.obj = ax25.Message_new(
             c_src,
             c_dest,
@@ -67,23 +70,25 @@ class Message:
             c_payload
         )
 
+
 def list_to_bytes(payload):
     # Converts list of ints to cpp bytes
     sz = len(payload)
-    
+
     c_payload = (ctypes.c_ubyte * sz)()
-    for i,n in enumerate(payload):
+    for i, n in enumerate(payload):
         assert type(n) == int
         assert n >= 0
         assert n <= 255
         c_payload[i] = n
-        
+
     return sz, c_payload
+
 
 if __name__ == '__main__':
     # sample usage
     payload = "The quick brown"
-        
+
     m = Message(
         [ord(m) for m in payload],
         "USYDGS",
