@@ -7,13 +7,7 @@ import bindings
 # FORMAT:
 # time: 4 bytes, int
 # mode: 1 byte, int
-# ...: 1 byte, int
-# ...: 1 byte, int
-# ...: 1 byte, int
-# ...: 1 byte, int
-# ...: 1 byte, int
-# ...: 1 byte, int
-# ...: 1 byte, int
+# etc (7 more fields): 1 byte, int
 
 times = range(0,24*60*60, 30)
 

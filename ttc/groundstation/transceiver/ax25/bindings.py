@@ -1,5 +1,8 @@
 import ctypes
-ax25 = ctypes.cdll.LoadLibrary('./ax25.so')
+
+ax25 = ctypes.cdll.LoadLibrary('./transceiver/ax25/ax25.so')
+# N.B: use the below if running standalone
+# ax25 = ctypes.cdll.LoadLibrary('./ax25.so')
 
 ax25.ByteArray_getbytes.restype = ctypes.POINTER(ctypes.c_ubyte)
 ax25.Message_getpayload.restype = ctypes.POINTER(ctypes.c_ubyte)
@@ -38,20 +41,13 @@ class Message:
         """  
         assert len(source) <= 6
         assert len(destination) <= 6
-        
-        sz = len(payload)
-        if sz > 16:
+            
+        sz, c_payload = list_to_bytes(payload)
+        if sz > 16  :
             print("[WARNING] python bindings do not support payloads >16 bytes. Truncating to 16 :)")
             sz = 16
             payload = payload[:16]
-            
-        c_payload = (ctypes.c_ubyte * sz)()
-        for i,n in enumerate(payload):
-            assert type(n) == int
-            assert n >= 0
-            assert n <= 255
-            c_payload[i] = n
-            
+
         c_src = (ctypes.c_ubyte * 6)()
         for i,n in enumerate(source.ljust(6, ' ')):
             c_src[i] = ord(n)
@@ -71,9 +67,22 @@ class Message:
             c_payload
         )
 
+def list_to_bytes(payload):
+    # Converts list of ints to cpp bytes
+    sz = len(payload)
+    
+    c_payload = (ctypes.c_ubyte * sz)()
+    for i,n in enumerate(payload):
+        assert type(n) == int
+        assert n >= 0
+        assert n <= 255
+        c_payload[i] = n
+        
+    return sz, c_payload
+
 if __name__ == '__main__':
     # sample usage
-    payload = "The quick brown fox jumps over the lazy dog"
+    payload = "The quick brown"
         
     m = Message(
         [ord(m) for m in payload],
@@ -100,4 +109,4 @@ if __name__ == '__main__':
 
     ax25.ByteArray_del(b)
     ax25.Message_del(m.obj)
-    ax25.Message_del(decoded_msg.obj)
+    ax25.Message_del(decoded_msg)

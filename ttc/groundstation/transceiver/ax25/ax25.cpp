@@ -302,7 +302,7 @@ Message* decode(ByteArray* frame, int receiveState) {
     // Unstuff bits
     frame = unstuffBits(frame);
     if (frame == NULL) {
-        std::cout<<"Frame failed bit unstuffing verification\n";
+        // std::cout<<"Frame failed bit unstuffing verification\n";
         return NULL;
     }
 
@@ -312,7 +312,7 @@ Message* decode(ByteArray* frame, int receiveState) {
     memcpy(crc,&frame->bytes[frame->nbytes-2],2);
     unsigned short crcGiven = (((short)crc[0]) << 8) | (0x00ff & crc[1]);
     if (crcGiven != crcCalced) {
-        std::cout<<"Frame failed CRC checksum\n";
+        // std::cout<<"Frame failed CRC checksum\n";
         return NULL;
     }
 
@@ -329,11 +329,11 @@ Message* decode(ByteArray* frame, int receiveState) {
     int commandResponse = (destExtraByte & 0b10000000)>>7;
     int dataType = ((destExtraByte & 0b00011110)>>1) - 14;
     if (commandResponse > 1) {
-        std::cout<<"Frame failed command/response check\n";
+        // std::cout<<"Frame failed command/response check\n";
         return NULL;
     }
     if (dataType > 1) {
-        std::cout<<"Frame failed dataType check (SSID)\n";
+        // std::cout<<"Frame failed dataType check (SSID)\n";
         return NULL;
     }
 
@@ -349,7 +349,7 @@ Message* decode(ByteArray* frame, int receiveState) {
         // Verify receive state
         receiveSequence = (controlByte & 0b11100000)>>5;
         if (receiveSequence != receiveState) {
-            std::cout<<"[WARNING] Receive state does not match expected. Did we miss a packet??\n";
+            // std::cout<<"[WARNING] Receive state does not match expected. Did we miss a packet??\n";
         }
 
         sendSequence = (controlByte & 0b00001110)>>1;
@@ -415,7 +415,7 @@ Message* searchForMessage(unsigned char* stream, int nstream, int receiveState) 
                         continue;
                     }
 
-                    std::cout<<"Decoding candidate frame\n";
+                    // std::cout<<"Decoding candidate frame\n";
 
                     // This is the only successful exit case
                     // Add the end flag
@@ -434,7 +434,7 @@ Message* searchForMessage(unsigned char* stream, int nstream, int receiveState) 
                         continue;
                     }
 
-                    std::cout<<"Successfully validated frame\n";
+                    // std::cout<<"Successfully validated frame\n";
                     delete frame;
                     return m;
                 } else {
@@ -470,9 +470,9 @@ int main() {
     // should be developed
     // NOTE: all messaging is done with unsigned char, representing 1 byte
     
-    std::cout<<"Sending:\n";
+    // std::cout<<"Sending:\n";
     std::string benchmarkMsg = "The quick brown fox jumps over the lazy dog";
-    std::cout << benchmarkMsg << '\n';
+    // std::cout << benchmarkMsg << '\n';
 
     // Note: will need to be flipped on OBC code
     unsigned char destaddr[6] = {'N','I','C','E',' ',' '};
@@ -509,32 +509,32 @@ int main() {
         }
     }
 
-    std::cout<<"\nEncoded:\n";
+    // std::cout<<"\nEncoded:\n";
     printListHex(encodedMsg->bytes, encodedMsg->nbytes);
 
     // Simulate some noise
-    std::cout<<"\nGenerating 1mio bits of random noise and searching for packets\n";
+    // std::cout<<"\nGenerating 1mio bits of random noise and searching for packets\n";
     unsigned char noisyMessage[1000000];
     // TODO: move to backend of message once decoding is validated
     memcpy(&noisyMessage[800000],encodedMsg->bytes,encodedMsg->nbytes);
     Message* retrievedMsg = searchForMessage(noisyMessage, 1000000, receiveState);
     if (retrievedMsg == NULL) {
-        std::cout<<"Failed to find message in noise\n";
+        // std::cout<<"Failed to find message in noise\n";
     } else {
         receiveState++;
         receiveState%=SEQUENCE_MOD;
     }
 
-    std::cout<<"\nDecoded:\n";
-    std::cout<<"Source: ";
+    // std::cout<<"\nDecoded:\n";
+    // std::cout<<"Source: ";
     printList(retrievedMsg->source,6);
-    std::cout<<"Destination: ";
+    // std::cout<<"Destination: ";
     printList(retrievedMsg->destination,6);
-    std::cout<<"Data Type (0=WOD, 1=Science): "<< int(retrievedMsg->dataType) << '\n';
-    std::cout<<"Command(1)/Response(0) Type : "<< int(retrievedMsg->commandResponse) << '\n';
-    std::cout<<"Control Type (0=Info, 2=Unnumbered): "<< int(retrievedMsg->controlType) << '\n';
-    std::cout<<"Sequence Nos (Send, Receive): "<< int(retrievedMsg->sendSequence) << ',' << int(retrievedMsg->receiveSequence) << '\n';
-    std::cout<<"PAYLOAD: ";
+    // std::cout<<"Data Type (0=WOD, 1=Science): "<< int(retrievedMsg->dataType) << '\n';
+    // std::cout<<"Command(1)/Response(0) Type : "<< int(retrievedMsg->commandResponse) << '\n';
+    // std::cout<<"Control Type (0=Info, 2=Unnumbered): "<< int(retrievedMsg->controlType) << '\n';
+    // std::cout<<"Sequence Nos (Send, Receive): "<< int(retrievedMsg->sendSequence) << ',' << int(retrievedMsg->receiveSequence) << '\n';
+    // std::cout<<"PAYLOAD: ";
     printList(retrievedMsg->payload, retrievedMsg->npayload);
 
     delete retrievedMsg->payload;

@@ -1,5 +1,5 @@
 import sys
-import transceiver
+from transceiver import test_data_pipeline
 
 HELP_MSG = """
 Usage: python3 main.py [live|demo|import]
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     
     
     if sys.argv[1] == "import":
-        transceiver.test_data_pipeline.run()
+        test_data_pipeline.run()
     elif sys.argv[1] == "live":
         # TODO: launch transceiver listening stuff on a different thread
         raise NotImplementedError("live integration not setup yet")
