@@ -2,13 +2,12 @@ import sqlite3
 
 DB_HOST = "db/ground-station.db"
 
-class DB:
 
+class DB:
     def __init__(self):
         self.con = sqlite3.connect(DB_HOST)
-        
         self.initialise()
-        
+
     def initialise(self):
         cursor = self.con.cursor()
         cursor.execute("""
