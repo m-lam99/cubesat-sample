@@ -4,12 +4,19 @@ from gui import gui
 
 HELP_MSG = """
 Usage: python3 main.py [live|demo|import]
-                        live: listen to transceiver
-                        demo: use sample/stored data
+                        live: listen to transceiver and launch GUI
+                        demo: launch GUI
                         import: test data import feature
 """
 
 if __name__ == '__main__':
+    print("""
+        IMPORTANT: FOR THIS TO WORK
+        You must have compiled the ax25 C++ layer (go to `transceiver/ax25` and run `make`)
+        You must run this with the same processing bits as you compiled ax25 with (32bit vs 64bit)
+                I (Adam) use 32bit because my C++ compiler was being a bitch
+          """)
+    
     if len(sys.argv) < 2:
         print(HELP_MSG)
         sys.exit(1)
