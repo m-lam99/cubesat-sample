@@ -66,10 +66,10 @@ for t in times:
     send_seq%=8
     msgs.append(encoded_msg)
             
-    current_lat += 90/samples_per_orbit*2
+    current_lat += 0.76543*90/samples_per_orbit*2
     if current_lat > 90:
         current_lat-=180
-    current_long += 180/samples_per_orbit*2
+    current_long += 1.23456*180/samples_per_orbit*2
     if current_long > 180:
         current_long-=360
     current_alt+=(random.randint(-250000,250000)/10000)

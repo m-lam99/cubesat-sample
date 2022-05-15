@@ -22,6 +22,7 @@ def decode_wod(msg):
     
     t = int.from_bytes(data[:4], byteorder='big', signed=True)
     assert t > 0
+    assert t < 1000000000
     
     return [
         t, # time offset
@@ -54,10 +55,10 @@ def decode_science(msg):
     t = int.from_bytes(data[:4], byteorder='big', signed=True)
     assert t > 0
     
-    reading = frombuffer(bytes(data[4:6]), dtype=float16)
-    lat = frombuffer(bytes(data[6:8]), dtype=float16)
-    lon = frombuffer(bytes(data[8:10]), dtype=float16)
-    alt = frombuffer(bytes(data[10:12]), dtype=float16)
+    reading = float(frombuffer(bytes(data[4:6]), dtype=float16))
+    lat = float(frombuffer(bytes(data[6:8]), dtype=float16))
+    lon = float(frombuffer(bytes(data[8:10]), dtype=float16))
+    alt = float(frombuffer(bytes(data[10:12]), dtype=float16))
     
     assert reading >= -1 and reading <= 1
     assert lat >= -90 and lat <= 90
@@ -65,8 +66,8 @@ def decode_science(msg):
     
     return [
         t,
-        reading,
         lat,
         lon,
-        alt
+        alt,
+        reading
     ]

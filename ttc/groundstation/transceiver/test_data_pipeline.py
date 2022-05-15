@@ -25,7 +25,7 @@ def run():
     print(f"Decoded {successes} WOD packets, inserting into DB")
     cursor = db.con.cursor()
     cursor.executemany("""
-        INSERT OR REPLACE INTO wod (offsetTime, mode, batteryVoltage, batteryCurrent, `3V3Current`, `5V5Current`, commTemperature, epsTemperature, batteryTemperature)
+        INSERT OR REPLACE INTO wod (offsetTime, mode, batteryVoltage, batteryCurrent, `3V3Current`, `5VCurrent`, commTemperature, epsTemperature, batteryTemperature)
         VALUES (?,?,?,?,?,?,?,?,?)
     """, decoded_data)
     print(f"Insertion complete of {successes} WOD entries")
@@ -46,7 +46,7 @@ def run():
             data = decode_science(decoded_msg)
             decoded_data.append(data)
             successes += 1
-        except AssertionError as e:
+        except AssertionError:
             continue
     
     print(f"Decoded {successes} science packets, inserting into DB")
