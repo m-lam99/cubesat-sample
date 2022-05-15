@@ -14,7 +14,7 @@ if __name__ == '__main__':
         IMPORTANT: FOR THIS TO WORK
         You must have compiled the ax25 C++ layer (go to `transceiver/ax25` and run `make`)
         You must run this with the same processing bits as you compiled ax25 with (32bit vs 64bit)
-                I (Adam) use 32bit because my C++ compiler was being a bitch
+                I (Adam) use 32bit Python because my C++ compiler was being a bitch
           """)
     
     if len(sys.argv) < 2:
