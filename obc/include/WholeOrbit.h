@@ -15,7 +15,7 @@ class WholeOrbit {
 
    private:
     uint32_t time_;
-    bool mode_;
+    uint8_t mode_;
     uint8_t voltage_batt_ = 0;
     uint8_t current_batt_ = 0;
     uint8_t current_3v3_ = 0;

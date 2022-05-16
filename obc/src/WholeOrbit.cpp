@@ -10,6 +10,10 @@ WholeOrbit::WholeOrbit():
 }
 
 void WholeOrbit::GetData(){
+    // UUI8 = min(0, max(28-1, floor( (20 * U) - 60) ) ) 
+    float voltage_batt_f = current_sensor_batt_.busVoltage();
+    voltage_batt_ = std::min(0, std::max(1<<8 -1, (int)floor((20*voltage_batt_f) - 60)));
+
     // IUI8 = min(0, max(28-1, floor( 127 * I ) + 127) )
     float current_batt_f = current_sensor_batt_.current();
     current_batt_ = std::min(0, std::max(1<<8 - 1, (int)floor(127*current_batt_f)+127));
@@ -20,7 +24,7 @@ void WholeOrbit::GetData(){
 
     float current_5v_f = current_sensor_5v_.current();
     current_5v_ = std::min(0, std::max(1<<8 -1, (int)floor(40*current_5v_f)));
-
+    
 }
 
 WholeOrbit::~WholeOrbit()
