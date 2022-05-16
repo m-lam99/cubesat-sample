@@ -1,5 +1,5 @@
 import sys
-from transceiver import test_data_pipeline
+from transceiver import test_data_pipeline, transceiver
 from gui import gui
 
 HELP_MSG = """
@@ -7,6 +7,7 @@ Usage: python3 main.py [live|demo|import]
                         live: listen to transceiver and launch GUI
                         demo: launch GUI
                         import: test data import feature
+                        receive: listen to transceiver and store in DB
 """
 
 if __name__ == '__main__':
@@ -28,6 +29,8 @@ if __name__ == '__main__':
         # TODO: launch transceiver listening stuff on a different thread
         raise NotImplementedError("live integration not setup yet")
         gui.run()
+    elif sys.argv[1] == "receive":
+        transceiver.run_receive_loop()
     elif sys.argv[1] == "demo":
         gui.run()
     else:

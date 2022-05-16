@@ -625,6 +625,9 @@ extern "C" {
     int Message_getnpayload(Message * m) {
         return m -> npayload;
     }
+    int Message_getdatatype(Message * m) {
+        return m -> dataType;
+    }
     unsigned char * Message_getpayload(Message * m) {
         return m -> payload;
     }
