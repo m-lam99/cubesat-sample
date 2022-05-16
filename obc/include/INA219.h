@@ -97,6 +97,7 @@ class INA219:protected I2CDevice{
         float determineCurrentLSB(float max_expected_amps, float max_possible_amps);
         float current();
         float power();
+        void reset();
     private:
         unsigned int I2CBus, I2CAddress;
         float min_device_current_lsb_;
