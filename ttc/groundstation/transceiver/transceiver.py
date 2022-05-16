@@ -1,5 +1,6 @@
 import serial
 from time import sleep
+from transceiver.ax25 import bindings
 
 CMD_OPERATING_MODE = [0x41, 0x54, 0x4D]
 CMD_RECEIVE_MODE_CONFIG = [0x41, 0x54, 0x52]
@@ -120,3 +121,23 @@ def transmit_message(data: list, channel: int = 0):
     full_message = CMD_TRANSMIT_MODE_CONFIG + [channel] + [len(data)] + data
 
     send_command(full_message)
+
+def send_mode_command(mode: int):
+    """Encodes mode command and invokes message transmitter"""
+    
+    m = bindings.Message(
+        [0x4D, 0x30+mode], # "M<mode>"
+        "USYDGS",
+        "NICE",
+        0,
+        1,
+        2,
+        -1,
+        -1
+    )
+    
+    b = bindings.ax25._encode(m.obj)
+    nbytes = bindings.ax25.ByteArray_getnbytes(b)
+    _bytes = bindings.ax25.ByteArray_getbytes(b)
+    encoded_msg = [_bytes[i] for i in range(nbytes)]
+    transmit_message(encoded_msg)
