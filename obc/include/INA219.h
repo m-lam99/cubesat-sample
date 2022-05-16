@@ -5,7 +5,10 @@
 #include <cstdint>
 
 // Need to change for different devices
-#define INA219_ADDRESS 0x40
+#define INA219_ADDRESS1 0x40
+#define INA219_ADDRESS2 0x41
+#define INA219_ADDRESS3 0x44
+#define INA219_ADDRESS4 0x45
 
 #define CURRENT_LSB_FACTOR 32770
 #define SHUNT_MV_LSB 0.01
@@ -91,6 +94,7 @@ class INA219:protected I2CDevice{
         float determineCurrentLSB(float max_expected_amps, float max_possible_amps);
         float current();
         float power();
+        void reset();
     private:
         unsigned int I2CBus, I2CAddress;
         float min_device_current_lsb_;

@@ -51,7 +51,7 @@ int main()
         printf("Error reading: %s", strerror(errno));
         return 1;
     }
-    printf("Read %i bytes. Received message: %s", num_bytes, read_buf);
+    printf("Read %i bytes. Received message: %s\n", num_bytes, read_buf);
     close(serial_port);
     return 0;
 }

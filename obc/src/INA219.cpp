@@ -92,6 +92,7 @@ float INA219::shuntVoltage(){
    default:
       break;
    }
+   return shunt_voltage;
 }
 
 float INA219::busVoltage(){
@@ -100,7 +101,7 @@ float INA219::busVoltage(){
       std::cout << "Error: Power or Current out of range" << std::endl;
    }
    else {
-      return bus_voltage_bits >> 3;
+      return (float)(bus_voltage_bits >> 3);
    }
 }
 
@@ -137,18 +138,30 @@ float INA219::determineCurrentLSB(float max_expected_amps, float max_possible_am
 	if (current_lsb < min_device_current_lsb_) {
 		current_lsb = min_device_current_lsb_;
 	}
-	return current_lsb;
+	return (float)current_lsb;
 }
 
 float INA219::current(){
-   int16_t current = (int16_t)readRegister(REGISTERS::CURRENT);
-   if (current > 32767){
-      current -= 65536;
-   }
-   return current*current_lsb_*1000.0;
+   reset();
+   writeRegister(REGISTERS::CALIBRATION, 4096);
+   // calibrate(26, 0.5, 3.2);
+   // uint32_t ina219_currentDivider_mA = 10;
+   current_lsb_ = 10;
+   int16_t current = readRegister(REGISTERS::CURRENT);
+   // if (current > 32767){
+   //    current -= 65536;
+   // }
+   std::cout << current << std::endl;
+   return (float)(current)/current_lsb_;
 }
 
 float INA219::power(){
    int16_t power = (int16_t)readRegister(REGISTERS::POWER);
-   return power*power_lsb_*1000.0;
+   return (float)power*power_lsb_*1000.0;
+}
+
+void INA219::reset(){
+   int old_bits = readRegister(REGISTERS::CONFIG);
+   int new_bits = 1 << CONFIG_BITS::RST | old_bits;
+   writeRegister(REGISTERS::CONFIG, new_bits);
 }
