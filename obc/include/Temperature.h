@@ -10,11 +10,11 @@
 
 class Temperature {
    private:
-    /* data */
+    int pin_;
    public:
-    Temperature(/* args */);
-    float GetTemp(int number);
-    int ReadAnalog(int number);
+    Temperature(int pin);
+    float GetTemp();
+    int ReadAnalog();
     ~Temperature();
 };
 

@@ -6,6 +6,7 @@
 #include <stdint.h>
 
 #include "INA219.h"
+#include "Temperature.h"
 
 class WholeOrbit {
    public:
@@ -27,6 +28,10 @@ class WholeOrbit {
     INA219 current_sensor_batt_;
     INA219 current_sensor_3v3_;
     INA219 current_sensor_5v_;
+
+    Temperature thermistor_comms_;
+    Temperature thermistor_eps_;
+    Temperature thermistor_batt_;
 };
 
 #endif
