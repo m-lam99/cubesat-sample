@@ -64,7 +64,7 @@ int UARTDevice::init(){
         return 1;
     }
 
-    tty.c_cflag = baud | CS8 | CLOCAL | CREAD;
+    tty.c_cflag = B9600 | CS8 | CLOCAL | CREAD;
     tty.c_iflag = IGNPAR;
     tty.c_oflag = 0;
     tty.c_lflag = 0;
