@@ -87,6 +87,7 @@ void UARTDevice::readln(char* buffer){
 	char c;
     char *b = buffer;
     int rx_length = -1;
+    cout << "UART Print";
     while(1) {
         rx_length = read(serial_port, (void*)(&c), 1);
 
@@ -96,9 +97,11 @@ void UARTDevice::readln(char* buffer){
         } else {
             if (c == '\n') {
                 *b++ = '\0';
+                cout << c;
                 break;
             }
             *b++ = c;
+            cout << c;
         }
     }
 
