@@ -27,6 +27,7 @@ UARTDevice::UARTDevice(unsigned int channel, unsigned int baud) {
 	this->channel = channel;
     this->baud = baud; 
 	this->init();
+    this->config();
 }
 
 /**
@@ -36,6 +37,7 @@ UARTDevice::UARTDevice(unsigned int channel, unsigned int baud) {
 int UARTDevice::init(){
     const char* name;
 
+    // Device channel based on input 
     switch(this->channel) {
         case 0: 
             name = BBB_UART_0;
@@ -56,6 +58,11 @@ int UARTDevice::init(){
 
     this->serial_port = open(name, O_RDWR | O_NOCTTY | O_NDELAY);
     
+    return 0;
+}
+
+int UARTDevice::config(){
+    
     struct termios tty;
 
     if (tcgetattr(serial_port, &tty) != 0)
@@ -63,8 +70,20 @@ int UARTDevice::init(){
         printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
         return 1;
     }
-
-    tty.c_cflag = B9600 | CS8 | CLOCAL | CREAD;
+    
+    // Device channel based on baud 
+    switch(this->baud) {
+        case 9600: 
+            tty.c_cflag = B9600 | CS8 | CLOCAL | CREAD;
+            break; 
+        case 19200: 
+            tty.c_cflag = B19200 | CS8 | CLOCAL | CREAD;
+            break; 
+        default: 
+            cout << "Invalid Baud Selection" << this->baud << endl;
+            return 1;
+    }
+    
     tty.c_iflag = IGNPAR;
     tty.c_oflag = 0;
     tty.c_lflag = 0;
@@ -77,7 +96,7 @@ int UARTDevice::init(){
         printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
         return 1;
     }   
-    return 0;
+
 }
 
 /**

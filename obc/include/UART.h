@@ -16,7 +16,8 @@ class UARTDevice{
 		unsigned int channel; 
 		unsigned int baud; 
 		int serial_port; 
-		virtual int init(); // Config settigs 
+		virtual int init(); // Open serial connection 
+		virtual int config(); // Config settigs 
 
 	public:
 		UARTDevice(unsigned int channel, unsigned int baud);
