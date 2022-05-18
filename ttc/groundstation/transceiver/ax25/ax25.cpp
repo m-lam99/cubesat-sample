@@ -526,28 +526,28 @@ int main() {
     printListHex(encodedMsg -> bytes, encodedMsg -> nbytes);
 
     // Simulate some noise
-    // std::cout<<"\nGenerating 1mio bits of random noise and searching for packets\n";
+    std::cout<<"\nGenerating 1mio bits of random noise and searching for packets\n";
     unsigned char noisyMessage[1000000];
     // TODO: move to backend of message once decoding is validated
     memcpy( & noisyMessage[800000], encodedMsg -> bytes, encodedMsg -> nbytes);
     Message * retrievedMsg = searchForMessage(noisyMessage, 1000000, receiveState);
     if (retrievedMsg == NULL) {
-        // std::cout<<"Failed to find message in noise\n";
+        std::cout<<"Failed to find message in noise\n";
     } else {
         receiveState++;
         receiveState %= SEQUENCE_MOD;
     }
 
-    // std::cout<<"\nDecoded:\n";
-    // std::cout<<"Source: ";
+    std::cout<<"\nDecoded:\n";
+    std::cout<<"Source: ";
     printList(retrievedMsg -> source, 6);
-    // std::cout<<"Destination: ";
+    std::cout<<"Destination: ";
     printList(retrievedMsg -> destination, 6);
-    // std::cout<<"Data Type (0=WOD, 1=Science): "<< int(retrievedMsg->dataType) << '\n';
-    // std::cout<<"Command(1)/Response(0) Type : "<< int(retrievedMsg->commandResponse) << '\n';
-    // std::cout<<"Control Type (0=Info, 2=Unnumbered): "<< int(retrievedMsg->controlType) << '\n';
-    // std::cout<<"Sequence Nos (Send, Receive): "<< int(retrievedMsg->sendSequence) << ',' << int(retrievedMsg->receiveSequence) << '\n';
-    // std::cout<<"PAYLOAD: ";
+    std::cout<<"Data Type (0=WOD, 1=Science): "<< int(retrievedMsg->dataType) << '\n';
+    std::cout<<"Command(1)/Response(0) Type : "<< int(retrievedMsg->commandResponse) << '\n';
+    std::cout<<"Control Type (0=Info, 2=Unnumbered): "<< int(retrievedMsg->controlType) << '\n';
+    std::cout<<"Sequence Nos (Send, Receive): "<< int(retrievedMsg->sendSequence) << ',' << int(retrievedMsg->receiveSequence) << '\n';
+    std::cout<<"PAYLOAD: ";
     printList(retrievedMsg -> payload, retrievedMsg -> npayload);
 
     delete retrievedMsg -> payload;

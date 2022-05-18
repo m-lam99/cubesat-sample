@@ -75,6 +75,8 @@ def list_to_bytes(payload):
     # Converts list of ints to cpp bytes
     sz = len(payload)
 
+    # Make sure python doesn't clean it up - somehow only a problem on the RPI
+    global c_payload 
     c_payload = (ctypes.c_ubyte * sz)()
     for i, n in enumerate(payload):
         assert type(n) == int
@@ -99,6 +101,7 @@ if __name__ == '__main__':
         0,
         0
     )
+
     b = ax25._encode(m.obj)
     nbytes = ax25.ByteArray_getnbytes(b)
     _bytes = ax25.ByteArray_getbytes(b)
