@@ -45,7 +45,9 @@ void testINA219(){
 
 int main(){
    //testINA219();
-   AS7263 sensor(2, 0x49);
+   AS7263 sensor(2, 0x93);
    sensor.Test();
+   AS7263 sensor2(2, 0x92);
+   sensor2.Test();
    return 0;
 }
