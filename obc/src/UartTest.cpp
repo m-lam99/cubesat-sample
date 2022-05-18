@@ -7,7 +7,7 @@
 
 int main()
 {
-    int serial_port = open("/dev/ttyS0", O_RDWR);
+    int serial_port = open("/dev/ttyS4", O_RDWR);
 
     struct termios tty;
 
@@ -47,11 +47,11 @@ int main()
     memset(&read_buf, '\0', sizeof(read_buf));
     while(1){
     int num_bytes = read(serial_port, &read_buf, sizeof(read_buf));
-    if (num_bytes < 0)
-    {
-        printf("Error reading: %s", strerror(errno));
-        return 1;
-    }
+    // if (num_bytes < 0)
+    // {
+    //     printf("Error reading: %s", strerror(errno));
+    //     return 1;
+    // }
     printf("Read %i bytes. Received message: %s\n", num_bytes, read_buf);
     }
     close(serial_port);
