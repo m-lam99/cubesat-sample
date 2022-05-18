@@ -9,7 +9,7 @@
 #include "GPIO.h"
 #include "I2C.h"
 #include "INA219.h"
-
+#include "AS7263.h"
 using namespace exploringBB;
 
 void testGPIO(){
@@ -44,7 +44,8 @@ void testINA219(){
 }
 
 int main(){
-   testINA219();
-
+   //testINA219();
+   AS7263 sensor(0, 0x49);
+   sensor.Test();
    return 0;
 }
