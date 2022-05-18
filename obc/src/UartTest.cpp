@@ -43,8 +43,9 @@ int main()
     // unsigned char msg[] = {0x41, 0x54, 0x56};
     // write(serial_port, msg, sizeof(msg));
     sleep(1);
-    char read_buf[16];
+    char read_buf[75];
     memset(&read_buf, '\0', sizeof(read_buf));
+    while(1){
     int num_bytes = read(serial_port, &read_buf, sizeof(read_buf));
     if (num_bytes < 0)
     {
@@ -52,6 +53,7 @@ int main()
         return 1;
     }
     printf("Read %i bytes. Received message: %s\n", num_bytes, read_buf);
+    }
     close(serial_port);
     return 0;
 }
