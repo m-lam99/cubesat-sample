@@ -45,11 +45,11 @@ class Message:
         assert len(destination) <= 6
 
         sz, c_payload = list_to_bytes(payload)
-        if sz > 16:
-            print(
-                "[WARNING] python bindings do not support payloads >16 bytes. Truncating to 16 :)")
-            sz = 16
-            payload = payload[:16]
+        # if sz > 16:
+        #     print(
+        #         "[WARNING] python bindings do not support payloads >16 bytes. Truncating to 16 :)")
+        #     sz = 16
+        #     payload = payload[:16]
 
         c_src = (ctypes.c_ubyte * 6)()
         for i, n in enumerate(source.ljust(6, ' ')):
@@ -57,7 +57,7 @@ class Message:
         c_dest = (ctypes.c_ubyte * 6)()
         for i, n in enumerate(destination.ljust(6, ' ')):
             c_dest[i] = ord(n)
-
+            
         self.obj = ax25.Message_new(
             c_src,
             c_dest,
@@ -87,7 +87,7 @@ def list_to_bytes(payload):
 
 if __name__ == '__main__':
     # sample usage
-    payload = "The quick brown"
+    payload = "The quick brown fox jumped over the lazy dog"
 
     m = Message(
         [ord(m) for m in payload],
@@ -99,7 +99,6 @@ if __name__ == '__main__':
         0,
         0
     )
-
     b = ax25._encode(m.obj)
     nbytes = ax25.ByteArray_getnbytes(b)
     _bytes = ax25.ByteArray_getbytes(b)

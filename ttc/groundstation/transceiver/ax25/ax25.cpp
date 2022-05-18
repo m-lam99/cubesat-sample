@@ -587,6 +587,9 @@ extern "C" {
         int npayload,
         unsigned char * payload
     ) {
+        unsigned char * _payload = new unsigned char[npayload]();
+        for (int i = 0; i < npayload; i++)
+            _payload[i]=payload[i];
         return new Message {
             source,
             destination,
@@ -596,7 +599,7 @@ extern "C" {
             sendSequence,
             receiveSequence,
             npayload,
-            payload
+            _payload
         };
     }
 
