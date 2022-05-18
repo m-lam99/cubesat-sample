@@ -590,9 +590,15 @@ extern "C" {
         unsigned char * _payload = new unsigned char[npayload]();
         for (int i = 0; i < npayload; i++)
             _payload[i]=payload[i];
+        unsigned char src[6];
+        unsigned char dest[6];
+        for (int i = 0; i < 6; i++) {
+            src[i]=source[i];
+            dest[i]=destination[i];
+        }
         return new Message {
-            source,
-            destination,
+            src,
+            dest,
             dataType,
             commandResponse,
             controlType,

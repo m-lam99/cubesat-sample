@@ -1,5 +1,5 @@
 import sys
-from transceiver import test_data_pipeline, transceiver
+from transceiver import test_data_pipeline
 from gui import gui
 
 HELP_MSG = """
