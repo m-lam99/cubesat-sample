@@ -4,7 +4,7 @@
 #include "UART.h"
 #include <cstdint>
 
-#define GPS_CHANNEL 4
+#define GPS_CHANNEL 0
 #define GPS_BAUD 9600 
 
 class GPS:public UARTDevice{
