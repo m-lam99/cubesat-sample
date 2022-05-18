@@ -5,8 +5,8 @@
 using namespace std;
 
 // DEFAULT is Channel 4, baud 9600
-GPS::GPS(unsigned int channel, unsigned int baud):
-    UARTDevice(channel, baud){
+GPS::GPS( ):
+    UARTDevice(GPS_CHANNEL, GPS_BAUD){
    
 }
 

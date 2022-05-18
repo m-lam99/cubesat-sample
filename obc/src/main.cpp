@@ -64,7 +64,7 @@ void testPWM(){
 int main(){
   // testINA219();
 
-   GPS gps(0, 9600); 
+   GPS gps( ); 
    while(1){
       gps.print_GPS();
    }
