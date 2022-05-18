@@ -11,6 +11,7 @@
 #include "I2C.h"
 #include "INA219.h"
 #include "PWM.h"
+#include "GPS.h"
 
 using namespace exploringBB;
 
@@ -60,8 +61,12 @@ void testPWM(){
     return; 
 }
 
-// int main(){
-//    testINA219();
+int main(){
+  // testINA219();
 
-//    return 0;
-// }
+   GPS gps(4, 9600); 
+   while(1){
+      gps.print_GPS();
+   }
+   return 0;
+}
