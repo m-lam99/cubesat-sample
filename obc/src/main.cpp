@@ -60,8 +60,8 @@ void testPWM(){
     return; 
 }
 
-int main(){
-   testINA219();
+// int main(){
+//    testINA219();
 
-   return 0;
-}
+//    return 0;
+// }
