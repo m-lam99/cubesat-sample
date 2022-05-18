@@ -33,15 +33,15 @@ int main()
     tty.c_oflag &= ~ONLCR;
     tty.c_cc[VTIME] = 10;
     tty.c_cc[VMIN] = 0;
-    cfsetispeed(&tty, B19200);
-    cfsetospeed(&tty, B19200);
+    cfsetispeed(&tty, B9600);
+    cfsetospeed(&tty, B9600);
     if (tcsetattr(serial_port, TCSANOW, &tty) != 0)
     {
         printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
         return 1;
     }
-    unsigned char msg[] = {0x41, 0x54, 0x56};
-    write(serial_port, msg, sizeof(msg));
+    // unsigned char msg[] = {0x41, 0x54, 0x56};
+    // write(serial_port, msg, sizeof(msg));
     sleep(1);
     char read_buf[16];
     memset(&read_buf, '\0', sizeof(read_buf));
