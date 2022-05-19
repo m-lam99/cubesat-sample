@@ -23,7 +23,6 @@ void GPS::print_GPS(){
 
     while (1) {
         get_location(&data);
-
         printf("%lf %lf\n", data.latitude, data.longitude);
     }
 
@@ -167,4 +166,5 @@ uint8_t GPS::nmea_valid_checksum(const char *message) {
 
 void GPS::gps_off(){
     close(); 
+    cout << "GPS OFF" << endl; 
 }
