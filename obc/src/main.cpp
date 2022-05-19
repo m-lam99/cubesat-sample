@@ -50,7 +50,7 @@ void testGPIO(){
 }
 
 void testINA219(){
-   INA219 sensor1(1, 0x45);
+   INA219 sensor1(2, 0x45);
    // INA219 sensor2(1, INA219_ADDRESS2);
    // INA219 sensor3(1, INA219_ADDRESS3);
    // INA219 sensor4(1, INA219_ADDRESS4);
