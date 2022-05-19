@@ -42,7 +42,7 @@ uint16_t ADS1015::readRegisters(unsigned int registerAddress) {
 }
 
 float ADS1015::getVoltage(int channel) {
-    writeRegister(ADDRESS_POINTER::CONFIG, 0x2580);
+    writeRegister(ADDRESS_POINTER::CONFIG, 0b0100010010000011);
     uint16_t config = readRegisters(ADDRESS_POINTER::CONFIG);
 
     switch (channel) {
