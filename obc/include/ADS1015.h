@@ -7,8 +7,8 @@
 #include <stdint.h>
 using namespace exploringBB;
 
-#define ADC_ADDRESS1 0x4A;
-#define ADC_ADDRESS2 0x4B;
+#define ADC_ADDRESS1 0x4A
+#define ADC_ADDRESS2 0x4B
 
 class ADS1015 : protected I2CDevice {
    public:
