@@ -590,8 +590,8 @@ extern "C" {
         unsigned char * _payload = new unsigned char[npayload]();
         for (int i = 0; i < npayload; i++)
             _payload[i]=payload[i];
-        unsigned char src[6];
-        unsigned char dest[6];
+        unsigned char * src = new unsigned char[6];
+        unsigned char * dest = new unsigned char[6];
         for (int i = 0; i < 6; i++) {
             src[i]=source[i];
             dest[i]=destination[i];
@@ -636,6 +636,24 @@ extern "C" {
     }
     int Message_getdatatype(Message * m) {
         return m -> dataType;
+    }
+    int Message_getcommandresponse(Message * m) {
+        return m->commandResponse;
+    }
+    int Message_getcontroltype(Message * m) {
+        return m->controlType;
+    }
+    int Message_getsendsequence(Message * m) {
+        return m->sendSequence;
+    }
+    int Message_getreceivesequence(Message * m) {
+        return m->receiveSequence;
+    }
+    unsigned char *  Message_getsource(Message * m) {
+        return m->source;
+    }
+    unsigned char *  Message_getdestination(Message * m) {
+        return m->destination;
     }
     unsigned char * Message_getpayload(Message * m) {
         return m -> payload;
