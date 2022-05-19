@@ -77,9 +77,9 @@ void testADS1015() {
 }
 
 int main() {
-    testINA219();
+   //  testINA219();
 
-   // testADS1015();
+   testADS1015();
     // GPIO outGPIO(59), inGPIO(46);
 
     // // Basic Output - Flash the LED 10 times, once per second
