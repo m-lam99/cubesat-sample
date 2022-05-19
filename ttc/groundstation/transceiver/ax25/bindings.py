@@ -132,7 +132,7 @@ msg type {'command' if command_response else 'response'}, data type {'N/A' if co
         nbytes = ax25.ByteArray_getnbytes(b)
         _bytes = ax25.ByteArray_getbytes(b)
         encoded_msg = [_bytes[i] for i in range(nbytes)]
-        print(f"Encoded message: {''.join([hex(m) for m in encoded_msg])}")
+        print(f"Encoded message: {' '.join([hex(m) for m in encoded_msg])}")
 
         print("Placing encoded message inside 1mio bytes of random noise...")
         cnoise = (ctypes.c_ubyte * 1000000)()
