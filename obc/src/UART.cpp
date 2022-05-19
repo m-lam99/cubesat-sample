@@ -132,6 +132,7 @@ void UARTDevice::readln(char* buffer){
  */
 void UARTDevice::close(){
 	::close(this->serial_port);
+    cout << "serial port " << serial_port << " closed" << endl;
 }
 
 /**

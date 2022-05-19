@@ -18,3 +18,7 @@ void GPS::print_GPS(){
 
 }
 
+
+void GPS::gps_off(){
+    close(); 
+}

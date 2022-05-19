@@ -13,8 +13,10 @@ class GPS:public UARTDevice{
          // DEFAULT is Channel 4, baud 9600
         GPS( );
         void print_GPS(); 
+        void gps_off();
 
     private:
+
 };
 
 

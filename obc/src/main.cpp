@@ -65,8 +65,8 @@ int main(){
   // testINA219();
 
    GPS gps; 
-   while(1){
-      gps.print_GPS();
-   }
+   gps.print_GPS();
+   gps.gps_off(); 
+
    return 0;
 }
