@@ -66,14 +66,6 @@ void testPWM(){
 int main(){
 
    GPS gps; 
-   gps.gps_off();
-   sleep(2);
-   gps.gps_on();
-   sleep(2);
-   gps.gps_off();
-   sleep(2);
-   gps.gps_on();
-   sleep(2);
    gps.print_GPS();
    return 0;
 }
