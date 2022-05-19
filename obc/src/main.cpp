@@ -63,10 +63,6 @@ void testPWM(){
 
 int main(){
   // testINA219();
-
-   GPS gps; 
-   gps.print_GPS();
-   gps.gps_off(); 
-
+   testGPIO();
    return 0;
 }
