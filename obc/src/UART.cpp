@@ -122,7 +122,7 @@ void UARTDevice::readln(char* buffer){
             *b++ = c;
         }
     }
-
+ 
     return;
 }
 
