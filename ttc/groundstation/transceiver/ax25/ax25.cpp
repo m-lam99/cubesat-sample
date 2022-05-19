@@ -526,28 +526,28 @@ int main() {
     printListHex(encodedMsg -> bytes, encodedMsg -> nbytes);
 
     // Simulate some noise
-    // std::cout<<"\nGenerating 1mio bits of random noise and searching for packets\n";
+    std::cout<<"\nGenerating 1mio bits of random noise and searching for packets\n";
     unsigned char noisyMessage[1000000];
     // TODO: move to backend of message once decoding is validated
     memcpy( & noisyMessage[800000], encodedMsg -> bytes, encodedMsg -> nbytes);
     Message * retrievedMsg = searchForMessage(noisyMessage, 1000000, receiveState);
     if (retrievedMsg == NULL) {
-        // std::cout<<"Failed to find message in noise\n";
+        std::cout<<"Failed to find message in noise\n";
     } else {
         receiveState++;
         receiveState %= SEQUENCE_MOD;
     }
 
-    // std::cout<<"\nDecoded:\n";
-    // std::cout<<"Source: ";
+    std::cout<<"\nDecoded:\n";
+    std::cout<<"Source: ";
     printList(retrievedMsg -> source, 6);
-    // std::cout<<"Destination: ";
+    std::cout<<"Destination: ";
     printList(retrievedMsg -> destination, 6);
-    // std::cout<<"Data Type (0=WOD, 1=Science): "<< int(retrievedMsg->dataType) << '\n';
-    // std::cout<<"Command(1)/Response(0) Type : "<< int(retrievedMsg->commandResponse) << '\n';
-    // std::cout<<"Control Type (0=Info, 2=Unnumbered): "<< int(retrievedMsg->controlType) << '\n';
-    // std::cout<<"Sequence Nos (Send, Receive): "<< int(retrievedMsg->sendSequence) << ',' << int(retrievedMsg->receiveSequence) << '\n';
-    // std::cout<<"PAYLOAD: ";
+    std::cout<<"Data Type (0=WOD, 1=Science): "<< int(retrievedMsg->dataType) << '\n';
+    std::cout<<"Command(1)/Response(0) Type : "<< int(retrievedMsg->commandResponse) << '\n';
+    std::cout<<"Control Type (0=Info, 2=Unnumbered): "<< int(retrievedMsg->controlType) << '\n';
+    std::cout<<"Sequence Nos (Send, Receive): "<< int(retrievedMsg->sendSequence) << ',' << int(retrievedMsg->receiveSequence) << '\n';
+    std::cout<<"PAYLOAD: ";
     printList(retrievedMsg -> payload, retrievedMsg -> npayload);
 
     delete retrievedMsg -> payload;
@@ -587,16 +587,25 @@ extern "C" {
         int npayload,
         unsigned char * payload
     ) {
+        unsigned char * _payload = new unsigned char[npayload]();
+        for (int i = 0; i < npayload; i++)
+            _payload[i]=payload[i];
+        unsigned char * src = new unsigned char[6];
+        unsigned char * dest = new unsigned char[6];
+        for (int i = 0; i < 6; i++) {
+            src[i]=source[i];
+            dest[i]=destination[i];
+        }
         return new Message {
-            source,
-            destination,
+            src,
+            dest,
             dataType,
             commandResponse,
             controlType,
             sendSequence,
             receiveSequence,
             npayload,
-            payload
+            _payload
         };
     }
 
@@ -624,6 +633,27 @@ extern "C" {
 
     int Message_getnpayload(Message * m) {
         return m -> npayload;
+    }
+    int Message_getdatatype(Message * m) {
+        return m -> dataType;
+    }
+    int Message_getcommandresponse(Message * m) {
+        return m->commandResponse;
+    }
+    int Message_getcontroltype(Message * m) {
+        return m->controlType;
+    }
+    int Message_getsendsequence(Message * m) {
+        return m->sendSequence;
+    }
+    int Message_getreceivesequence(Message * m) {
+        return m->receiveSequence;
+    }
+    unsigned char *  Message_getsource(Message * m) {
+        return m->source;
+    }
+    unsigned char *  Message_getdestination(Message * m) {
+        return m->destination;
     }
     unsigned char * Message_getpayload(Message * m) {
         return m -> payload;

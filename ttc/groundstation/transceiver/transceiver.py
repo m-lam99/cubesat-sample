@@ -1,6 +1,8 @@
 import serial
 from time import sleep
-#from transceiver.ax25 import bindings
+from transceiver.ax25 import bindings
+from db import db
+from transceiver.decode import decode_wod, decode_science
 
 CMD_OPERATING_MODE = [0x41, 0x54, 0x4D]
 CMD_RECEIVE_MODE_CONFIG = [0x41, 0x54, 0x52]
@@ -26,6 +28,7 @@ TIMEOUT = 2  # s
 PORT = "/dev/ttyS0"
 WRITE_WAIT_TIME = 0.2  # s
 RECEIVE_WAIT_TIME = 0.2  # s
+LOOP_TIME = 5 # s
 FIRMWARE = b"#V1.01"
 
 _ser = serial.Serial(
@@ -142,3 +145,56 @@ def send_mode_command(mode: int):
     _bytes = bindings.ax25.ByteArray_getbytes(b)
     encoded_msg = [_bytes[i] for i in range(nbytes)]
     transmit_message(encoded_msg)
+    
+def run_receive_loop():
+    db = db.DB()
+    while True:
+        # sleep for a few seconds then try get 100 bytes
+        sleep(LOOP_TIME)
+        data = receive_data(100)
+        try:
+            b = bindings.ByteArray([int(d) for d in data])
+            nbytes = bindings.ax25.ByteArray_getnbytes(b)
+            _bytes = bindings.ax25.ByteArray_getbytes(b)
+            decoded_msg = bindings.ax25._searchForMessage(_bytes, nbytes, 0)
+            bindings.ax25.ByteArray_del(b)
+            if decoded_msg == 0:
+                # null ptr, no valid message
+                continue
+            data_type = bindings.ax25.Message_getdatatype(decoded_msg)
+            
+            # Decode data and insert
+            if data_type == 0:
+                try:
+                    data = decode_wod(decoded_msg)
+                    successes += 1
+                    bindings.ax25.Message_del(decoded_msg)
+                except AssertionError:
+                    bindings.ax25.Message_del(decoded_msg)
+                    continue
+                cursor = db.con.cursor()
+                cursor.execute("""
+                    INSERT OR REPLACE INTO wod (offsetTime, mode, batteryVoltage, batteryCurrent, `3V3Current`, `5VCurrent`, commTemperature, epsTemperature, batteryTemperature)
+                    VALUES (?,?,?,?,?,?,?,?,?)
+                """, data)
+                cursor.close()
+                db.con.commit()
+            else:
+                try:
+                    data = decode_science(decoded_msg)
+                    successes += 1
+                    bindings.ax25.Message_del(decoded_msg)
+                except AssertionError:
+                    bindings.ax25.Message_del(decoded_msg)
+                    continue
+                cursor = db.con.cursor()
+                cursor.execute("""
+                    INSERT OR REPLACE INTO science (offsetTime, latitude, longitude, altitude, reading)
+                    VALUES (?,?,?,?,?)
+                """, data)
+                cursor.close()
+                db.con.commit()
+                
+            
+        except Exception as e:
+            print(e.with_traceback)
