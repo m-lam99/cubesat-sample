@@ -57,7 +57,7 @@ int UARTDevice::init(){
     }
 
     this->serial_port = open(name, O_RDWR | O_NOCTTY | O_NDELAY);
-    
+    cout << "serial port open " <<  serial_port << endl; 
     return 0;
 }
 
