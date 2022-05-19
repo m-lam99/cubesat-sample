@@ -41,7 +41,7 @@ void testGPIO() {
 }
 
 void testINA219() {
-    INA219 sensor1(1, INA219_ADDRESS_3V3);
+    INA219 sensor1(2, 0x45);
     // INA219 sensor2(1, INA219_ADDRESS2);
     // INA219 sensor3(1, INA219_ADDRESS3);
     // INA219 sensor4(1, INA219_ADDRESS4);
@@ -77,9 +77,9 @@ void testADS1015() {
 }
 
 int main() {
-   //  testINA219();
+    testINA219();
 
-   testADS1015();
+   // testADS1015();
     // GPIO outGPIO(59), inGPIO(46);
 
     // // Basic Output - Flash the LED 10 times, once per second
