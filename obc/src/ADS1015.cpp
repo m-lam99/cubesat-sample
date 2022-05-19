@@ -47,19 +47,19 @@ float ADS1015::getVoltage(int channel) {
 
     switch (channel) {
         case 0:
-            writeRegister(ADDRESS_POINTER::CONFIG, config || (0b100 << 12));
+            writeRegister(ADDRESS_POINTER::CONFIG, config | (0b100 << 12));
             break;
         case 1:
-            writeRegister(ADDRESS_POINTER::CONFIG, config || (0b101 << 12));
+            writeRegister(ADDRESS_POINTER::CONFIG, config | (0b101 << 12));
             break;
         case 2:
-            writeRegister(ADDRESS_POINTER::CONFIG, config || (0b110 << 12));
+            writeRegister(ADDRESS_POINTER::CONFIG, config | (0b110 << 12));
             break;
         default:
             perror("No >:(");
             break;
     }
-    int test = config || (0b100 << 12);
+    int test = config | (0b100 << 12);
     std::bitset<16> x(test);
     std::cout << "config " << x << std::endl;
     uint16_t bit_val = readRegisters(ADDRESS_POINTER::CONVERSION);
