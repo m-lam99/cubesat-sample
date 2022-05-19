@@ -18,7 +18,7 @@ void GPS::gps_on( ){
 }
 
 void GPS::print_GPS(){
-
+    cout << "PRINT GPS" << endl; 
     loc_t data;
 
     while (1) {
