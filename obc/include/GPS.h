@@ -25,9 +25,7 @@ class GPS:public UARTDevice{
         struct location {
             double latitude;
             double longitude;
-            double speed;
             double altitude;
-            double course;
             double time; 
         };
         typedef struct location loc_t;
