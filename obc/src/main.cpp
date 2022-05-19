@@ -63,7 +63,7 @@ void testPWM(){
 
 int main(){
   // testINA219();
-   GPIO outGPIO(23), inGPIO(46);
+   GPIO outGPIO(86), inGPIO(46);
 
    // Basic Output - Flash the LED 10 times, once per second
    outGPIO.setDirection(OUTPUT);
