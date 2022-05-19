@@ -23,7 +23,7 @@ void GPS::print_GPS(){
 
     while (1) {
         get_location(&data);
-        printf("%lf %lf\n", data.latitude, data.longitude);
+        printf("%lf %lf %lf %lf\n", data.time, data.latitude, data.longitude, data.altitude);
     }
 
 }
@@ -45,6 +45,7 @@ void GPS::get_location(loc_t *coord){
                 coord->latitude = gpgga.latitude;
                 coord->longitude = gpgga.longitude;
                 coord->altitude = gpgga.altitude;
+                coord->time = gpgga.time; 
 
                 status |= NMEA_GPGGA;
                 status = _COMPLETED;
@@ -102,6 +103,7 @@ void GPS::nmea_parse_gpgga(char *nmea, gpgga_t *loc)
     char *p = nmea;
 
     p = strchr(p, ',')+1; //skip time
+    loc->time = atof(p);
 
     p = strchr(p, ',')+1;
     loc->latitude = atof(p);

@@ -28,6 +28,7 @@ class GPS:public UARTDevice{
             double speed;
             double altitude;
             double course;
+            double time; 
         };
         typedef struct location loc_t;
 
@@ -47,6 +48,9 @@ class GPS:public UARTDevice{
             uint8_t satellites;
             // Altitude eg: 280.2 (Meters above mean sea level)
             double altitude;
+
+            //utc time
+            double time;
         };
         typedef struct gpgga gpgga_t;
 
