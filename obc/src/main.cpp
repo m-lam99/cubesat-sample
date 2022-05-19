@@ -20,23 +20,25 @@ void testGPIO(){
 
    // Basic Output - Flash the LED 10 times, once per second
    outGPIO.setDirection(OUTPUT);
-   for (int i=0; i<10; i++){
+   for (int i=0; i<50; i++){
       outGPIO.setValue(HIGH);
-      usleep(1000000); //micro-second sleep 0.5 seconds
+      std::cout << "ON" << std::endl;
+      usleep(2000000); //micro-second sleep 0.5 seconds
       outGPIO.setValue(LOW);
-      usleep(1000000);
+      std::cout << "OFF" << std::endl;
+      usleep(2000000);
    }
-   // Basic Input example
-   inGPIO.setDirection(INPUT);
-   std::cout << "The value of the input is: "<< inGPIO.getValue() << std::endl;
+   // // Basic Input example
+   // inGPIO.setDirection(INPUT);
+   // std::cout << "The value of the input is: "<< inGPIO.getValue() << std::endl;
 
-   // Fast write to GPIO 1 million times
-   outGPIO.streamOpen();
-   for (int i=0; i<1000000; i++){
-      outGPIO.streamWrite(HIGH);
-      outGPIO.streamWrite(LOW);
-   }
-   outGPIO.streamClose();
+   // // Fast write to GPIO 1 million times
+   // outGPIO.streamOpen();
+   // for (int i=0; i<1000000; i++){
+   //    outGPIO.streamWrite(HIGH);
+   //    outGPIO.streamWrite(LOW);
+   // }
+   // outGPIO.streamClose();
 }
 
 void testINA219(){
