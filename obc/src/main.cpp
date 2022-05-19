@@ -50,7 +50,7 @@ void testGPIO(){
 }
 
 void testINA219(){
-   INA219 sensor1(1, INA219_ADDRESS1);
+   INA219 sensor1(1, 0x45);
    // INA219 sensor2(1, INA219_ADDRESS2);
    // INA219 sensor3(1, INA219_ADDRESS3);
    // INA219 sensor4(1, INA219_ADDRESS4);
@@ -73,7 +73,7 @@ void testINA219(){
 }
 
 int main(){
-   // testINA219();
+   testINA219();
    // GPIO outGPIO(59), inGPIO(46);
 
    // // Basic Output - Flash the LED 10 times, once per second
@@ -96,12 +96,12 @@ int main(){
    // }
    // outGPIO.streamClose();
    
-   std::cout << "The value on the ADC is:" << std::endl;
-   // for(int i=0; i<1000; i++){
-   int value = readAnalog(0);
-   std::cout << "  = " << value << "/4095    " << std::endl;
-   usleep(50000);
-   // }
+   // std::cout << "The value on the ADC is:" << std::endl;
+   // // for(int i=0; i<1000; i++){
+   // int value = readAnalog(0);
+   // std::cout << "  = " << value << "/4095    " << std::endl;
+   // usleep(50000);
+   // // }
 
 
    return 0;
