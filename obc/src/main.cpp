@@ -28,17 +28,17 @@ void testGPIO(){
       std::cout << "OFF" << std::endl;
       usleep(2000000);
    }
-   // // Basic Input example
-   // inGPIO.setDirection(INPUT);
-   // std::cout << "The value of the input is: "<< inGPIO.getValue() << std::endl;
+   // Basic Input example
+   inGPIO.setDirection(INPUT);
+   std::cout << "The value of the input is: "<< inGPIO.getValue() << std::endl;
 
-   // // Fast write to GPIO 1 million times
-   // outGPIO.streamOpen();
-   // for (int i=0; i<1000000; i++){
-   //    outGPIO.streamWrite(HIGH);
-   //    outGPIO.streamWrite(LOW);
-   // }
-   // outGPIO.streamClose();
+   // Fast write to GPIO 1 million times
+   outGPIO.streamOpen();
+   for (int i=0; i<1000000; i++){
+      outGPIO.streamWrite(HIGH);
+      outGPIO.streamWrite(LOW);
+   }
+   outGPIO.streamClose();
 }
 
 void testINA219(){
@@ -64,7 +64,10 @@ void testPWM(){
 }
 
 int main(){
-   testGPIO();
 
+   GPS gps; 
+   gps.gps_off();
+   gps.gps_on();
+   gps.print_GPS();
    return 0;
 }
