@@ -23,7 +23,7 @@ void GPS::print_GPS(){
 
     while (1) {
         get_location(&data);
-        printf("%lf %lf\n", data.latitude, data.longitude);
+        printf("GPGGA from getloc: %lf %lf\n", data.latitude, data.longitude);
     }
 
 }
@@ -36,9 +36,9 @@ void GPS::get_location(loc_t *coord){
         char buffer[256];
 
         readln(buffer);
-        cout << "BUFFER" << buffer << endl; 
         switch (get_NMEA_type(buffer)) {
             case NMEA_GPGGA:
+                cout << "GPGGA SPOTTED" << endl; 
                 nmea_parse_gpgga(buffer, &gpgga);
 
                 gps_convert_deg_to_dec(&(gpgga.latitude), gpgga.lat, &(gpgga.longitude), gpgga.lon);
