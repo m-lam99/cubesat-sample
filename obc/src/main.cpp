@@ -16,7 +16,7 @@
 using namespace exploringBB;
 
 void testGPIO(){
-   GPIO outGPIO(23), inGPIO(46);
+   GPIO outGPIO(86), inGPIO(46);
 
    // Basic Output - Flash the LED 10 times, once per second
    outGPIO.setDirection(OUTPUT);
@@ -62,14 +62,7 @@ void testPWM(){
 }
 
 int main(){
-   GPS gps; 
-   gps.print_GPS(); 
-   sleep(10); 
-   gps.print_GPS(); 
-   sleep(10);  
-   gps.print_GPS(); 
-   sleep(10); 
-
-   gps.gps_off();
+   testGPIO();
+   
    return 0;
 }
