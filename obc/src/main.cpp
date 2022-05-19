@@ -22,9 +22,9 @@ void testGPIO(){
    outGPIO.setDirection(OUTPUT);
    for (int i=0; i<10; i++){
       outGPIO.setValue(HIGH);
-      usleep(500000); //micro-second sleep 0.5 seconds
+      usleep(1000000); //micro-second sleep 0.5 seconds
       outGPIO.setValue(LOW);
-      usleep(500000);
+      usleep(1000000);
    }
    // Basic Input example
    inGPIO.setDirection(INPUT);
@@ -63,6 +63,6 @@ void testPWM(){
 
 int main(){
    testGPIO();
-   
+
    return 0;
 }
