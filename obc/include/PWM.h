@@ -71,6 +71,12 @@ class PWM {
 
         float period_nsToFrequency(unsigned int);
         unsigned int frequencyToPeriod_ns(float);
+
+
+        int pwm_write(string path, string filename, string value);
+        string pwm_read(string path, string filename);
+        int pwm_write(string path, string filename, int value);
+
 };
 
 #endif /* PWM_H_ */
