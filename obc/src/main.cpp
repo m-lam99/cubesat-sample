@@ -63,6 +63,27 @@ void testPWM(){
 
 int main(){
   // testINA219();
-   testGPIO();
+   GPIO outGPIO(59), inGPIO(46);
+
+   // Basic Output - Flash the LED 10 times, once per second
+   outGPIO.setDirection(OUTPUT);
+   for (int i=0; i<10; i++){
+      outGPIO.setValue(HIGH);
+      usleep(500000); //micro-second sleep 0.5 seconds
+      outGPIO.setValue(LOW);
+      usleep(500000);
+   }
+   // Basic Input example
+   inGPIO.setDirection(INPUT);
+   std::cout << "The value of the input is: "<< inGPIO.getValue() << std::endl;
+
+   // Fast write to GPIO 1 million times
+   outGPIO.streamOpen();
+   for (int i=0; i<1000000; i++){
+      outGPIO.streamWrite(HIGH);
+      outGPIO.streamWrite(LOW);
+   }
+   outGPIO.streamClose();
+   
    return 0;
 }
