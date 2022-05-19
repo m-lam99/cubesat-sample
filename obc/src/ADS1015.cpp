@@ -1,7 +1,7 @@
 #include "ADS1015.h"
 
 #include <unistd.h>
-
+#include <bitset>
 #include <iostream>
 
 using namespace exploringBB;
@@ -59,7 +59,8 @@ float ADS1015::getVoltage(int channel) {
             break;
     }
     int test = config || (0b100 << 12);
-    std::cout << "config " << test << std::endl;
+    std::bitset<16> x(config);
+    std::cout << "config " << x << std::endl;
     uint16_t bit_val = readRegisters(ADDRESS_POINTER::CONVERSION);
     std::cout << "bit " << bit_val << std::endl;
     float voltage;
