@@ -23,7 +23,7 @@ void GPS::print_GPS(){
 
     while (1) {
         get_location(&data);
-        printf("GPGGA from getloc: %lf %lf\n", data.latitude, data.longitude);
+        printf("%lf %lf\n", data.latitude, data.longitude);
     }
 
 }
