@@ -21,7 +21,7 @@ class ADS1015 : protected I2CDevice {
     ADS1015(unsigned int I2CBus, unsigned int I2CAddress);
     uint16_t readRegisters(unsigned int registerAddress);
     int writeRegister(unsigned int registerAddress, uint16_t value);
-    float getVoltage();
+    float getVoltage(int channel);
     ~ADS1015();
 
    private:
