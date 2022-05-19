@@ -68,7 +68,7 @@ void testINA219() {
 }
 
 void testADS1015() {
-    ADS1015 sensor(2, 0x48);
+    ADS1015 sensor(1, 0x4A);
 
     for (int i = 0; i < 10; i++) {
         std::cout << sensor.getVoltage(0) << std::endl;
@@ -77,9 +77,9 @@ void testADS1015() {
 }
 
 int main() {
-    testINA219();
+   //  testINA219();
 
-   // testADS1015();
+   testADS1015();
     // GPIO outGPIO(59), inGPIO(46);
 
     // // Basic Output - Flash the LED 10 times, once per second
