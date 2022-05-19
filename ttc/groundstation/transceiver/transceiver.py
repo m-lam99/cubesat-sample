@@ -1,6 +1,6 @@
 import serial
 from time import sleep
-from transceiver.ax25 import bindings
+#from transceiver.ax25 import bindings
 
 CMD_OPERATING_MODE = [0x41, 0x54, 0x4D]
 CMD_RECEIVE_MODE_CONFIG = [0x41, 0x54, 0x52]
@@ -61,7 +61,8 @@ def receive_data(packet_size: int, channel: int = 0) -> list:
         received_data: list = _ser.read()
         sleep(RECEIVE_WAIT_TIME)
         if len(received_data) == 0:
-            print("Timeout!")
+            # print("Timeout!")
+            pass
         else:
             break
 
