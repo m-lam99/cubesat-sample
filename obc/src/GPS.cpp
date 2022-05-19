@@ -38,7 +38,6 @@ void GPS::get_location(loc_t *coord){
         readln(buffer);
         switch (get_NMEA_type(buffer)) {
             case NMEA_GPGGA:
-                cout << "GPGGA SPOTTED" << endl; 
                 nmea_parse_gpgga(buffer, &gpgga);
 
                 gps_convert_deg_to_dec(&(gpgga.latitude), gpgga.lat, &(gpgga.longitude), gpgga.lon);
@@ -48,6 +47,7 @@ void GPS::get_location(loc_t *coord){
                 coord->altitude = gpgga.altitude;
 
                 status |= NMEA_GPGGA;
+                status = _COMPLETED;
                 break;
             default:
                 break;
