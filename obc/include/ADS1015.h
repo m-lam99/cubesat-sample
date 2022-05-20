@@ -10,6 +10,13 @@ using namespace exploringBB;
 #define ADC_ADDRESS1 0x4A
 #define ADC_ADDRESS2 0x4B
 
+/* CONNECTIONS
+0x48 (1001000) ADR -> GND
+0x49 (1001001) ADR -> VDD
+0x4A (1001010) ADR -> SDA
+0x4B (1001011) ADR -> SCL
+*/
+
 class ADS1015 : protected I2CDevice {
    public:
     enum ADDRESS_POINTER {
