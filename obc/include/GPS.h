@@ -16,7 +16,7 @@
 #define NMEA_CHECKSUM_ERR 0x80
 #define NMEA_MESSAGE_ERR 0xC0
 
-#define GPS_CHANNEL 4
+#define GPS_CHANNEL 2
 #define GPS_BAUD 9600 
 
 class GPS:public UARTDevice{
