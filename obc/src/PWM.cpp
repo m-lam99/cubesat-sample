@@ -24,6 +24,9 @@
 
 #include "PWM.h"
 #include <cstdlib>
+#include<iostream>
+#include<fstream>
+#include<sstream>
 
 namespace exploringBB{
 
