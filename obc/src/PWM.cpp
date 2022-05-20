@@ -28,7 +28,8 @@
 #include<fstream>
 #include<sstream>
 
-namespace exploringBB{
+using namespace std;
+using std::string;
 
 PWM::PWM(string pinName) {
 	this->name = pinName;
@@ -168,8 +169,7 @@ string PWM::pwm_read(string path, string filename){
 int PWM::pwm_write(string path, string filename, int value){
     stringstream s;
     s << value;
-    return write(path,filename,s.str());
+    return pwm_write(path,filename,s.str());
 }
 
 PWM::~PWM() {}
-}
