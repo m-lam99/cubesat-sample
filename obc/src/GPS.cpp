@@ -45,8 +45,6 @@ void GPS::get_location(loc_t *coord){
                 coord->longitude = gpgga.longitude;
                 coord->altitude = gpgga.altitude;
                 coord->time = gpgga.time; 
-
-                status |= NMEA_GPGGA;
                 status = _COMPLETED;
                 break;
             default:
