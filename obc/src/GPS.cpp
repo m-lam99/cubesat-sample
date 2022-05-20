@@ -33,7 +33,7 @@ void GPS::get_location(loc_t *coord){
     while(status != _COMPLETED) {
         gpgga_t gpgga;
         char buffer[256];
-        cout << "BUFFER: " << buffer << endl; 
+
         readln(buffer);
         switch (get_NMEA_type(buffer)) {
             case NMEA_GPGGA:
