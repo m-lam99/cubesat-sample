@@ -29,6 +29,7 @@
 
 #define BBB_I2C_0 "/dev/i2c-0"
 #define BBB_I2C_1 "/dev/i2c-1"
+#define BBB_I2C_2 "/dev/i2c-2"
 
 namespace exploringBB{
 /**

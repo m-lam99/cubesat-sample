@@ -56,8 +56,16 @@ I2CDevice::I2CDevice(unsigned int bus, unsigned int device) {
  */
 int I2CDevice::open(){
    string name;
-   if(this->bus==0) name = BBB_I2C_0;
-   else name = BBB_I2C_1;
+   if(this->bus==0){
+      name = BBB_I2C_0;
+   } 
+   else if (this->bus==2)
+   {
+      name = BBB_I2C_2;
+   }
+   else {
+      name = BBB_I2C_1;
+   }
 
    if((this->file=::open(name.c_str(), O_RDWR)) < 0){
       perror("I2C: failed to open the bus\n");
