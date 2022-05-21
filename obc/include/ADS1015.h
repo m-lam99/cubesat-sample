@@ -33,7 +33,7 @@ class ADS1015 : protected I2CDevice {
 
    private:
     unsigned int I2CBus, I2CAddress;
-    float fsr_ = 3.38; // Configurable with config register
+    float fsr_ = 2.048; // Configurable with config register
 };
 
 #endif

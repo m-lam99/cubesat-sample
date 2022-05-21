@@ -63,18 +63,18 @@ float ADS1015::getVoltage(int channel) {
     std::bitset<16> x(test);
     std::cout << "config " << x << std::endl;
     uint16_t bit_val = readRegisters(ADDRESS_POINTER::CONVERSION);
-    std::cout << "bit " << bit_val << std::endl;
+    std::cout << "bit " << bit_val;
 
     // Bit shift to right 
     bit_val = bit_val >> 4; 
     
-    std::cout << "bit dhifted " << bit_val << std::endl;
+    std::cout << "    bit shifted " << bit_val << std::endl;
 
-    
+
     float voltage;
     // Negative
     if (bit_val & 1 << 12) { // bit shifted value
-        voltage = ((float)(-(~bit_val)) - 1.0) / (1 << 11) * fsr_;
+        voltage = ((float)(-(~bit_val)) - 1.0) /  (float)(1 << 11) * fsr_;
     } else {
         voltage = (float)bit_val / (float)(1 << 11) * fsr_;
     }
