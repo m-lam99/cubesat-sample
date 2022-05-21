@@ -68,14 +68,15 @@ float ADS1015::getVoltage(int channel) {
     // Bit shift to right 
     bit_val = bit_val >> 4; 
     
-    std::cout << "bit " << bit_val << std::endl;
+    std::cout << "bit dhifted " << bit_val << std::endl;
 
+    
     float voltage;
     // Negative
-    if (bit_val & 1 << 16) {
-        voltage = (-(~bit_val) - 1) / (1 << 11) * fsr_;
+    if (bit_val & 1 << 12) { // bit shifted value
+        voltage = ((float)(-(~bit_val)) - 1.0) / (1 << 11) * fsr_;
     } else {
-        voltage = bit_val / (1 << 11) * fsr_;
+        voltage = (float)bit_val / (float)(1 << 11) * fsr_;
     }
 
     return voltage;
