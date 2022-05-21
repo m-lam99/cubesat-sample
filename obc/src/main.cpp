@@ -75,11 +75,11 @@ void testADS1015() {
         usleep(500000);
     }
 
-    ADS1015 sensor(2, 0x48);
+    ADS1015 sensor2(2, 0x48);
 
     std::cout << "SENSOR 2" << std::endl; 
     for (int i = 0; i < 10; i++) {
-        std::cout << sensor.getVoltage(0) << std::endl;
+        std::cout << sensor2.getVoltage(0) << std::endl;
         usleep(500000);
     }
 }
