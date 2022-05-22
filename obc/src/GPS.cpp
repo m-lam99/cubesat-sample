@@ -36,11 +36,14 @@ void GPS::get_location(loc_t *coord){
      cout << "Getting liocation" << endl;
 
     uint8_t status = _EMPTY;
+    cout << "Status: " << status << endl;
+
     while(status != _COMPLETED) {
         gpgga_t gpgga;
         gprmc_t gprmc;
 
         char buffer[256];
+        cout << "About to read: "<< endl;
 
         readln(buffer);
         cout << "BUFFER  " << buffer << endl;
