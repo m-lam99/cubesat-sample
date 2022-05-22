@@ -22,7 +22,7 @@
 #include <iostream>
 #include <unistd.h> // for usleep 
 
-#include "BN055.h"
+#include "BNO055.h"
 #include "I2C.h"
 
 using namespace exploringBB;
