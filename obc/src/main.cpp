@@ -100,18 +100,11 @@ void testPWM(){
    // 
     PWM pwm(PWM_0B);  // P9_42 MUST be loaded as a slot before use
     pwm.setPeriod(1000000000);         // Set the period in ns
-    std::cout << "set period" << std::endl; 
-     pwm.setDutyCycle(50.0f);       // Set the duty cycle as a percentage
-    std::cout << "set duty" << std::endl; 
+    pwm.setDutyCycle(50.0f);       // Set the duty cycle as a percentage
 
     pwm.setPolarity(PWM::ACTIVE_LOW);  // using active low PWM
-     std::cout << "set polarity" << std::endl; 
-
     pwm.run();                     // start the PWM output
-    std::cout << "RUN" << std::endl; 
-
-    while(1);
-
+    std::cout << "PWM active" << std::endl; 
     return; 
 }
 
