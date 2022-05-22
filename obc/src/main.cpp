@@ -14,7 +14,7 @@
 #include "INA219.h"
 #include "AS7263.h"
 
-#include "BNO055.h"
+//#include "BNO055.h"
 
 using namespace exploringBB;
 
