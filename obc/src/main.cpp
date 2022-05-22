@@ -109,13 +109,17 @@ void testPWM(){
     return; 
 }
 
-int main() {
-    //  testINA219();
-    //testBNO055();
-    testPWM();
-    //testADS1015();
+void testGPS() {
 
-    // testADS1015();
-    //testAS7263();
+    GPS gps; 
+    gps.gps_on();  
+    while(1){
+        gps.print_GPS(); 
+    }
+    return; 
+}
+
+int main() {
+    testGPS();
     return 0;
 }

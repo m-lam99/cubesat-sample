@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string.h>
 #include <math.h>
+#include <ctime>    // timestamp conversion
+#include <time> 
 
 using namespace std;
 
@@ -32,6 +34,8 @@ void GPS::get_location(loc_t *coord){
     uint8_t status = _EMPTY;
     while(status != _COMPLETED) {
         gpgga_t gpgga;
+        gprmc_t gprmc;
+
         char buffer[256];
 
         readln(buffer);
@@ -45,12 +49,47 @@ void GPS::get_location(loc_t *coord){
                 coord->longitude = gpgga.longitude;
                 coord->altitude = gpgga.altitude;
                 coord->time = gpgga.time; 
-                status = _COMPLETED;
+                status |= NMEA_GPGGA;;
                 break;
+            case NMEA_GPRMC:
+                nmea_parse_gprmc(buffer, &gprmc);
+
+                coord->date = gprmc.date;
+                status |= NMEA_GPRMC;
+
             default:
                 break;
         }
     }
+
+    coord->epoch = convertToEpoch(coord->date, coord->time); 
+}
+
+int GPS::convertToEpoch(string date, string time){
+    tm tmTime;
+    int unix_seconds; 
+    int epoch_ms; 
+    int millisec; 
+    int offset = 946684800000; // ms between unix epoch and 1/1/2000
+
+    tmTime.tm_mday = atoi(date.substr(0,2));
+    tmTime.tm_mon = atoi(date.substr(2,4));
+    tmTime.tm_year = atoi(date.substr(4,6)) + 100;
+
+    tmTime.tm_hour = atoi(time.substr(0,2));
+    tmTime.tm_min = atoi(time.substr(2,4));
+    tmTime.tm_sec = atoi(time.substr(4,6));
+    
+    millisec = atoi(time.substr(7,9));
+
+    unix_seconds = gmtime(&tmTime);
+    cout << "EPOCH: " << unix_seconds << endl; 
+
+    epoch_ms = unix_seconds * 1000 + millisec - offset; 
+
+    cout << "MS since 1/1/2000: " << epoch_ms << endl; 
+
+    return epoch_ms;
 }
 
 // Convert lat e lon to decimals (from deg)
@@ -100,7 +139,7 @@ void GPS::nmea_parse_gpgga(char *nmea, gpgga_t *loc)
     char *p = nmea;
 
     p = strchr(p, ',')+1; //skip time
-    loc->time = atof(p);
+    loc->time = p;
 
     p = strchr(p, ',')+1;
     loc->latitude = atof(p);
@@ -146,6 +185,28 @@ void GPS::nmea_parse_gpgga(char *nmea, gpgga_t *loc)
     loc->altitude = atof(p);
 }
 
+void GPS::nmea_parse_gprmc(char *nmea, gprmc_t *loc)
+{
+    char *p = nmea;
+
+    p = strchr(p, ',')+1; //skip time
+    p = strchr(p, ',')+1; //skip status
+
+    p = strchr(p, ',')+1; // skip latitude
+    p = strchr(p, ',')+1; // skip latitude direction
+
+    p = strchr(p, ',')+1; // skip longitude
+    p = strchr(p, ',')+1; // skip longitude direction
+
+    p = strchr(p, ',')+1;
+    loc->speed = atof(p);
+
+    p = strchr(p, ',')+1;
+    loc->course = atof(p);
+
+    p = strchr(p, ',')+1;
+    loc->date = p;
+}
 
 uint8_t GPS::nmea_valid_checksum(const char *message) {
     uint8_t checksum= (uint8_t)strtol(strchr(message, '*')+1, NULL, 16);
