@@ -56,8 +56,20 @@ I2CDevice::I2CDevice(unsigned int bus, unsigned int device) {
  */
 int I2CDevice::open(){
    string name;
-   if(this->bus==0) name = BBB_I2C_0;
-   else name = BBB_I2C_1;
+   if(this->bus==0){
+      name = BBB_I2C_0;
+   } 
+   else if (this->bus==2)
+   {
+      name = BBB_I2C_2;
+   }
+   else if (this->bus==1){
+      name = BBB_I2C_1;
+   }
+   else {
+      perror("Non Existent I2C bus - choose 1 or 2");
+      return 1;  
+   }
 
    if((this->file=::open(name.c_str(), O_RDWR)) < 0){
       perror("I2C: failed to open the bus\n");
@@ -109,7 +121,7 @@ int I2CDevice::write(unsigned char value){
  * @param registerAddress the address to read from
  * @return the byte value at the register address.
  */
-uint16_t I2CDevice::readRegister(unsigned int registerAddress){
+uint8_t I2CDevice::readRegister(unsigned int registerAddress){
    this->write(registerAddress);
    unsigned char buffer[1];
    if(::read(this->file, buffer, 1)!=1){

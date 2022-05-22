@@ -1,3 +1,6 @@
+// Class for INA219 Current Sensor
+// EAP Subsystem for NICE
+
 #ifndef INA219_H
 #define INA219_H
 
@@ -5,7 +8,10 @@
 #include <cstdint>
 
 // Need to change for different devices
-#define INA219_ADDRESS 0x40
+#define INA219_ADDRESS_3V3 0x40
+#define INA219_ADDRESS_5V 0x41
+#define INA219_ADDRESS_BATT 0x44
+#define INA219_ADDRESS_24V 0x45
 
 #define CURRENT_LSB_FACTOR 32770
 #define SHUNT_MV_LSB 0.01
@@ -82,7 +88,7 @@ class INA219:protected I2CDevice{
         };
 
         int writeRegister(unsigned int registerAddress, uint16_t value);
-        uint16_t readRegister(unsigned int registerAddress);
+        uint16_t readRegisters(unsigned int registerAddress);
         INA219(unsigned int I2CBus, unsigned int I2CAddress);
         void configure(int voltage_range, int gain, int bus_adc, int shunt_adc);
         float shuntVoltage();
@@ -91,6 +97,7 @@ class INA219:protected I2CDevice{
         float determineCurrentLSB(float max_expected_amps, float max_possible_amps);
         float current();
         float power();
+        void reset();
     private:
         unsigned int I2CBus, I2CAddress;
         float min_device_current_lsb_;
