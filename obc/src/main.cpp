@@ -70,10 +70,10 @@ void testINA219() {
 }
 
 void testADS1015() {
-    ADS1015 sensor(2, 0x48);
+    ADS1015 sensor(2, ADC_ADDRESS1);
 
     for (int i = 0; i < 10; i++) {
-        std::cout << sensor.getVoltage(0) << std::endl;
+        std::cout << sensor.getVoltage(0) << ", " << sensor.getVoltage(1) << std::endl;
         usleep(500000);
     }
 }
