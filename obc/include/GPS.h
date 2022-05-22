@@ -75,7 +75,7 @@ class GPS:public UARTDevice{
         double gps_deg_dec(double deg_point);
         void nmea_parse_gpgga(char *nmea, gpgga_t *loc);
         void nmea_parse_gprmc(char *nmea, gprmc_t *loc);
-        int convertToEpoch(std::string date, std::string time); 
+        int convertToEpoch(std::string date, std::string time);  // returns ms since 1/1/2000
 
 };
 
