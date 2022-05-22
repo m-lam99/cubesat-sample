@@ -98,7 +98,7 @@ void testAS7263() {
 
 void testPWM(){
    // 
-    PWM pwm("pwm-2:0");  // P9_42 MUST be loaded as a slot before use
+    PWM pwm(PWM_2B);  // P9_42 MUST be loaded as a slot before use
     pwm.setPeriod(100000);         // Set the period in ns
     std::cout << "set period" << std::endl; 
      pwm.setDutyCycle(0.0f);       // Set the duty cycle as a percentage
