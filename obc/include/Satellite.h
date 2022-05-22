@@ -14,6 +14,20 @@
 
 class Satellite {
    public:
+    struct wod{
+        uint32_t time;
+        uint8_t mode;
+        uint8_t voltage_batt;
+        uint8_t current_batt;
+        uint8_t current_3v3;
+        uint8_t current_5v;
+        uint8_t temp_comms;
+        uint8_t temp_eps;
+        uint8_t temp_batt;
+    }
+
+    typedef wod_t;
+
     Satellite(/* args */);
     int detumbling();
     int payloadDataCollection();
