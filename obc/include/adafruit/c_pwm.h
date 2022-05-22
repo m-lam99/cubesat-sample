@@ -23,7 +23,7 @@ SOFTWARE.
 #ifndef C_PWM_H
 #define C_PWM_H
 
-#include "common.h"
+#include "adafruit/common.h"
 
 BBIO_err initialize_pwm(void);
 BBIO_err pwm_start(const char *key, float duty, float freq, int polarity);
