@@ -57,6 +57,11 @@ int UARTDevice::init(){
     }
 
     this->serial_port = open(name, O_RDWR | O_NOCTTY | O_NDELAY);
+
+    if(this->serial_port < 0){
+        cout << "UART failed to open" << endl; 
+    }
+
     return 0;
 }
 
