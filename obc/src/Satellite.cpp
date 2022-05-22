@@ -1,6 +1,7 @@
 #include "Satellite.h"
 
-Satellite::Satellite() : wod_() {}
+Satellite::Satellite()
+    : wod_(), adc1_(2, ADC_ADDRESS1), adc2_(2, ADC_ADDRESS2), imu_(2, 0x28) {}
 
 Satellite::~Satellite() {}
 
@@ -16,9 +17,16 @@ int Satellite::checkOrbit() {}
 
 int Satellite::orbitCorrection() {}
 
-int Satellite::wodTransmission() {
-    wod_data_.push_back(wod_.GetData());
+int Satellite::wodCollection(){
+    wod_data_.push(wod_.GetData());
     return 1;
+}
+
+int Satellite::wodTransmission() {
+    WholeOrbit::wod_t data_packet = wod_data_.front();
+    //transmit(data_packet)
+    wod_data_.pop();
+    
 }
 
 int Satellite::deployment() {}
