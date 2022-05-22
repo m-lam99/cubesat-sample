@@ -1,6 +1,5 @@
 #include "GPS.h"
 #include <iostream>
-#include <string.h>
 #include <math.h>
 #include <ctime>    // timestamp conversion
 #include <time.h>    // timestamp conversion

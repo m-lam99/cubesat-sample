@@ -4,6 +4,7 @@
 #include "UART.h"
 #include <cstdint>
 #include <inttypes.h>
+#include <string.h>
 
 #define GPS_CHANNEL 2
 #define GPS_BAUD 9600 
