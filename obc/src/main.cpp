@@ -19,8 +19,7 @@
 #include "BNO055.h"
 
 // For the PWM
-#include "adafruit/bbio.h"
-using adafruit::bbio::Pwm;
+#include "PWM.h"
 
 using namespace exploringBB;
 
@@ -126,12 +125,11 @@ void testBNO055(){
 
 void testPWM(){
    // 
-    std::string channel = "P2_01";
-    int duty = 100; 
-    Pwm pwm(channel);
-    pwm.start();
-    pwm.set_duty_cycle(50); 
-    pwm.set_frequency(100);
+    PWM pwm("ehrpwm1a");  // P9_42 MUST be loaded as a slot before use
+    pwm.setPeriod(100000);         // Set the period in ns
+    pwm.setDutyCycle(25.0f);       // Set the duty cycle as a percentage
+    pwm.setPolarity(PWM::ACTIVE_LOW);  // using active low PWM
+    pwm.run();                     // start the PWM output
 
     return; 
 }

@@ -1,72 +1,129 @@
 /*
-Copyright (c) 2017 Adafruit
-Copyright (c) 2017 Nikolay Semenov
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-
-#include "adafruit/bbio/pwm.h"
-
-extern "C" {
-#include "adafruit/c_pwm.h"
-}
-
-namespace adafruit {
-namespace bbio {
-
-/*
- * Pwm
+ * PWM.cpp  Created on: 29 Apr 2014
+ * Copyright (c) 2014 Derek Molloy (www.derekmolloy.ie)
+ * Made available for the book "Exploring BeagleBone" 
+ * See: www.exploringbeaglebone.com
+ * Licensed under the EUPL V.1.1
+ *
+ * This Software is provided to You under the terms of the European 
+ * Union Public License (the "EUPL") version 1.1 as published by the 
+ * European Union. Any use of this Software, other than as authorized 
+ * under this License is strictly prohibited (to the extent such use 
+ * is covered by a right of the copyright holder of this Software).
+ * 
+ * This Software is provided under the License on an "AS IS" basis and 
+ * without warranties of any kind concerning the Software, including 
+ * without limitation merchantability, fitness for a particular purpose, 
+ * absence of defects or errors, accuracy, and non-infringement of 
+ * intellectual property rights other than copyright. This disclaimer 
+ * of warranty is an essential part of the License and a condition for 
+ * the grant of any rights to this Software.
+ * 
+ * For more details, see http://www.derekmolloy.ie/
  */
-Pwm::Pwm(std::string const& key)
-    : key_(key)
-{}
 
-Pwm::~Pwm()
-{
-    stop();
+#include "PWM.h"
+#include "util.h"
+#include <cstdlib>
+
+namespace exploringBB {
+
+PWM::PWM(string pinName) {
+	this->name = pinName;
+	this->path = PWM_PATH + this->name + "/";
+	this->analogFrequency = 100000;
+	this->analogMax = 3.3;
 }
 
-void Pwm::start(float duty_cycle, float frequency, Polarity polarity)
-{
-    (CheckError)pwm_start(key_.c_str(), duty_cycle, frequency, (int)polarity);
+int PWM::setPeriod(unsigned int period_ns){
+	return write(this->path, PWM_PERIOD, period_ns);
 }
 
-void Pwm::stop()
-{
-    (CheckError)pwm_disable(key_.c_str());
+unsigned int PWM::getPeriod(){
+	return atoi(read(this->path, PWM_PERIOD).c_str());
 }
 
-void Pwm::set_duty_cycle(float duty_cycle)
-{
-    (CheckError)pwm_set_duty_cycle(key_.c_str(), duty_cycle);
+float PWM::period_nsToFrequency(unsigned int period_ns){
+	float period_s = (float)period_ns/1000000000;
+	return 1.0f/period_s;
 }
 
-void Pwm::set_frequency(float frequency)
-{
-    (CheckError)pwm_set_frequency(key_.c_str(), frequency);
+unsigned int PWM::frequencyToPeriod_ns(float frequency_hz){
+	float period_s = 1.0f/frequency_hz;
+	return (unsigned int)(period_s*1000000000);
 }
 
-void Pwm::set_polarity(Polarity polarity)
-{
-    (CheckError)pwm_set_polarity(key_.c_str(), (int)polarity);
+int PWM::setFrequency(float frequency_hz){
+	return this->setPeriod(this->frequencyToPeriod_ns(frequency_hz));
 }
 
-} // namespace bbio
-} // namespace adafruit
+float PWM::getFrequency(){
+	return this->period_nsToFrequency(this->getPeriod());
+}
 
+int PWM::setDutyCycle(unsigned int duty_ns){
+	return write(this->path, PWM_DUTY, duty_ns);
+}
+
+int PWM::setDutyCycle(float percentage){
+	if ((percentage>100.0f)||(percentage<0.0f)) return -1;
+	unsigned int period_ns = this->getPeriod();
+	float duty_ns = period_ns * (percentage/100.0f);
+	this->setDutyCycle((unsigned int) duty_ns );
+	return 0;
+}
+
+unsigned int PWM::getDutyCycle(){
+	return atoi(read(this->path, PWM_DUTY).c_str());
+}
+
+float PWM::getDutyCyclePercent(){
+	unsigned int period_ns = this->getPeriod();
+	unsigned int duty_ns = this->getDutyCycle();
+	return 100.0f * (float)duty_ns/(float)period_ns;
+}
+
+int PWM::setPolarity(PWM::POLARITY polarity){
+	return write(this->path, PWM_POLARITY, polarity);
+}
+
+void PWM::invertPolarity(){
+	if (this->getPolarity()==PWM::ACTIVE_LOW) this->setPolarity(PWM::ACTIVE_HIGH);
+	else this->setPolarity(PWM::ACTIVE_LOW);
+}
+
+PWM::POLARITY PWM::getPolarity(){
+	if (atoi(read(this->path, PWM_POLARITY).c_str())==0) return PWM::ACTIVE_LOW;
+	else return PWM::ACTIVE_HIGH;
+}
+
+int PWM::calibrateAnalogMax(float analogMax){ //must be between 3.2 and 3.4
+	if((analogMax<3.2f) || (analogMax>3.4f)) return -1;
+	else this->analogMax = analogMax;
+	return 0;
+}
+
+int PWM::analogWrite(float voltage){
+	if ((voltage<0.0f)||(voltage>3.3f)) return -1;
+	this->setFrequency(this->analogFrequency);
+	this->setPolarity(PWM::ACTIVE_LOW);
+	this->setDutyCycle((100.0f*voltage)/this->analogMax);
+	return this->run();
+}
+
+int PWM::run(){
+	return write(this->path, PWM_RUN, 1);
+}
+
+bool PWM::isRunning(){
+	string running = read(this->path, PWM_RUN);
+	return (running=="1");
+}
+
+int PWM::stop(){
+	return write(this->path, PWM_RUN, 0);
+}
+
+PWM::~PWM() {}
+
+} /* namespace exploringBB */
