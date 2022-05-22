@@ -30,7 +30,7 @@ class GPS:public UARTDevice{
             double altitude;
             std::string time; 
             std::string date; 
-            int epoch;   // milliseconds since 01/01/2000 
+            long long int epoch;   // seconds since 01/01/2000 
         };
         typedef struct location loc_t;
 
@@ -77,7 +77,7 @@ class GPS:public UARTDevice{
         double gps_deg_dec(double deg_point);
         void nmea_parse_gpgga(char *nmea, gpgga_t *loc);
         void nmea_parse_gprmc(char *nmea, gprmc_t *loc);
-        int convertToEpoch(std::string date, std::string time);  // returns ms since 1/1/2000
+        long long int convertToEpoch(std::string date, std::string time);  // returns ms since 1/1/2000
 
 };
 

@@ -42,6 +42,7 @@ void GPS::get_location(loc_t *coord){
         char buffer[256];
 
         readln(buffer);
+        cout << "BUFFER  " << buffer << endl;
         switch (get_NMEA_type(buffer)) {
             case NMEA_GPGGA:
                 nmea_parse_gpgga(buffer, &gpgga);
@@ -68,12 +69,12 @@ void GPS::get_location(loc_t *coord){
     coord->epoch = convertToEpoch(coord->date, coord->time); 
 }
 
-int GPS::convertToEpoch(std::string date, std::string time){
+long long int GPS::convertToEpoch(std::string date, std::string time){
     std::tm tmTime;
-    int unix_seconds; 
-    int epoch_ms; 
+    long long int unix_seconds; 
+    long long int epoch_ms; 
     int millisec; 
-    int offset = 946684800000; // ms between unix epoch and 1/1/2000
+    long long int offset = 946684800; // ms between unix epoch and 1/1/2000
 
     tmTime.tm_mday = atoi(date.substr(0,2).c_str());
     tmTime.tm_mon = atoi(date.substr(2,2).c_str());
@@ -88,7 +89,7 @@ int GPS::convertToEpoch(std::string date, std::string time){
     unix_seconds = (int)timegm(&tmTime);
     std::cout << "EPOCH: " << unix_seconds << std::endl; 
 
-    epoch_ms = unix_seconds * 1000 + millisec - offset; 
+    epoch_ms = unix_seconds * 1000 - offset; 
 
     std::cout << "MS since 1/1/2000: " << epoch_ms << std::endl; 
 
