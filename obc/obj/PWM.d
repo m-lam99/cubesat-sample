@@ -1,5 +1,3 @@
-obj/PWM.o: src/PWM.cpp include/PWM.h include/Util.h
+obj/PWM.o: src/PWM.cpp include/PWM.h
 
 include/PWM.h:
-
-include/Util.h:
