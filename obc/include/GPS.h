@@ -20,6 +20,8 @@
 #define NMEA_CHECKSUM_ERR 0x80
 #define NMEA_MESSAGE_ERR 0xC0
 
+using namespace std;
+
 class GPS:public UARTDevice{
     
     public:
@@ -27,8 +29,8 @@ class GPS:public UARTDevice{
             double latitude;
             double longitude;
             double altitude;
-            std::string time; 
-            std::string date; 
+            string time; 
+            string date; 
             int epoch;   // milliseconds since 01/01/2000 
         };
         typedef struct location loc_t;
@@ -51,14 +53,14 @@ class GPS:public UARTDevice{
             double altitude;
 
             //utc time
-            std::string time;
+            string time;
         };
         typedef struct gpgga gpgga_t;
 
         struct gprmc {
             double speed;
             double course;
-            std::string date;   // date ddmmyy
+            string date;   // date ddmmyy
         };
         typedef struct gprmc gprmc_t;
 
@@ -76,7 +78,7 @@ class GPS:public UARTDevice{
         double gps_deg_dec(double deg_point);
         void nmea_parse_gpgga(char *nmea, gpgga_t *loc);
         void nmea_parse_gprmc(char *nmea, gprmc_t *loc);
-        int convertToEpoch(std::string date, std::string time);  // returns ms since 1/1/2000
+        int convertToEpoch(string date, string time);  // returns ms since 1/1/2000
 
 };
 
