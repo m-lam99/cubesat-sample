@@ -33,13 +33,13 @@ using namespace exploringBB;
 
 /**************************************************************************/
 /*!
-    @brief  Instantiates a new Adafruit_BNO055 class
+    @brief  Instantiates a new BNO055 class
 */
 /**************************************************************************/
-Adafruit_BNO055::Adafruit_BNO055(unsigned int I2CBus, int32_t sensorID, uint8_t address)
+BNO055::BNO055(unsigned int I2CBus,uint8_t address)
   : I2CDevice(I2CBus, address)
 {
-  _sensorID = sensorID;
+  _sensorID = 0;
   _address = address;
   _i2cChannel = I2CBus;
 }
@@ -53,7 +53,7 @@ Adafruit_BNO055::Adafruit_BNO055(unsigned int I2CBus, int32_t sensorID, uint8_t 
     @brief  Sets up the HW
 */
 /**************************************************************************/
-bool Adafruit_BNO055::begin(adafruit_bno055_opmode_t mode)
+bool BNO055::begin(adafruit_bno055_opmode_t mode)
 {
 
   /* Make sure we have the right device */
@@ -99,7 +99,7 @@ bool Adafruit_BNO055::begin(adafruit_bno055_opmode_t mode)
     @brief  Puts the chip in the specified operating mode
 */
 /**************************************************************************/
-void Adafruit_BNO055::setMode(adafruit_bno055_opmode_t mode)
+void BNO055::setMode(adafruit_bno055_opmode_t mode)
 {
   _mode = mode;
   write8(BNO055_OPR_MODE_ADDR, _mode);
@@ -111,7 +111,7 @@ void Adafruit_BNO055::setMode(adafruit_bno055_opmode_t mode)
     @brief  Use the external 32.768KHz crystal
 */
 /**************************************************************************/
-void Adafruit_BNO055::setExtCrystalUse(bool usextal)
+void BNO055::setExtCrystalUse(bool usextal)
 {
   adafruit_bno055_opmode_t modeback = _mode;
 
@@ -138,7 +138,7 @@ void Adafruit_BNO055::setExtCrystalUse(bool usextal)
     @brief  Gets the latest system status info
 */
 /**************************************************************************/
-int8_t Adafruit_BNO055::getSystemStatus(void)
+int8_t BNO055::getSystemStatus(void)
 {
   write8(BNO055_PAGE_ID_ADDR, 0);
 
@@ -192,7 +192,7 @@ int8_t Adafruit_BNO055::getSystemStatus(void)
     @brief  Gets the chip revision numbers
 */
 /**************************************************************************/
-void Adafruit_BNO055::getRevInfo(adafruit_bno055_rev_info_t *info)
+void BNO055::getRevInfo(adafruit_bno055_rev_info_t *info)
 {
   uint8_t a, b;
 
@@ -222,7 +222,7 @@ void Adafruit_BNO055::getRevInfo(adafruit_bno055_rev_info_t *info)
             fully calibrated.
 */
 /**************************************************************************/
-void Adafruit_BNO055::getCalibration(uint8_t *sys, uint8_t *gyro, uint8_t *accel, uint8_t *mag)
+void BNO055::getCalibration(uint8_t *sys, uint8_t *gyro, uint8_t *accel, uint8_t *mag)
 {
   uint8_t calData = read8(BNO055_CALIB_STAT_ADDR);
   if (sys != NULL)
@@ -248,7 +248,7 @@ void Adafruit_BNO055::getCalibration(uint8_t *sys, uint8_t *gyro, uint8_t *accel
     @brief  Gets the temperature in degrees celsius
 */
 /**************************************************************************/
-int8_t Adafruit_BNO055::getTemp(void)
+int8_t BNO055::getTemp(void)
 {
   int8_t temp = (int8_t)(read8(BNO055_TEMP_ADDR));
   return temp;
@@ -259,7 +259,7 @@ int8_t Adafruit_BNO055::getTemp(void)
     @brief  Gets a vector reading from the specified source
 */
 /**************************************************************************/
-imu::Vector<3> Adafruit_BNO055::getVector(adafruit_vector_type_t vector_type)
+imu::Vector<3> BNO055::getVector(adafruit_vector_type_t vector_type)
 {
   imu::Vector<3> xyz;
   uint8_t buffer[6];
@@ -315,7 +315,7 @@ imu::Vector<3> Adafruit_BNO055::getVector(adafruit_vector_type_t vector_type)
     @brief  Gets a quaternion reading from the specified source
 */
 /**************************************************************************/
-imu::Quaternion Adafruit_BNO055::getQuat(void)
+imu::Quaternion BNO055::getQuat(void)
 {
   uint8_t buffer[8];
   memset(buffer, 0, 8);
@@ -343,7 +343,7 @@ imu::Quaternion Adafruit_BNO055::getQuat(void)
     @brief  Provides the sensor_t data for this sensor
 */
 /**************************************************************************/
-void Adafruit_BNO055::getSensor(sensor_t *sensor)
+void BNO055::getSensor(sensor_t *sensor)
 {
   /* Clear the sensor_t object */
   memset(sensor, 0, sizeof(sensor_t));
@@ -365,7 +365,7 @@ void Adafruit_BNO055::getSensor(sensor_t *sensor)
 @brief  Reads the sensor's offset registers into a byte array
 */
 /**************************************************************************/
-bool Adafruit_BNO055::getSensorOffsets(uint8_t *calibData)
+bool BNO055::getSensorOffsets(uint8_t *calibData)
 {
   if (isFullyCalibrated())
   {
@@ -385,7 +385,7 @@ bool Adafruit_BNO055::getSensorOffsets(uint8_t *calibData)
 @brief  Reads the sensor's offset registers into an offset struct
 */
 /**************************************************************************/
-bool Adafruit_BNO055::getSensorOffsets(adafruit_bno055_offsets_t &offsets_type)
+bool BNO055::getSensorOffsets(adafruit_bno055_offsets_t &offsets_type)
 {
   if (isFullyCalibrated())
   {
@@ -419,7 +419,7 @@ bool Adafruit_BNO055::getSensorOffsets(adafruit_bno055_offsets_t &offsets_type)
 @brief  Writes an array of calibration values to the sensor's offset registers
 */
 /**************************************************************************/
-void Adafruit_BNO055::setSensorOffsets(const uint8_t *calibData)
+void BNO055::setSensorOffsets(const uint8_t *calibData)
 {
   adafruit_bno055_opmode_t lastMode = _mode;
   setMode(OPERATION_MODE_CONFIG);
@@ -461,7 +461,7 @@ void Adafruit_BNO055::setSensorOffsets(const uint8_t *calibData)
 @brief  Writes to the sensor's offset registers from an offset struct
 */
 /**************************************************************************/
-void Adafruit_BNO055::setSensorOffsets(const adafruit_bno055_offsets_t &offsets_type)
+void BNO055::setSensorOffsets(const adafruit_bno055_offsets_t &offsets_type)
 {
   adafruit_bno055_opmode_t lastMode = _mode;
   setMode(OPERATION_MODE_CONFIG);
@@ -497,7 +497,7 @@ void Adafruit_BNO055::setSensorOffsets(const adafruit_bno055_offsets_t &offsets_
   setMode(lastMode);
 }
 
-bool Adafruit_BNO055::isFullyCalibrated(void)
+bool BNO055::isFullyCalibrated(void)
 {
   uint8_t system, gyro, accel, mag;
   getCalibration(&system, &gyro, &accel, &mag);
@@ -515,7 +515,7 @@ bool Adafruit_BNO055::isFullyCalibrated(void)
     @brief  Writes an 8 bit value over I2C
 */
 /**************************************************************************/
-bool Adafruit_BNO055::write8(adafruit_bno055_reg_t reg, uint8_t value)
+bool BNO055::write8(adafruit_bno055_reg_t reg, uint8_t value)
 {
   writeRegister(reg, value);
 
@@ -528,7 +528,7 @@ bool Adafruit_BNO055::write8(adafruit_bno055_reg_t reg, uint8_t value)
     @brief  Reads an 8 bit value over I2C
 */
 /**************************************************************************/
-uint8_t Adafruit_BNO055::read8(adafruit_bno055_reg_t reg)
+uint8_t BNO055::read8(adafruit_bno055_reg_t reg)
 {
   uint8_t value = readRegister(reg);
 
@@ -540,7 +540,7 @@ uint8_t Adafruit_BNO055::read8(adafruit_bno055_reg_t reg)
     @brief  Reads the specified number of bytes over I2C
 */
 /**************************************************************************/
-bool Adafruit_BNO055::readLen(adafruit_bno055_reg_t reg, uint8_t *buffer, uint8_t len)
+bool BNO055::readLen(adafruit_bno055_reg_t reg, uint8_t *buffer, uint8_t len)
 {
 
   int BRead = i2cReadI2CBlockData(reg, (char *)buffer, len);
@@ -552,7 +552,7 @@ bool Adafruit_BNO055::readLen(adafruit_bno055_reg_t reg, uint8_t *buffer, uint8_
   return true;
 }
 
-int Adafruit_BNO055::i2cReadI2CBlockData(unsigned reg, char *buf, unsigned count)
+int BNO055::i2cReadI2CBlockData(unsigned reg, char *buf, unsigned count)
 {
   uint32_t size; 
   union my_smbus_data data;

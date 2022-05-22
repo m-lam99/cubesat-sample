@@ -49,7 +49,7 @@ typedef struct
   uint16_t mag_radius;
 } adafruit_bno055_offsets_t;
 
-class Adafruit_BNO055 : public Adafruit_Sensor, public I2CDevice
+class BNO055 : public Adafruit_Sensor, public I2CDevice
 {
 public:
   typedef enum
@@ -277,7 +277,7 @@ public:
     uint8_t  block[32 + 2];
   };
 
-  Adafruit_BNO055(unsigned int I2CBus = 2, int32_t sensorID = -1, uint8_t address = BNO055_ADDRESS_A);
+  BNO055(unsigned int I2CBus = 2, uint8_t address = BNO055_ADDRESS_A, int32_t sensorID = -1);
 
   bool begin(adafruit_bno055_opmode_t mode = OPERATION_MODE_NDOF);
   void setMode(adafruit_bno055_opmode_t mode);
