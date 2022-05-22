@@ -13,8 +13,8 @@ AS7263::AS7263(unsigned int I2CBus, unsigned int I2CAddress)
 }
 
 void AS7263::Test() {
-    uint8_t device_no = readRegister(VIRTUAL_REG::HW_VERSION);
-    std::cout << device_no << std::endl;
+    uint8_t device_no = readVirtualReg(VIRTUAL_REG::HW_VERSION);
+    std::cout << (int)device_no << std::endl;
 }
 
 void AS7263::writeVirtualReg(unsigned int virtual_reg, uint8_t data) {
