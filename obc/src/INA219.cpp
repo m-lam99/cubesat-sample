@@ -19,7 +19,7 @@ int INA219::writeRegister(unsigned int registerAddress, uint16_t value){
    return 0;
 }
 
-uint16_t INA219::readRegister(unsigned int registerAddress){
+uint16_t INA219::readRegisters(unsigned int registerAddress){
    this->write(registerAddress);
    unsigned char buffer[2];
    if(::read(this->file, buffer, 1)!=1){
