@@ -29,7 +29,7 @@ using std::string;
 
 #define PWM_PATH "/sys/class/pwm/"
 #define PWM_PERIOD "period"
-#define PWM_DUTY "duty"
+#define PWM_DUTY "duty_cycle"
 #define PWM_POLARITY "polarity"
 #define PWM_RUN "enable"
 
