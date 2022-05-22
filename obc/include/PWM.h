@@ -33,6 +33,9 @@ using std::string;
 #define PWM_POLARITY "polarity"
 #define PWM_RUN "enable"
 
+#define PWM_1A "pwm-2:0"
+
+
 namespace exploringBB {
 
 class PWM {
