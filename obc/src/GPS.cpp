@@ -28,25 +28,23 @@ void GPS::print_GPS(){
     while (1) {
         get_location(&data);
         printf("%lf %lf %lf %lf\n", data.time, data.latitude, data.longitude, data.altitude);
+        std::cout << "seconds since 1/1/2000: " << data.epoch << std::endl; 
+
     }
 
 }
 
 void GPS::get_location(loc_t *coord){
-     cout << "Getting liocation" << endl;
 
     uint8_t status = _EMPTY;
-    cout << "Status: " << status << "hi " << endl;
 
     while(status != _COMPLETED) {
         gpgga_t gpgga;
         gprmc_t gprmc;
 
         char buffer[256];
-        cout << "About to read: "<< endl;
 
         readln(buffer);
-        cout << "BUFFER  " << buffer << endl;
         switch (get_NMEA_type(buffer)) {
             case NMEA_GPGGA:
                 nmea_parse_gpgga(buffer, &gpgga);
@@ -76,7 +74,7 @@ void GPS::get_location(loc_t *coord){
 long long int GPS::convertToEpoch(std::string date, std::string time){
     std::tm tmTime;
     long long int unix_seconds; 
-    long long int epoch_ms; 
+    long long int epoch_sec; 
     int millisec; 
     long long int offset = 946684800; // ms between unix epoch and 1/1/2000
 
@@ -91,13 +89,10 @@ long long int GPS::convertToEpoch(std::string date, std::string time){
     millisec = atoi(time.substr(7,2).c_str());
 
     unix_seconds = (int)timegm(&tmTime);
-    std::cout << "EPOCH: " << unix_seconds << std::endl; 
+    epoch_sec = unix_seconds * 1000 - offset; 
 
-    epoch_ms = unix_seconds * 1000 - offset; 
 
-    std::cout << "MS since 1/1/2000: " << epoch_ms << std::endl; 
-
-    return epoch_ms;
+    return epoch_sec;
 }
 
 // Convert lat e lon to decimals (from deg)
