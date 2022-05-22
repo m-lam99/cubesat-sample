@@ -33,6 +33,7 @@ void GPS::print_GPS(){
 }
 
 void GPS::get_location(loc_t *coord){
+     cout << "Getting liocation" << endl;
 
     uint8_t status = _EMPTY;
     while(status != _COMPLETED) {
