@@ -76,7 +76,7 @@ long long int GPS::convertToEpoch(std::string date, std::string time){
     long long int unix_seconds; 
     long long int epoch_sec; 
     int millisec; 
-    long long int offset = 946684800; // ms between unix epoch and 1/1/2000
+    long long int offset = 946684800; // s between unix epoch and 1/1/2000
 
     tmTime.tm_mday = atoi(date.substr(0,2).c_str());
     tmTime.tm_mon = atoi(date.substr(2,2).c_str());
@@ -89,7 +89,7 @@ long long int GPS::convertToEpoch(std::string date, std::string time){
     millisec = atoi(time.substr(7,2).c_str());
 
     unix_seconds = (int)timegm(&tmTime);
-    epoch_sec = unix_seconds * 1000 - offset; 
+    epoch_sec = unix_seconds - offset; 
 
 
     return epoch_sec;
@@ -127,13 +127,10 @@ uint8_t GPS::get_NMEA_type(const char *message)
     }
 
     if (strstr(message, NMEA_GPGGA_STR) != NULL) {
-        cout << "NMEA_GPGGA" << endl;
         return NMEA_GPGGA;
     }
 
     if (strstr(message, NMEA_GPRMC_STR) != NULL) {
-        cout << "NMEA_GPRMC" << endl;
-
         return NMEA_GPRMC;
     }
 
