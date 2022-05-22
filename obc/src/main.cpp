@@ -105,6 +105,7 @@ void testPWM(){
     pwm.setPolarity(PWM::ACTIVE_LOW);  // using active low PWM
     pwm.run();                     // start the PWM output
     std::cout << "PWM active" << std::endl; 
+    // pwm.stop();  // to discontinue the pwm signal 
     return; 
 }
 
@@ -115,6 +116,6 @@ int main() {
     //testADS1015();
 
     // testADS1015();
-    testAS7263();
+    //testAS7263();
     return 0;
 }
