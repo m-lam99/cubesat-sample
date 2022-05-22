@@ -72,17 +72,17 @@ int GPS::convertToEpoch(std::string date, std::string time){
     int millisec; 
     int offset = 946684800000; // ms between unix epoch and 1/1/2000
 
-    tmTime.tm_mday = atoi(date.substr(0,2));
-    tmTime.tm_mon = atoi(date.substr(2,4));
-    tmTime.tm_year = atoi(date.substr(4,6)) + 100;
+    tmTime.tm_mday = atoi(date.substr(0,2).c_str());
+    tmTime.tm_mon = atoi(date.substr(2,2).c_str());
+    tmTime.tm_year = atoi(date.substr(4,2).c_str()) + 100;
 
-    tmTime.tm_hour = atoi(time.substr(0,2));
-    tmTime.tm_min = atoi(time.substr(2,4));
-    tmTime.tm_sec = atoi(time.substr(4,6));
+    tmTime.tm_hour = atoi(time.substr(0,2).c_str());
+    tmTime.tm_min = atoi(time.substr(2,2).c_str());
+    tmTime.tm_sec = atoi(time.substr(4,2).c_str());
     
-    millisec = atoi(time.substr(7,9));
+    millisec = atoi(time.substr(7,2).c_str());
 
-    unix_seconds = gmtime(&tmTime);
+    unix_seconds = (int)timegm(&tmTime);
     std::cout << "EPOCH: " << unix_seconds << std::endl; 
 
     epoch_ms = unix_seconds * 1000 + millisec - offset; 
