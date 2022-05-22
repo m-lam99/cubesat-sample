@@ -81,9 +81,9 @@ void testADS1015() {
 
 void testAS7263() {
     AS7263 sensor(2, AS7263_ADDRESS);
-
+   sensor.Test();
     for (int i = 0; i < 10; i++) {
-        std::cout << sensor.readVirtualReg(AS7263::VIRTUAL_REG::S_HIGH) << std::endl;
+        std::cout << sensor.readVirtualReg(AS7263::VIRTUAL_REG::HW_VERSION) << std::endl;
         usleep(500000);
     }
 }
@@ -121,6 +121,7 @@ void testAS7263() {
 
 int main(){
    testAS7263();
+   
    /*  
    AS7263 sensor(2, AS7263_ADDRESS);
    sensor.Test();
