@@ -27,7 +27,7 @@
 #include<string>
 using std::string;
 
-#define PWM_PATH "/dev/pwm/"
+#define PWM_PATH "sys/class/pwm"
 #define PWM_PERIOD "period"
 #define PWM_DUTY "duty"
 #define PWM_POLARITY "polarity"

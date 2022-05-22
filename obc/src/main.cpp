@@ -125,7 +125,7 @@ void testBNO055(){
 
 void testPWM(){
    // 
-    PWM pwm("ehrpwm1a");  // P9_42 MUST be loaded as a slot before use
+    PWM pwm("pwm-2:0");  // P9_42 MUST be loaded as a slot before use
     pwm.setPeriod(100000);         // Set the period in ns
     pwm.setDutyCycle(25.0f);       // Set the duty cycle as a percentage
     pwm.setPolarity(PWM::ACTIVE_LOW);  // using active low PWM
