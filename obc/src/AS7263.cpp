@@ -40,7 +40,7 @@ void AS7263::writeVirtualReg(unsigned int virtual_reg, uint8_t data) {
     writeRegister(REGISTERS::WRITE, data);
 }
 
-uint8_t AS7263::readVirtualReg(unsigned int virtual_reg) {
+int AS7263::readVirtualReg(unsigned int virtual_reg) {
     volatile uint8_t status, d;
 
     while (1) {
@@ -64,6 +64,5 @@ uint8_t AS7263::readVirtualReg(unsigned int virtual_reg) {
     
     // Read the data to complete the operation.
     d = readRegister(REGISTERS::READ);
-    std::cout << d << std::endl;
-    return d;
+    return (int)d;
 }

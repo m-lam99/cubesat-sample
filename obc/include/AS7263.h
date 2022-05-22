@@ -51,7 +51,7 @@ class AS7263:protected I2CDevice {
         AS7263(unsigned int I2CBus, unsigned int I2CAddress);
         void Test();
         void writeVirtualReg(unsigned int registerAddress, uint8_t data);
-        uint8_t readVirtualReg(unsigned int registerAddress);
+        int readVirtualReg(unsigned int registerAddress);
         // ~AS7263();
     private:
         unsigned int I2CBus, I2CAddress;
