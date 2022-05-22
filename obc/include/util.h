@@ -27,18 +27,14 @@
 #include<string>
 using std::string;
 
-namespace exploringBB{
-
-/**
- * @class Util
- * @brief Utilities used by PWM
- */
-
-    int write(string path, string filename, string value);
-    string read(string path, string filename);
-    int write(string path, string filename, int value);
+namespace exploringBB {
 
 
+int write(string path, string filename, string value);
+int write(string path, string filename, int value);
+string read(string path, string filename);
+
+
+} /* namespace exploringBB */
 
 #endif /* UTIL_H_ */
-}

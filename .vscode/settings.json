@@ -2,6 +2,11 @@
     "makefile.extensionOutputFolder": "./.vscode",
     "files.associations": {
 <<<<<<< HEAD
+<<<<<<< HEAD
+        "cstdint": "cpp",
+        "istream": "cpp",
+=======
+>>>>>>> main
 =======
         "cmath": "cpp",
         "*.tcc": "cpp",
@@ -27,7 +32,11 @@
         "system_error": "cpp",
         "type_traits": "cpp",
         "typeinfo": "cpp",
+<<<<<<< HEAD
+>>>>>>> main
+=======
 >>>>>>> adcs
+>>>>>>> main
         "__bit_reference": "cpp",
         "__bits": "cpp",
         "__config": "cpp",
@@ -48,19 +57,31 @@
         "bitset": "cpp",
 <<<<<<< HEAD
         "cctype": "cpp",
+<<<<<<< HEAD
+        "chrono": "cpp",
+        "clocale": "cpp",
+        "cmath": "cpp",
+=======
+        "chrono": "cpp",
+>>>>>>> main
+=======
         "chrono": "cpp",
         "clocale": "cpp",
         "cmath": "cpp",
 =======
         "chrono": "cpp",
 >>>>>>> adcs
+>>>>>>> main
         "compare": "cpp",
         "complex": "cpp",
         "concepts": "cpp",
         "cstdarg": "cpp",
         "cstddef": "cpp",
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
         "cstdint": "cpp",
+>>>>>>> main
         "cstdio": "cpp",
         "cstdlib": "cpp",
         "cstring": "cpp",
@@ -75,7 +96,10 @@
         "ios": "cpp",
         "iosfwd": "cpp",
         "iostream": "cpp",
+<<<<<<< HEAD
+=======
         "istream": "cpp",
+>>>>>>> main
         "limits": "cpp",
         "locale": "cpp",
         "memory": "cpp",
@@ -109,7 +133,11 @@
         "stack": "cpp",
         "string": "cpp",
         "tuple": "cpp",
+<<<<<<< HEAD
+>>>>>>> main
+=======
 >>>>>>> adcs
+>>>>>>> main
         "unordered_map": "cpp",
         "variant": "cpp",
         "vector": "cpp",

@@ -7,15 +7,21 @@
 #include <unistd.h>  //for usleep
 
 #include <iostream>
+#include <unistd.h> //for usleep
+#include <iomanip> // for setprecision
 
 #include "ADS1015.h"
 #include "GPIO.h"
 #include "I2C.h"
 #include "INA219.h"
+#include "GPS.h"
 #include "AS7263.h"
 
 #include "BNO055.h"
 #include "Satellite.h"
+
+// For the PWM
+#include "PWM.h"
 
 using namespace exploringBB;
 
@@ -91,9 +97,29 @@ void testAS7263() {
     }
 }
 
+void testPWM(){
+   // 
+    PWM pwm("pwm-2:0");  // P9_42 MUST be loaded as a slot before use
+    pwm.setPeriod(100000);         // Set the period in ns
+    std::cout << "set period" << std::endl; 
+     pwm.setDutyCycle(25.0f);       // Set the duty cycle as a percentage
+    std::cout << "set duty" << std::endl; 
+
+    pwm.setPolarity(PWM::ACTIVE_LOW);  // using active low PWM
+     std::cout << "set polarity" << std::endl; 
+
+    pwm.run();                     // start the PWM output
+    std::cout << "RUN" << std::endl; 
+
+
+    return; 
+}
+
 int main() {
     //  testINA219();
     //testBNO055();
+    testPWM();
+    //testADS1015();
 
     // testADS1015();
     // testAS7263();
