@@ -84,7 +84,8 @@ void testAS7263() {
    sensor.Test();
     for (int i = 0; i < 10; i++) {
         sensor.takeMeasurements();
-        std::cout << sensor.getCalibratedViolet() << std::endl;
+        std::cout << "calibrated val: " << sensor.getCalibratedR() << std::endl;
+        std::cout << "meas val: " << sensor.getR() << std::endl;
         usleep(500000);
     }
 }

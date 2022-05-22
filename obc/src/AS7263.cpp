@@ -210,3 +210,12 @@ void AS7263::takeMeasurementsWithBulb()
 	disableBulb(); //Turn off bulb to avoid heating sensor
 				   //disableIndicator();
 }
+
+
+//A the 16-bit value stored in a given channel registerReturns 
+int AS7263::getChannel(uint8_t channelRegister)
+{
+	int colorData = readVirtualReg(channelRegister) << 8; //High uint8_t
+	colorData |= readVirtualReg(channelRegister + 1); //Low uint8_t
+	return(colorData);
+}

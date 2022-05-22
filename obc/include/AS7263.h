@@ -51,43 +51,32 @@ class AS7263 : protected I2CDevice {
     AS7263(unsigned int I2CBus, unsigned int I2CAddress);
 
     // Returns the various calibration data
-    float AS7263::getCalibratedViolet() {
-        return (getCalibratedValue(AS7262_V_CAL));
+    float getCalibratedR() {
+        return (getCalibratedValue(VIRTUAL_REG::R_CAL));
     }
-    float AS7263::getCalibratedBlue() {
-        return (getCalibratedValue(AS7262_B_CAL));
+    float getCalibratedS() {
+        return (getCalibratedValue(VIRTUAL_REG::S_CAL));
     }
-    float AS7263::getCalibratedGreen() {
-        return (getCalibratedValue(AS7262_G_CAL));
+    float getCalibratedT() {
+        return (getCalibratedValue(VIRTUAL_REG::T_CAL));
     }
-    float AS7263::getCalibratedYellow() {
-        return (getCalibratedValue(AS7262_Y_CAL));
+    float getCalibratedU() {
+        return (getCalibratedValue(VIRTUAL_REG::U_CAL));
     }
-    float AS7263::getCalibratedOrange() {
-        return (getCalibratedValue(AS7262_O_CAL));
+    float getCalibratedV() {
+        return (getCalibratedValue(VIRTUAL_REG::V_CAL));
     }
-    float AS7263::getCalibratedRed() {
-        return (getCalibratedValue(AS7262_R_CAL));
+    float getCalibratedW() {
+        return (getCalibratedValue(VIRTUAL_REG::W_CAL));
     }
 
-    float AS7263::getCalibratedR() {
-        return (getCalibratedValue(AS7263_R_CAL));
-    }
-    float AS7263::getCalibratedS() {
-        return (getCalibratedValue(AS7263_S_CAL));
-    }
-    float AS7263::getCalibratedT() {
-        return (getCalibratedValue(AS7263_T_CAL));
-    }
-    float AS7263::getCalibratedU() {
-        return (getCalibratedValue(AS7263_U_CAL));
-    }
-    float AS7263::getCalibratedV() {
-        return (getCalibratedValue(AS7263_V_CAL));
-    }
-    float AS7263::getCalibratedW() {
-        return (getCalibratedValue(AS7263_W_CAL));
-    }
+    //Get the various NIR readings
+    int getR() { return(getChannel(VIRTUAL_REG::R_HIGH)); }
+    int getS() { return(getChannel(VIRTUAL_REG::S_HIGH)); }
+    int getT() { return(getChannel(VIRTUAL_REG::T_HIGH)); }
+    int getU() { return(getChannel(VIRTUAL_REG::U_HIGH)); }
+    int getV() { return(getChannel(VIRTUAL_REG::V_HIGH)); }
+    int getW() { return(getChannel(VIRTUAL_REG::W_HIGH)); }
     void Test();
     void writeVirtualReg(unsigned int registerAddress, uint8_t data);
     uint8_t readVirtualReg(unsigned int registerAddress);
@@ -103,6 +92,7 @@ class AS7263 : protected I2CDevice {
     float getCalibratedValue(uint8_t calAddress);
     float convertBytesToFloat(uint32_t myLong);
     void takeMeasurementsWithBulb();
+    int getChannel(uint8_t channelRegister);
     // ~AS7263();
    private:
     unsigned int I2CBus, I2CAddress;
