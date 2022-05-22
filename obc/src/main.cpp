@@ -15,6 +15,7 @@
 #include "AS7263.h"
 
 #include "BNO055.h"
+#include "Satellite.h"
 
 using namespace exploringBB;
 
@@ -95,6 +96,9 @@ int main() {
     //testBNO055();
 
     // testADS1015();
-    testAS7263();
+    // testAS7263();
+    Satellite NICE;
+    NICE.wodTransmission();
+
     return 0;
 }
