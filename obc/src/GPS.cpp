@@ -3,7 +3,7 @@
 #include <math.h>
 #include <ctime>    // timestamp conversion
 #include <time.h>    // timestamp conversion
-#include <string.h>
+#include <string>
 
 // DEFAULT is Channel 4, baud 9600
 GPS::GPS( ):
