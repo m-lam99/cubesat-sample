@@ -13,6 +13,8 @@
 #include "I2C.h"
 #include "INA219.h"
 
+#include "BNO055.h"
+
 using namespace exploringBB;
 
 void testGPIO() {
@@ -74,6 +76,10 @@ void testADS1015() {
         std::cout << sensor.getVoltage(0) << std::endl;
         usleep(500000);
     }
+}
+
+void testBNO055(){
+
 }
 
 int main() {

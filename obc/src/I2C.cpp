@@ -63,8 +63,12 @@ int I2CDevice::open(){
    {
       name = BBB_I2C_2;
    }
-   else {
+   else if (this->bus==1){
       name = BBB_I2C_1;
+   }
+   else {
+      perror("Non Existent I2C bus - choose 1 or 2");
+      return 1;  
    }
 
    if((this->file=::open(name.c_str(), O_RDWR)) < 0){

@@ -19,10 +19,13 @@
 
 #include <math.h>
 #include <limits.h>
-#include <pigpio.h>
 #include <iostream>
+#include <unistd.h> // for usleep 
 
-#include "RPi_BNO055.h"
+#include "BN055.h"
+#include "I2C.h"
+
+using namespace exploringBB;
 
 /***************************************************************************
  CONSTRUCTOR
@@ -33,11 +36,12 @@
     @brief  Instantiates a new Adafruit_BNO055 class
 */
 /**************************************************************************/
-Adafruit_BNO055::Adafruit_BNO055(int32_t sensorID, uint8_t address)
+Adafruit_BNO055::Adafruit_BNO055(unsigned int I2CBus, int32_t sensorID, uint8_t address)
+  : I2CDevice(I2CBus, address)
 {
   _sensorID = sensorID;
   _address = address;
-  _i2cChannel = 2;
+  _i2cChannel = I2CBus;
 }
 
 /***************************************************************************
@@ -56,7 +60,7 @@ bool Adafruit_BNO055::begin(adafruit_bno055_opmode_t mode)
   uint8_t id = read8(BNO055_CHIP_ID_ADDR);
   if (id != BNO055_ID)
   {
-    gpioSleep(PI_TIME_RELATIVE, 0, 1000 * 1000); // hold on for boot
+    usleep(1000 * 1000);
     id = read8(BNO055_CHIP_ID_ADDR);
     if (id != BNO055_ID)
     {
@@ -73,36 +77,19 @@ bool Adafruit_BNO055::begin(adafruit_bno055_opmode_t mode)
   write8(BNO055_SYS_TRIGGER_ADDR, 0x20);
   while (read8(BNO055_CHIP_ID_ADDR) != BNO055_ID)
   {
-    gpioSleep(PI_TIME_RELATIVE, 0, 1000 * 10);
+    usleep(1000*10);
   }
-  gpioSleep(PI_TIME_RELATIVE, 0, 1000 * 50);
+  usleep(1000*50); 
 
   /* Set to normal power mode */
   write8(BNO055_PWR_MODE_ADDR, POWER_MODE_NORMAL);
-  gpioSleep(PI_TIME_RELATIVE, 0, 1000 * 10);
-  /* Set the output units */
-  /*
-  uint8_t unitsel = (0 << 7) | // Orientation = Android
-                    (0 << 4) | // Temperature = Celsius
-                    (0 << 2) | // Euler = Degrees
-                    (1 << 1) | // Gyro = Rads
-                    (0 << 0);  // Accelerometer = m/s^2
-  write8(BNO055_UNIT_SEL_ADDR, unitsel);
-  */
-
-  /* Configure axis mapping (see section 3.4) */
-  /*
-  write8(BNO055_AXIS_MAP_CONFIG_ADDR, REMAP_CONFIG_P2); // P0-P7, Default is P1
-  gpioSleep(PI_TIME_RELATIVE, 0, 1000*10);
-  write8(BNO055_AXIS_MAP_SIGN_ADDR, REMAP_SIGN_P2); // P0-P7, Default is P1
-  gpioSleep(PI_TIME_RELATIVE, 0, 1000*10);
-  */
+  usleep(1000*10);
 
   write8(BNO055_SYS_TRIGGER_ADDR, 0x0);
-  gpioSleep(PI_TIME_RELATIVE, 0, 1000 * 10);
+  usleep(1000*10);
   /* Set the requested operating mode (see section 3.3) */
   setMode(OPERATION_MODE_NDOF);
-  gpioSleep(PI_TIME_RELATIVE, 0, 1000 * 20);
+  usleep(1000*20);
 
   return true;
 }
@@ -116,7 +103,7 @@ void Adafruit_BNO055::setMode(adafruit_bno055_opmode_t mode)
 {
   _mode = mode;
   write8(BNO055_OPR_MODE_ADDR, _mode);
-  gpioSleep(PI_TIME_RELATIVE, 0, 1000 * 30);
+  usleep(1000*30);
 }
 
 /**************************************************************************/
@@ -130,7 +117,7 @@ void Adafruit_BNO055::setExtCrystalUse(bool usextal)
 
   /* Switch to config mode (just in case since this is the default) */
   setMode(OPERATION_MODE_CONFIG);
-  gpioSleep(PI_TIME_RELATIVE, 0, 1000 * 25);
+  usleep(1000*25);
   write8(BNO055_PAGE_ID_ADDR, 0);
   if (usextal)
   {
@@ -140,10 +127,10 @@ void Adafruit_BNO055::setExtCrystalUse(bool usextal)
   {
     write8(BNO055_SYS_TRIGGER_ADDR, 0x00);
   }
-  gpioSleep(PI_TIME_RELATIVE, 0, 1000 * 10);
+  usleep(1000*10);
   /* Set the requested operating mode (see section 3.3) */
   setMode(modeback);
-  gpioSleep(PI_TIME_RELATIVE, 0, 1000 * 20);
+  usleep(1000*20);
 }
 
 /**************************************************************************/
@@ -196,7 +183,7 @@ int8_t Adafruit_BNO055::getSystemStatus(void)
 
   // int8_t system_error = read8(BNO055_SYS_ERR_ADDR);
 
-  gpioSleep(PI_TIME_RELATIVE, 0, 1000 * 200);
+  usleep(1000*200);
   return status;
 }
 
@@ -375,30 +362,6 @@ void Adafruit_BNO055::getSensor(sensor_t *sensor)
 
 /**************************************************************************/
 /*!
-    @brief  Reads the sensor and returns the data as a sensors_event_t
-*/
-/**************************************************************************/
-bool Adafruit_BNO055::getEvent(sensors_event_t *event)
-{
-  /* Clear the event */
-  memset(event, 0, sizeof(sensors_event_t));
-
-  event->version = sizeof(sensors_event_t);
-  event->sensor_id = _sensorID;
-  event->type = SENSOR_TYPE_ORIENTATION;
-  event->timestamp = gpioTick() / 1000;
-
-  /* Get a Euler angle sample for orientation */
-  imu::Vector<3> euler = getVector(Adafruit_BNO055::VECTOR_EULER);
-  event->orientation.x = euler.x();
-  event->orientation.y = euler.y();
-  event->orientation.z = euler.z();
-
-  return true;
-}
-
-/**************************************************************************/
-/*!
 @brief  Reads the sensor's offset registers into a byte array
 */
 /**************************************************************************/
@@ -428,7 +391,7 @@ bool Adafruit_BNO055::getSensorOffsets(adafruit_bno055_offsets_t &offsets_type)
   {
     adafruit_bno055_opmode_t lastMode = _mode;
     setMode(OPERATION_MODE_CONFIG);
-    gpioSleep(PI_TIME_RELATIVE, 0, 1000 * 25);
+    usleep(1000*25);
 
     offsets_type.accel_offset_x = (read8(ACCEL_OFFSET_X_MSB_ADDR) << 8) | (read8(ACCEL_OFFSET_X_LSB_ADDR));
     offsets_type.accel_offset_y = (read8(ACCEL_OFFSET_Y_MSB_ADDR) << 8) | (read8(ACCEL_OFFSET_Y_LSB_ADDR));
@@ -460,7 +423,7 @@ void Adafruit_BNO055::setSensorOffsets(const uint8_t *calibData)
 {
   adafruit_bno055_opmode_t lastMode = _mode;
   setMode(OPERATION_MODE_CONFIG);
-  gpioSleep(PI_TIME_RELATIVE, 0, 1000 * 25);
+  usleep(1000*25);
 
   /* A writeLen() would make this much cleaner */
   write8(ACCEL_OFFSET_X_LSB_ADDR, calibData[0]);
@@ -502,7 +465,7 @@ void Adafruit_BNO055::setSensorOffsets(const adafruit_bno055_offsets_t &offsets_
 {
   adafruit_bno055_opmode_t lastMode = _mode;
   setMode(OPERATION_MODE_CONFIG);
-  gpioSleep(PI_TIME_RELATIVE, 0, 1000 * 25);
+  usleep(1000*25);
 
   write8(ACCEL_OFFSET_X_LSB_ADDR, (offsets_type.accel_offset_x) & 0x0FF);
   write8(ACCEL_OFFSET_X_MSB_ADDR, (offsets_type.accel_offset_x >> 8) & 0x0FF);
@@ -554,7 +517,7 @@ bool Adafruit_BNO055::isFullyCalibrated(void)
 /**************************************************************************/
 bool Adafruit_BNO055::write8(adafruit_bno055_reg_t reg, uint8_t value)
 {
-  i2cWriteByteData(_HandleBNO, reg, value);
+  writeRegister(reg, value);
 
   /* ToDo: Check for error! */
   return true;
@@ -567,7 +530,7 @@ bool Adafruit_BNO055::write8(adafruit_bno055_reg_t reg, uint8_t value)
 /**************************************************************************/
 uint8_t Adafruit_BNO055::read8(adafruit_bno055_reg_t reg)
 {
-  uint8_t value = i2cReadByteData(_HandleBNO, reg);
+  uint8_t value = readRegister(reg);
 
   return value;
 }
@@ -579,11 +542,37 @@ uint8_t Adafruit_BNO055::read8(adafruit_bno055_reg_t reg)
 /**************************************************************************/
 bool Adafruit_BNO055::readLen(adafruit_bno055_reg_t reg, uint8_t *buffer, uint8_t len)
 {
-  int BRead = i2cReadI2CBlockData(_HandleBNO, reg, (char *)buffer, len);
+
+  int BRead = i2cReadI2CBlockData(reg, (char *)buffer, len);
 
   if (BRead != (int)len)
     return -1;
 
   /* ToDo: Check for errors! */
   return true;
+}
+
+int Adafruit_BNO055::i2cReadI2CBlockData(unsigned reg, char *buf, unsigned count)
+{
+  uint32_t size; 
+  union my_smbus_data data;
+
+  if (count == 32){
+    size = 6;
+  }
+  else{
+    size = 8; 
+  }
+
+  if (data.block[0] <= 32)
+  {
+    for (int i=0; i<data.block[0]; i++){
+      buf[i] = data.block[i+1];
+    }
+  } 
+  else {
+    std::cout << "I2C read block data failed" << std::endl;
+  }
+  
+  return data.block[0];
 }
