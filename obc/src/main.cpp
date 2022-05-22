@@ -113,9 +113,11 @@ void testGPS() {
 
     GPS gps; 
     gps.gps_on();  
-    while(1){
-        gps.print_GPS(); 
+    for(int i = 0; i < 1000; i++){
+        gps.print_GPS();
+        usleep(200); 
     }
+    gps.gps_off();
     return; 
 }
 
