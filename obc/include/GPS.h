@@ -1,10 +1,11 @@
 #ifndef GPS_H
 #define GPS_H
 
-#include "UART.h"
 #include <cstdint>
 #include <inttypes.h>
 #include <string>
+
+#include "UART.h"
 
 #define GPS_CHANNEL 2
 #define GPS_BAUD 9600 
