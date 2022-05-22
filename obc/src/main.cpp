@@ -12,13 +12,10 @@
 #include "GPIO.h"
 #include "I2C.h"
 #include "INA219.h"
-<<<<<<< HEAD
 #include "AS7263.h"
-=======
 
 #include "BNO055.h"
 
->>>>>>> adcs
 using namespace exploringBB;
 
 void testGPIO() {
@@ -82,6 +79,15 @@ void testADS1015() {
     }
 }
 
+void testAS7263() {
+    AS7263 sensor(2, AS7263_ADDRESS);
+
+    for (int i = 0; i < 10; i++) {
+        std::cout << sensor.readVirtualReg(AS7263::VIRTUAL_REG::S_HIGH) << std::endl;
+        usleep(500000);
+    }
+}
+
 void testBNO055(){
     BNO055 bno(2,BNO055_ADDRESS_A);
     std::cout << "Orientation Sensor Raw Data Test" << std::endl;
@@ -126,20 +132,13 @@ void testBNO055(){
 	}
 }
 
-<<<<<<< HEAD
 int main(){
-   //testINA219();
-   AS7263 sensor(2, 0x93);
+   testAS7263();
+   /*  
+   AS7263 sensor(2, AS7263_ADDRESS);
    sensor.Test();
    AS7263 sensor2(2, 0x92);
    sensor2.Test();
+   */
    return 0;
-=======
-int main() {
-   //  testINA219();
-
-   testADS1015();
-
-    return 0;
->>>>>>> adcs
 }
