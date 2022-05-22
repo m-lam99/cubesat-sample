@@ -137,20 +137,6 @@ void testPWM(){
     pwm.run();                     // start the PWM output
     std::cout << "RUN" << std::endl; 
 
-    PWM pwm2("pwm-2:1");  // P9_42 MUST be loaded as a slot before use
-
-    pwm2.run();                     // start the PWM output
-    std::cout << "RUN" << std::endl; 
-    PWM pwm3("pwm-4:0");  // P9_42 MUST be loaded as a slot before use
-
-    pwm3.run();                     // start the PWM output
-    std::cout << "RUN" << std::endl; 
-
-    PWM pwm4("pwm-4:1");  // P9_42 MUST be loaded as a slot before use
-
-    pwm4.run();                     // start the PWM output
-    std::cout << "RUN" << std::endl; 
-
 
     return; 
 }
