@@ -3,7 +3,7 @@
 #include <math.h>
 #include <ctime>    // timestamp conversion
 #include <time.h>    // timestamp conversion
-#include <string>
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
