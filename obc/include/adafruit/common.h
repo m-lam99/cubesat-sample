@@ -33,7 +33,7 @@ SOFTWARE.
 
 #include <stddef.h>
 
-#include "adafruit/bbio/error.h"
+#include "bbio/error.h"
 #ifdef __cplusplus
 using adafruit::bbio::BBIO_err;
 #endif

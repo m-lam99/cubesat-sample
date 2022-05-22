@@ -21,10 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 #pragma once
-
-#include <adafruit/bbio/error.h>
-#include <adafruit/bbio/gpio.h>
-#include <adafruit/bbio/pwm.h>
+#include <bbio/pwm.h>
 
 #include <syslog.h>
 

@@ -43,7 +43,7 @@ SOFTWARE.
 #include <syslog.h>
 #include <time.h>
 
-#include "common.h"
+#include "adafruit/common.h"
 
 #include <linux/version.h>
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4,1,0)

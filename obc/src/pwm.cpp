@@ -24,7 +24,7 @@ SOFTWARE.
 #include "adafruit/bbio/pwm.h"
 
 extern "C" {
-#include "c_pwm.h"
+#include "adafruit/c_pwm.h"
 }
 
 namespace adafruit {

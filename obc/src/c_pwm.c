@@ -31,11 +31,11 @@ SOFTWARE.
 #include <fcntl.h>
 #include <unistd.h>
 
-#include "c_pwm.h"
-#include "common.h"
+#include "adafruit/c_pwm.h"
+#include "adafruit/common.h"
 
 #ifdef BBBVERSION41
-#include "c_pinmux.h"
+#include "adafruit/c_pinmux.h"
 #endif
 
 #define KEYLEN 7

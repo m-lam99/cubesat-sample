@@ -20,47 +20,25 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#pragma once
 
-#include <string>
+#include "adafruit/bbio.h"
+#include "adafruit/bbio/error.h"
+
+extern "C" {
+#include "adafruit/common.h"
+#include "adafruit/c_pwm.h"
+}
 
 namespace adafruit {
 namespace bbio {
 
-class Gpio
+void init(lib_options lib_options)
 {
-public:
-    enum class Direction
-    {
-        Input = 0,
-        Output = 1
-    };
-
-    enum class Value
-    {
-        Low = 0,
-        High = 1
-    };
-
-    enum class Resistor
-    {
-        None = 0,
-        PullDown = 1,
-        PullUp = 2
-    };
-
-    Gpio(std::string const& key, Direction, Resistor = Resistor::None);
-    ~Gpio();
-
-    void set_direction(Direction, Resistor = Resistor::None);
-    void set_value(Value);
-    Value get_value() const;
-
-private:
-    std::string key_;
-    uint32_t pin_;
-    Direction direction_;
-};
+    initlog(lib_options.syslog_level,
+            lib_options.syslog_identifier,
+            lib_options.syslog_option);
+    initialize_pwm();
+}
 
 } // namespace bbio
 } // namespace adafruit
