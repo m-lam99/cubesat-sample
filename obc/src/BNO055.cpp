@@ -56,8 +56,12 @@ BNO055::BNO055(unsigned int I2CBus,uint8_t address)
 bool BNO055::begin(adafruit_bno055_opmode_t mode)
 {
 
+  std::cout << "BNO begin" << std::endl; 
+
   /* Make sure we have the right device */
   uint8_t id = read8(BNO055_CHIP_ID_ADDR);
+    std::cout << "Read 8 " << BNO055_CHIP_ID_ADDR <<  std::endl; 
+
   if (id != BNO055_ID)
   {
     usleep(1000 * 1000);
@@ -71,7 +75,10 @@ bool BNO055::begin(adafruit_bno055_opmode_t mode)
 
   /* Switch to config mode (just in case since this is the default) */
   setMode(OPERATION_MODE_CONFIG);
+  std::cout << "Operation mode config " << OPERATION_MODE_CONFIG <<  std::endl; 
+
   write8(BNO055_PAGE_ID_ADDR, 0);
+  std::cout << "Write to page id-ADDR" << BNO055_PAGE_ID_ADDR <<  std::endl; 
 
   /* Reset */
   write8(BNO055_SYS_TRIGGER_ADDR, 0x20);
