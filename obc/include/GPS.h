@@ -7,7 +7,7 @@
 
 #include "UART.h"
 
-#define GPS_CHANNEL 2
+#define GPS_CHANNEL 4
 #define GPS_BAUD 9600 
 
 #define _EMPTY 0x00
