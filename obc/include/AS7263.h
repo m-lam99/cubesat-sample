@@ -9,7 +9,7 @@
 using namespace exploringBB;
 
 // Check if needs to be 0x93
-#define AS7263_ADDRESS 0x92
+#define AS7263_ADDRESS 0x49
 #define AS7263_TX_VALID 0x02
 #define AS7263_RX_VALID 0x01
 
