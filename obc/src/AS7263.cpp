@@ -61,8 +61,9 @@ uint8_t AS7263::readVirtualReg(unsigned int virtual_reg) {
             break;
     }
 
-    std::cout << "test" << std::endl;
+    
     // Read the data to complete the operation.
     d = readRegister(REGISTERS::READ);
+    std::cout << d << std::endl;
     return d;
 }
