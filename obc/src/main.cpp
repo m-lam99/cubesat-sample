@@ -148,13 +148,18 @@ void testBNO055(){
         }
 }
 
+void testGPS(){
+    GPS gps; 
+    gps.gps_on();
+    while(1){
+        gps.print_GPS(); 
+    } 
+}
+
 int main() {
     //  testINA219();
     //testBNO055();
-    testPWM();
-    //testADS1015();
-
-    // testADS1015();
-    //testAS7263();
+    //testPWM();
+    testGPS();
     return 0;
 }
