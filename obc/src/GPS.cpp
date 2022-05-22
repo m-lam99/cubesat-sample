@@ -36,7 +36,7 @@ void GPS::get_location(loc_t *coord){
      cout << "Getting liocation" << endl;
 
     uint8_t status = _EMPTY;
-    cout << "Status: " << status << endl;
+    cout << "Status: " << status << "hi " << endl;
 
     while(status != _COMPLETED) {
         gpgga_t gpgga;
