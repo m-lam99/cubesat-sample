@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include <ctime>    // timestamp conversion
-#include <time> 
+#include <time.h>    // timestamp conversion
 
 using namespace std;
 
