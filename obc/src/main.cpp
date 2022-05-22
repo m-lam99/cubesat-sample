@@ -14,11 +14,8 @@
 #include "GPIO.h"
 #include "I2C.h"
 #include "INA219.h"
-<<<<<<< HEAD
 #include "GPS.h"
-=======
 #include "AS7263.h"
->>>>>>> main
 
 #include "BNO055.h"
 
