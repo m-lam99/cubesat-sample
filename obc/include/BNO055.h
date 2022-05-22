@@ -277,7 +277,7 @@ public:
     uint8_t  block[32 + 2];
   };
 
-  BNO055(unsigned int I2CBus = 2, uint8_t address = BNO055_ADDRESS_A, int32_t sensorID = -1);
+  BNO055(unsigned int I2CBus = 2, uint8_t address = BNO055_ADDRESS_A);
 
   bool begin(adafruit_bno055_opmode_t mode = OPERATION_MODE_NDOF);
   void setMode(adafruit_bno055_opmode_t mode);
