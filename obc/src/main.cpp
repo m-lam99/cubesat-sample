@@ -120,7 +120,7 @@ void testBNO055(){
 int main() {
     //  testINA219();
 
-    testADS1015();
+    //testADS1015();
     testBNO055();
     return 0;
 }

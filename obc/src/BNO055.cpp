@@ -563,6 +563,8 @@ int BNO055::i2cReadI2CBlockData(unsigned reg, char *buf, unsigned count)
   else{
     size = 8; 
   }
+  
+  data.block[0] = count;
 
   if (data.block[0] <= 32)
   {
