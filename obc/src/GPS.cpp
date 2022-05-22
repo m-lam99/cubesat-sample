@@ -129,10 +129,13 @@ uint8_t GPS::get_NMEA_type(const char *message)
     }
 
     if (strstr(message, NMEA_GPGGA_STR) != NULL) {
+        cout << "NMEA_GPGGA" << endl;
         return NMEA_GPGGA;
     }
 
     if (strstr(message, NMEA_GPRMC_STR) != NULL) {
+        cout << "NMEA_GPRMC" << endl;
+
         return NMEA_GPRMC;
     }
 
