@@ -5,8 +5,6 @@
 #include <time.h>    // timestamp conversion
 #include <string.h>
 
-using namespace std;
-
 // DEFAULT is Channel 4, baud 9600
 GPS::GPS( ):
     UARTDevice(GPS_CHANNEL, GPS_BAUD){
@@ -65,8 +63,8 @@ void GPS::get_location(loc_t *coord){
     coord->epoch = convertToEpoch(coord->date, coord->time); 
 }
 
-int GPS::convertToEpoch(string date, string time){
-    tm tmTime;
+int GPS::convertToEpoch(std::string date, std::string time){
+    std::tm tmTime;
     int unix_seconds; 
     int epoch_ms; 
     int millisec; 
@@ -83,11 +81,11 @@ int GPS::convertToEpoch(string date, string time){
     millisec = atoi(time.substr(7,9));
 
     unix_seconds = gmtime(&tmTime);
-    cout << "EPOCH: " << unix_seconds << endl; 
+    std::cout << "EPOCH: " << unix_seconds << std::endl; 
 
     epoch_ms = unix_seconds * 1000 + millisec - offset; 
 
-    cout << "MS since 1/1/2000: " << epoch_ms << endl; 
+    std::cout << "MS since 1/1/2000: " << epoch_ms << std::endl; 
 
     return epoch_ms;
 }
