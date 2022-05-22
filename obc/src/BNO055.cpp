@@ -60,7 +60,6 @@ bool BNO055::begin(adafruit_bno055_opmode_t mode)
 
   /* Make sure we have the right device */
   uint8_t id = read8(BNO055_CHIP_ID_ADDR);
-    std::cout << "Read 8 " << BNO055_CHIP_ID_ADDR <<  std::endl; 
 
   if (id != BNO055_ID)
   {
@@ -75,27 +74,35 @@ bool BNO055::begin(adafruit_bno055_opmode_t mode)
 
   /* Switch to config mode (just in case since this is the default) */
   setMode(OPERATION_MODE_CONFIG);
-  std::cout << "Operation mode config " << OPERATION_MODE_CONFIG <<  std::endl; 
 
   write8(BNO055_PAGE_ID_ADDR, 0);
-  std::cout << "Write to page id-ADDR" << BNO055_PAGE_ID_ADDR <<  std::endl; 
 
   /* Reset */
   write8(BNO055_SYS_TRIGGER_ADDR, 0x20);
+  std::cout << "Write to page sys trigger addr" << BNO055_SYS_TRIGGER_ADDR <<  std::endl; 
+
   while (read8(BNO055_CHIP_ID_ADDR) != BNO055_ID)
   {
     usleep(1000*10);
   }
   usleep(1000*50); 
 
+  std::cout << "Read Chip addr id : " << BNO055_CHIP_ID_ADDR <<  std::endl; 
+
   /* Set to normal power mode */
   write8(BNO055_PWR_MODE_ADDR, POWER_MODE_NORMAL);
+   std::cout << "Write power mode " << POWER_MODE_NORMAL << "  address:" << BNO055_PWR_MODE_ADDR <<  std::endl; 
+
   usleep(1000*10);
 
   write8(BNO055_SYS_TRIGGER_ADDR, 0x0);
+  std::cout << "Write Trigger : " << BNO055_SYS_TRIGGER_ADDR <<  std::endl; 
+
   usleep(1000*10);
   /* Set the requested operating mode (see section 3.3) */
   setMode(OPERATION_MODE_NDOF);
+  std::cout << "Set mode : " << OPERATION_MODE_NDOF <<  std::endl; 
+
   usleep(1000*20);
 
   return true;
@@ -110,6 +117,8 @@ void BNO055::setMode(adafruit_bno055_opmode_t mode)
 {
   _mode = mode;
   write8(BNO055_OPR_MODE_ADDR, _mode);
+  std::cout << "Write mode : " << BNO055_OPR_MODE_ADDR <<  std::endl; 
+
   usleep(1000*30);
 }
 
