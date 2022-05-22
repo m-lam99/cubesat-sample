@@ -14,7 +14,7 @@
 #include "INA219.h"
 #include "AS7263.h"
 
-//#include "BNO055.h"
+#include "BNO055.h"
 
 using namespace exploringBB;
 
@@ -88,25 +88,25 @@ void testAS7263() {
     }
 }
 
-  /* System Status */
-  int8_t status = bno.getSystemStatus();
-  std::cout << "System status: " << (int)status << std::endl;
+//   /* System Status */
+//   int8_t status = bno.getSystemStatus();
+//   std::cout << "System status: " << (int)status << std::endl;
 
 
-  std::cout << "Calibration status values: 0=uncalibrated, 3=fully calibrated"<<std::endl;
+//   std::cout << "Calibration status values: 0=uncalibrated, 3=fully calibrated"<<std::endl;
 
-	while (1)
-	{
-	  // Display Quaternions
-	  imu::Quaternion quat = bno.getQuat();
-	  std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() <<
-	  	" qZ: " << quat.z() << "\t\t";
+// 	while (1)
+// 	{
+// 	  // Display Quaternions
+// 	  imu::Quaternion quat = bno.getQuat();
+// 	  std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() <<
+// 	  	" qZ: " << quat.z() << "\t\t";
 
-	  /* Display calibration status for each sensor. */
-	  uint8_t system, gyro, accel, mag = 0;
-	  bno.getCalibration(&system, &gyro, &accel, &mag);
-	  std::cout<< "CALIBRATION: Sys=" << (int)system << " Gyro=" << (int) gyro
-	   << " Accel=" << (int) accel << " Mag=" << (int)mag << std::endl;
+// 	  /* Display calibration status for each sensor. */
+// 	  uint8_t system, gyro, accel, mag = 0;
+// 	  bno.getCalibration(&system, &gyro, &accel, &mag);
+// 	  std::cout<< "CALIBRATION: Sys=" << (int)system << " Gyro=" << (int) gyro
+// 	   << " Accel=" << (int) accel << " Mag=" << (int)mag << std::endl;
 
 
 // 	  /* Display calibration status for each sensor. */
