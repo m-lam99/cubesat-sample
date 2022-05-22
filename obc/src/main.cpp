@@ -19,11 +19,7 @@
 #include "BNO055.h"
 
 // For the PWM
-#include "adafruit/bbio.h"
-#include <fstream>
-#include <glob.h>
-using adafruit::bbio::Pwm;
-using adafruit::bbio::BBIOError;
+import Adafruit_BBIO.PWM as PWM
 
 using namespace exploringBB;
 
@@ -130,10 +126,9 @@ void testBNO055(){
 void testPWM(){
    // 
     std::string channel = "P2_01";
-    Pwm pwm(channel); 
-    pwm.start(); 
-    pwm.set_duty_cycle(100);
-    pwm.set_frequency(100);
+    int duty = 100; 
+    PWM.start(channel, duty); 
+    PWM.set_frequency(100);
 
     return; 
 }
