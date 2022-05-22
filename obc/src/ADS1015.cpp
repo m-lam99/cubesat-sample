@@ -87,7 +87,7 @@ float ADS1015::getVoltage(int channel) {
 }
 
 void ADS1015::setFSR() {
-    int fsr_bits = readRegisters(ADDRESS_POINTER::CONFIG) & CONFIG_BITS::PGA;
+    int fsr_bits = (readRegisters(ADDRESS_POINTER::CONFIG) & CONFIG_BITS::PGA) >> 9;
 
     switch (fsr_bits) {
         case 0b000:
