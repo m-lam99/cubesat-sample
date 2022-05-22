@@ -83,11 +83,11 @@ bool BNO055::begin(adafruit_bno055_opmode_t mode)
 
   while (read8(BNO055_CHIP_ID_ADDR) != BNO055_ID)
   {
-    usleep(1000*10);
+    usleep(1000*100);
+      std::cout << "Read Chip addr id : " << BNO055_CHIP_ID_ADDR <<  std::endl; 
   }
   usleep(1000*50); 
 
-  std::cout << "Read Chip addr id : " << BNO055_CHIP_ID_ADDR <<  std::endl; 
 
   /* Set to normal power mode */
   write8(BNO055_PWR_MODE_ADDR, POWER_MODE_NORMAL);
