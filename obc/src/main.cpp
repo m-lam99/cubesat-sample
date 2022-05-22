@@ -128,9 +128,9 @@ void testPWM(){
    // 
     std::string channel = "P2_01";
     int duty = 100; 
-    Pwm pwm("P9_14");
+    Pwm pwm(channel);
     pwm.start();
-    pwm.set_duty(50); 
+    pwm.set_duty_cycle(50); 
     pwm.set_frequency(100);
 
     return; 
