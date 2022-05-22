@@ -119,8 +119,5 @@ int main() {
     //testBNO055();
     testPWM();
     //testADS1015();
-
-    // testADS1015();
-    testAS7263();
     return 0;
 }
