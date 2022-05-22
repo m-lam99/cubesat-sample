@@ -90,7 +90,6 @@ void testBNO055(){
 
     usleep(1000);
 
-
   /* System Status */
   int8_t status = bno.getSystemStatus();
   std::cout << "System status: " << (int)status << std::endl;
@@ -99,18 +98,14 @@ void testBNO055(){
   int8_t temp = bno.getTemp();
   std::cout << "Current Temperature: "<< (int)temp << " C" << std::endl;
 
-  // bno.setExtCrystalUse(true);
-
   std::cout << "Calibration status values: 0=uncalibrated, 3=fully calibrated"<<std::endl;
 
 	while (1)
 	{
-
 	  // Display Quaternions
 	  imu::Quaternion quat = bno.getQuat();
 	  std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() <<
 	  	" qZ: " << quat.z() << "\t\t";
-
 
 	  /* Display calibration status for each sensor. */
 	  uint8_t system, gyro, accel, mag = 0;
@@ -123,9 +118,9 @@ void testBNO055(){
 }
 
 int main() {
-   //  testINA219();
+    //  testINA219();
 
-   testADS1015();
-
+    testADS1015();
+    testBNO055();
     return 0;
 }
