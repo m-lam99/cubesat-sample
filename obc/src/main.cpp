@@ -178,7 +178,7 @@ void testBNO055()
         std::cout << "CALIBRATION: Sys=" << (int)system << " Gyro=" << (int)gyro
                   << " Accel=" << (int)accel << " Mag=" << (int)mag << std::endl;
 
-        usleep(1000 * BNO055_SAMPLERATE_DELAY_MS);
+        usleep(10000 * BNO055_SAMPLERATE_DELAY_MS);
     }
 }
 
