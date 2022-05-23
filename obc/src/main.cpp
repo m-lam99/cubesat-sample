@@ -166,6 +166,8 @@ void testBNO055()
 
     std::cout << "Calibration status values: 0=uncalibrated, 3=fully calibrated" << std::endl;
 
+    bno.setExtCrystalUse(true);
+
     while (1)
     {
 
@@ -174,16 +176,23 @@ void testBNO055()
 	    //	<< euler.z() << "\t\t";
 
         // Display Quaternions
-        imu::Quaternion quat = bno.getQuat();
-        std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t\t";
+        // imu::Quaternion quat = bno.getQuat();
+        // std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t\t";
 
         /* Display calibration status for each sensor. */
         uint8_t system, gyro, accel, mag = 0;
         bno.getCalibration(&system, &gyro, &accel, &mag);
+        imu::Vector<3> euler = bno.getVector(BNO055::VECTOR_EULER);
+
+
+	    /* Display the floating point data */
+	    std::cout << "X: " << euler.x() <<  " Y: " << euler.y() << " Z: "
+	  	<< euler.z() << "\t\t";
+
         std::cout << "CALIBRATION: Sys=" << (int)system << " Gyro=" << (int)gyro
                   << " Accel=" << (int)accel << " Mag=" << (int)mag << std::endl;
 
-        usleep(1000 * BNO055_SAMPLERATE_DELAY_MS);
+        usleep(10000 * BNO055_SAMPLERATE_DELAY_MS);
     }
 }
 
@@ -204,8 +213,8 @@ void testGPS()
 int main()
 {
     //  testINA219();
-    // testBNO055();
-    // testPWM();
-    testGPS();
+    testBNO055();
+
+    //testADS1015();
     return 0;
 }

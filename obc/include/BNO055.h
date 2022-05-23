@@ -29,6 +29,7 @@ using namespace exploringBB;
 #define BNO055_ADDRESS_B (0x29)
 #define BNO055_ID (0xA0)
 
+#define BNO_CHANNEL 2
 #define BNO055_SAMPLERATE_DELAY_MS (100)
 
 #define NUM_BNO055_OFFSET_REGISTERS (22)
