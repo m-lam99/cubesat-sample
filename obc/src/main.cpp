@@ -167,7 +167,10 @@ void testTransceiver(){
 
     comms.TestTransceiver();
     std::vector<uint8_t> message = {'T', 'e', 's', 't'};
-    comms.TransmitMessage(message);
+    while(1){
+        comms.TransmitMessage(message);
+        usleep(2*1000000);
+    }
 }
 
 int main() {
