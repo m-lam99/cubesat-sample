@@ -4,27 +4,36 @@
  * ISBN 9781119533160. Please see the file README.md in the repository root
  * directory for copyright and GNU GPLv3 license information.            */
 
-#include <unistd.h>  //for usleep
+#include <unistd.h> //for usleep
 
 #include <iostream>
+#include <unistd.h> //for usleep
+#include <iomanip>  // for setprecision
 
 #include "ADS1015.h"
 #include "GPIO.h"
 #include "I2C.h"
 #include "INA219.h"
+#include "GPS.h"
+#include "AS7263.h"
 
 #include "BNO055.h"
 
+// For the PWM
+#include "PWM.h"
+
 using namespace exploringBB;
 
-void testGPIO() {
+void testGPIO()
+{
     GPIO outGPIO(59), inGPIO(46);
 
     // Basic Output - Flash the LED 10 times, once per second
     outGPIO.setDirection(OUTPUT);
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++)
+    {
         outGPIO.setValue(HIGH);
-        usleep(500000);  // micro-second sleep 0.5 seconds
+        usleep(500000); // micro-second sleep 0.5 seconds
         outGPIO.setValue(LOW);
         usleep(500000);
     }
@@ -35,14 +44,16 @@ void testGPIO() {
 
     // Fast write to GPIO 1 million times
     outGPIO.streamOpen();
-    for (int i = 0; i < 1000000; i++) {
+    for (int i = 0; i < 1000000; i++)
+    {
         outGPIO.streamWrite(HIGH);
         outGPIO.streamWrite(LOW);
     }
     outGPIO.streamClose();
 }
 
-void testINA219() {
+void testINA219()
+{
     INA219 sensor1(1, 0x45);
     // INA219 sensor2(1, INA219_ADDRESS2);
     // INA219 sensor3(1, INA219_ADDRESS3);
@@ -69,55 +80,124 @@ void testINA219() {
     std::cout << sensor1.current() << std::endl;
 }
 
-void testADS1015() {
-    ADS1015 sensor(2, ADC_ADDRESS1);
+void testADS1015()
+{
+    ADS1015 adc1(1, ADC_ADDRESS1);
+    ADS1015 adc2(2, ADC_ADDRESS1);
 
-    for (int i = 0; i < 10; i++) {
-        std::cout << sensor.getVoltage(0) << ", " << sensor.getVoltage(1) << std::endl;
+    for (int i = 0; i < 10; i++)
+    {
+        std::cout << (int)adc1.getVoltage(0) << ", " << (int)adc1.getVoltage(1) << std::endl;
+        usleep(500000);
+    }
+
+    /*
+    adc1:
+        0: +x
+        1: +y
+        2: +z
+    adc2:
+        0: -x
+        1: -y
+        2: -z
+    */
+
+    float voltages[6];
+    for (int i = 0; i < 3; i++)
+    {
+        voltages[i] = adc1.getVoltage(i);
+        voltages[i + 3] = adc2.getVoltage(i);
+    }
+
+    for (int i = 0; i < 6; i++)
+    {
+        std::cout << voltages[i] << std::endl;
+    }
+}
+
+void testAS7263()
+{
+    AS7263 sensor(2, AS7263_ADDRESS);
+    sensor.Test();
+    for (int i = 0; i < 10; i++)
+    {
+        sensor.takeMeasurements();
+        std::cout << "calibrated val: " << sensor.getCalibratedR() << std::endl;
+        std::cout << "meas val: " << sensor.getR() << std::endl;
         usleep(500000);
     }
 }
 
-void testBNO055(){
-    BNO055 bno(BNO_CHANNEL,BNO055_ADDRESS_A);
+void testPWM()
+{
+    //
+    PWM pwm(PWM_0B);           // P9_42 MUST be loaded as a slot before use
+    pwm.setPeriod(1000000000); // Set the period in ns
+    pwm.setDutyCycle(50.0f);   // Set the duty cycle as a percentage
+
+    pwm.setPolarity(PWM::ACTIVE_LOW); // using active low PWM
+    pwm.run();                        // start the PWM output
+    std::cout << "PWM active" << std::endl;
+    // pwm.stop();  // to discontinue the pwm signal
+    return;
+}
+
+void testBNO055()
+{
+    BNO055 bno(2, BNO055_ADDRESS_A);
     std::cout << "Orientation Sensor Raw Data Test" << std::endl;
-    if(!bno.begin())
+    if (!bno.begin())
     {
         /* There was a problem detecting the BNO055 ... check your connections */
         std::cout << "Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!" << std::endl;
-        while(1);
+        while (1)
+            ;
     }
 
     usleep(1000);
 
-  /* System Status */
-  int8_t status = bno.getSystemStatus();
-  std::cout << "System status: " << (int)status << std::endl;
+    /* System Status */
+    int8_t status = bno.getSystemStatus();
+    std::cout << "System status: " << (int)status << std::endl;
 
-  /* Display the current temperature */
-  int8_t temp = bno.getTemp();
-  std::cout << "Current Temperature: "<< (int)temp << " C" << std::endl;
+    /* Display the current temperature */
+    int8_t temp = bno.getTemp();
+    std::cout << "Current Temperature: " << (int)temp << " C" << std::endl;
 
-  std::cout << "Calibration status values: 0=uncalibrated, 3=fully calibrated"<<std::endl;
+    std::cout << "Calibration status values: 0=uncalibrated, 3=fully calibrated" << std::endl;
 
-	while (1)
-	{
-	  // Display Quaternions
-	  imu::Quaternion quat = bno.getQuat();
-	  std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() <<
-	  	" qZ: " << quat.z() << "\t\t";
+    while (1)
+    {
+        // Display Quaternions
+        imu::Quaternion quat = bno.getQuat();
+        std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t\t";
 
-	  /* Display calibration status for each sensor. */
-	  uint8_t system, gyro, accel, mag = 0;
-	  bno.getCalibration(&system, &gyro, &accel, &mag);
-	  std::cout<< "CALIBRATION: Sys=" << (int)system << " Gyro=" << (int) gyro
-	   << " Accel=" << (int) accel << " Mag=" << (int)mag << std::endl;
+        /* Display calibration status for each sensor. */
+        uint8_t system, gyro, accel, mag = 0;
+        bno.getCalibration(&system, &gyro, &accel, &mag);
+        std::cout << "CALIBRATION: Sys=" << (int)system << " Gyro=" << (int)gyro
+                  << " Accel=" << (int)accel << " Mag=" << (int)mag << std::endl;
 
-	  usleep(1000*BNO055_SAMPLERATE_DELAY_MS);
-	}
+        usleep(1000 * BNO055_SAMPLERATE_DELAY_MS);
+    }
 }
 
-int main() {
+void testGPS()
+{
+
+    GPS gps;
+    gps.gps_on();
+    for (int i = 0; i < 1000; i++)
+    {
+        gps.print_GPS();
+        usleep(200);
+    }
+    gps.gps_off();
+    return;
+}
+
+int main()
+{
     //  testINA219();
     testBNO055();
 

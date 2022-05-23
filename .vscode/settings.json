@@ -1,6 +1,13 @@
 {
     "makefile.extensionOutputFolder": "./.vscode",
     "files.associations": {
+<<<<<<< HEAD
+<<<<<<< HEAD
+        "cstdint": "cpp",
+        "istream": "cpp",
+=======
+>>>>>>> main
+=======
         "cmath": "cpp",
         "*.tcc": "cpp",
         "cctype": "cpp",
@@ -25,6 +32,11 @@
         "system_error": "cpp",
         "type_traits": "cpp",
         "typeinfo": "cpp",
+<<<<<<< HEAD
+>>>>>>> main
+=======
+>>>>>>> adcs
+>>>>>>> main
         "__bit_reference": "cpp",
         "__bits": "cpp",
         "__config": "cpp",
@@ -43,12 +55,70 @@
         "atomic": "cpp",
         "bit": "cpp",
         "bitset": "cpp",
+<<<<<<< HEAD
+        "cctype": "cpp",
+<<<<<<< HEAD
         "chrono": "cpp",
+        "clocale": "cpp",
+        "cmath": "cpp",
+=======
+        "chrono": "cpp",
+>>>>>>> main
+=======
+        "chrono": "cpp",
+        "clocale": "cpp",
+        "cmath": "cpp",
+=======
+        "chrono": "cpp",
+>>>>>>> adcs
+>>>>>>> main
         "compare": "cpp",
         "complex": "cpp",
         "concepts": "cpp",
         "cstdarg": "cpp",
         "cstddef": "cpp",
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        "cstdint": "cpp",
+>>>>>>> main
+        "cstdio": "cpp",
+        "cstdlib": "cpp",
+        "cstring": "cpp",
+        "ctime": "cpp",
+        "cwchar": "cpp",
+        "cwctype": "cpp",
+        "deque": "cpp",
+        "exception": "cpp",
+        "fstream": "cpp",
+        "initializer_list": "cpp",
+        "iomanip": "cpp",
+        "ios": "cpp",
+        "iosfwd": "cpp",
+        "iostream": "cpp",
+<<<<<<< HEAD
+=======
+        "istream": "cpp",
+>>>>>>> main
+        "limits": "cpp",
+        "locale": "cpp",
+        "memory": "cpp",
+        "mutex": "cpp",
+        "new": "cpp",
+        "optional": "cpp",
+        "ostream": "cpp",
+        "ratio": "cpp",
+        "sstream": "cpp",
+        "stack": "cpp",
+        "stdexcept": "cpp",
+        "streambuf": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "system_error": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "typeinfo": "cpp",
+=======
         "cstring": "cpp",
         "ctime": "cpp",
         "deque": "cpp",
@@ -63,6 +133,11 @@
         "stack": "cpp",
         "string": "cpp",
         "tuple": "cpp",
+<<<<<<< HEAD
+>>>>>>> main
+=======
+>>>>>>> adcs
+>>>>>>> main
         "unordered_map": "cpp",
         "variant": "cpp",
         "vector": "cpp",

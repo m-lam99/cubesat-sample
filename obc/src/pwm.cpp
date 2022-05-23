@@ -23,17 +23,16 @@
  */
 
 #include "PWM.h"
-#include "Util.h"
+#include "util.h"
 #include <cstdlib>
 
-namespace exploringBB{
+namespace exploringBB {
 
 PWM::PWM(string pinName) {
 	this->name = pinName;
 	this->path = PWM_PATH + this->name + "/";
 	this->analogFrequency = 100000;
 	this->analogMax = 3.3;
-
 }
 
 int PWM::setPeriod(unsigned int period_ns){
@@ -126,4 +125,5 @@ int PWM::stop(){
 }
 
 PWM::~PWM() {}
-}
+
+} /* namespace exploringBB */
