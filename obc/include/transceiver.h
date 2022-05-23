@@ -7,8 +7,12 @@
 #include <array>
 #include <vector>
 #include <stdint.h>
+#include "UART.h"
 
-class Transceiver
+#define TTC_CHANNEL 4
+#define TTC_BAUD 19200
+
+class Transceiver: public UARTDevice
 {
 
 public:
@@ -41,6 +45,4 @@ private:
     const char MODE_RF_BAUD_9600 = 0x02;
     std::string PORT = "/dev/ttyS4";
     std::string FIRMWARE = "#V1.01";
-    struct termios _tty;
-    int _serial_port;
 };
