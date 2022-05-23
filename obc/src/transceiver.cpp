@@ -4,7 +4,7 @@
 Transceiver::Transceiver():
     UARTDevice(TTC_CHANNEL, TTC_BAUD)
 {
-
+    config();
 }
 
 Transceiver::~Transceiver()
@@ -12,6 +12,49 @@ Transceiver::~Transceiver()
 	if(this->serial_port!=-1) this->close();
 }
 
+int Transceiver::config(){
+
+    std::cout << "Configuring transceiver" << std::endl;
+    struct termios tty;
+
+    if (tcgetattr(serial_port, &tty) != 0)
+    {
+        printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
+        return 1;
+    }
+
+     // FOR TTC 
+    tty.c_cflag &= ~PARENB;
+    tty.c_cflag &= ~CSTOPB;
+    tty.c_cflag &= ~CSIZE;
+    tty.c_cflag |= CS8;
+    tty.c_cflag &= ~CRTSCTS;
+    tty.c_cflag |= CREAD | CLOCAL;
+    tty.c_lflag &= ~ICANON;
+    tty.c_lflag &= ~ECHO;
+    tty.c_lflag &= ~ECHOE;
+    tty.c_lflag &= ~ECHONL;
+    tty.c_lflag &= ~ISIG;
+    tty.c_iflag &= ~(IXON | IXOFF | IXANY);
+    tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL);
+    tty.c_oflag &= ~OPOST;
+    tty.c_oflag &= ~ONLCR;
+    tty.c_cc[VTIME] = 10;
+    tty.c_cc[VMIN] = 0;
+    cfsetispeed(&tty, B19200);
+    cfsetospeed(&tty, B19200);
+
+    tcflush(serial_port, TCIFLUSH);
+    tcsetattr(serial_port, TCSANOW, &tty);
+
+    if (tcsetattr(serial_port, TCSANOW, &tty) != 0)
+    {
+        printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
+        return 1;
+    }   
+    return 0; 
+
+}
 
 void Transceiver::SendCommand(std::vector<uint8_t> data)
 {

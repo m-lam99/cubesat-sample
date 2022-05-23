@@ -45,4 +45,5 @@ private:
     const char MODE_RF_BAUD_9600 = 0x02;
     std::string PORT = "/dev/ttyS4";
     std::string FIRMWARE = "#V1.01";
+    int config();
 };
