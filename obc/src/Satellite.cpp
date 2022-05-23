@@ -24,8 +24,27 @@ int Satellite::wodCollection(){
 
 int Satellite::wodTransmission() {
     WholeOrbit::wod_t data_packet = wod_data_.front();
+    
+    unsigned char data_transmit[sizeof(data_packet)];
+    memcpy(data_transmit, &data_packet, sizeof(data_packet));
+    
+
+    message_.payload = data_transmit; // double check
+    message_.npayload = 12;
+    message_.source = srcaddr;
+    message_.destination = destaddr;
+    message_.dataType = 0;
+    message_.commandResponse = 0;
+    message_.controlType = 0;
+    message_.sendSequence = 0;
+    message_.receiveSequence = 0;
+
     //transmit(data_packet)
+    ax25::ByteArray * encodedMsg = encode( & message_);
+    if (encodedMsg != NULL) {
+        //int success = sendMessage(encodedMsg);
     wod_data_.pop();
+    }
     
 }
 

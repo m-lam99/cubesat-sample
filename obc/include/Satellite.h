@@ -40,6 +40,23 @@ class Satellite {
     WholeOrbit wod_;
     std::queue<WholeOrbit::wod_t> wod_data_;
     ax25::Message message_;
+
+    unsigned char srcaddr[6] = {
+        'N',
+        'I',
+        'C',
+        'E',
+        ' ',
+        ' '
+    };
+    unsigned char destaddr[6] = {
+        'U',
+        'S',
+        'Y',
+        'D',
+        'G',
+        'S'
+    };
     // PWM
 
 };

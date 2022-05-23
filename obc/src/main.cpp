@@ -172,6 +172,7 @@ int main() {
     // testADS1015();
     // testAS7263();
     Satellite NICE;
+    NICE.wodCollection();
     NICE.wodTransmission();
 
     return 0;

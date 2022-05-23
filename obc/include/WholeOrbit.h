@@ -25,6 +25,7 @@ class WholeOrbit {
     typedef struct wod wod_t;
     WholeOrbit();
     wod_t GetData();
+    void TransmitData();
     ~WholeOrbit();
 
    private:
@@ -47,6 +48,7 @@ class WholeOrbit {
     Temperature thermistor_comms_;
     Temperature thermistor_eps_;
     Temperature thermistor_batt_;
+    
 };
 
 #endif
