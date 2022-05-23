@@ -173,9 +173,9 @@ void testTransceiver(){
         std::vector<uint8_t> message = comms.ReceiveData();
         for (unsigned int i = 0; i < comms.MAX_BYTES_AX25; i++)
             {
-                std::cout << message[i] << std::endl; 
+                std::cout << message[i]; 
             }
-        
+        std::cout << std::endl; 
         usleep(1000000);
     }
     
