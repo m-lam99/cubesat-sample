@@ -77,9 +77,7 @@ bool Transceiver::TestTransceiver(void)
 void Transceiver::TransmitMessage(std::vector<uint8_t> message)
 {
     std::vector<uint8_t> full_message;
-    std::cout << "Test2" << std::endl;
     full_message.insert(full_message.end(), CMD_TRANSMIT_MODE_CONFIG.begin(), CMD_TRANSMIT_MODE_CONFIG.end());
-    std::cout << "Test3" << std::endl;
     full_message.insert(full_message.end(), message.begin(), message.end());
     for (unsigned int i = 0; i < full_message.size(); i++)
     {
@@ -87,5 +85,4 @@ void Transceiver::TransmitMessage(std::vector<uint8_t> message)
     }
     std::cout << std::endl;
     SendCommand(full_message);
-    std::cout << "Test4" << std::endl;
 }

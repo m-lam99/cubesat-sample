@@ -167,7 +167,6 @@ void testTransceiver(){
 
     comms.TestTransceiver();
     std::vector<uint8_t> message = {'T', 'e', 's', 't'};
-    std::cout << "Test1" << std::endl;
     comms.TransmitMessage(message);
 }
 
