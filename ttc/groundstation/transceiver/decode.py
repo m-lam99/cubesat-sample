@@ -28,7 +28,7 @@ def decode_wod(msg):
 
     return [
         t,  # time offset
-        data[4]/128,  # mode
+        data[4],  # mode
         parse_int(data[5], 20, -60),  # battery voltage
         parse_int(data[6], 127, 127),  # battery current
         parse_int(data[7], 40, 0),  # 3v3 current

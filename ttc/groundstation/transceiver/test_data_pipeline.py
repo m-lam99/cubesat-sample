@@ -7,7 +7,7 @@ def run():
     db = DB()
     
     print("Reading in encoded WOD packets...")
-    with open('transceiver/ax25/sample-wod.pickle', 'rb') as f:
+    with open('sample-wod.pickle', 'rb') as f:
         WOD = pickle.load(f)
         
     decoded_data = []
@@ -34,7 +34,7 @@ def run():
     
     
     print("Reading in encoded science packets...")
-    with open('transceiver/ax25/sample-science.pickle', 'rb') as f:
+    with open('sample-science.pickle', 'rb') as f:
         science = pickle.load(f)
         
     decoded_data = []
