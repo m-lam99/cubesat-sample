@@ -16,7 +16,7 @@
 #include "INA219.h"
 #include "GPS.h"
 #include "AS7263.h"
-
+#include "transceiver.h"
 #include "BNO055.h"
 
 // For the PWM
@@ -162,10 +162,17 @@ void testGPS() {
 }
 
 
+void testTransceiver(){
+    Transceiver comms;
+
+    comms.TestTransceiver();
+    std::vector<uint8_t> message = {'T', 'e', 's', 't'};
+    std::cout << "Test1" << std::endl;
+    comms.TransmitMessage(message);
+}
+
 int main() {
-    //  testINA219();
-    //testBNO055();
-    //testPWM();
-    testGPS();
+
+    testTransceiver();
     return 0;
 }
