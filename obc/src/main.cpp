@@ -79,7 +79,7 @@ void testADS1015() {
 }
 
 void testBNO055(){
-    BNO055 bno(2,BNO055_ADDRESS_A);
+    BNO055 bno(BNO_CHANNEL,BNO055_ADDRESS_A);
     std::cout << "Orientation Sensor Raw Data Test" << std::endl;
     if(!bno.begin())
     {
