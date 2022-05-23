@@ -259,7 +259,6 @@ public:
     uint16_t sw_rev;
     uint8_t bl_rev;
   } adafruit_bno055_rev_info_t;
-
   typedef enum
   {
     VECTOR_ACCELEROMETER = BNO055_ACCEL_DATA_X_LSB_ADDR,
@@ -275,6 +274,13 @@ public:
     uint8_t  byte;
     uint16_t word;
     uint8_t  block[32 + 2];
+  };
+
+  struct my_smbus_ioctl_data{
+    uint8_t read_write;
+    uint8_t command;
+    uint32_t size;
+    union BNO055::my_smbus_data *data;
   };
 
   BNO055(unsigned int I2CBus = 2, uint8_t address = BNO055_ADDRESS_A);
@@ -311,7 +317,7 @@ private:
   bool readLen(adafruit_bno055_reg_t, uint8_t *buffer, uint8_t len);
   bool write8(adafruit_bno055_reg_t, uint8_t value);
   int i2cReadI2CBlockData(unsigned reg, char *buf, unsigned count);
-
+  int my_smbus_access(int fd, char rw, uint8_t cmd, int size, union BNO055::my_smbus_data *data);
   uint8_t _address;
   int32_t _sensorID;
   adafruit_bno055_opmode_t _mode;

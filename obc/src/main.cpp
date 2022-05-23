@@ -168,6 +168,11 @@ void testBNO055()
 
     while (1)
     {
+
+        // imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
+        // std::cout << "X: " << euler.x() <<  " Y: " << euler.y() << " Z: "
+	    //	<< euler.z() << "\t\t";
+
         // Display Quaternions
         imu::Quaternion quat = bno.getQuat();
         std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t\t";
