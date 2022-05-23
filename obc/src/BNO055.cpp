@@ -586,7 +586,7 @@ int BNO055::i2cReadI2CBlockData(unsigned reg, char *buf, unsigned count)
   int status;
 
   status = (my_smbus_access(
-      i2cInfo[handle].fd, 1, reg, size, &data));
+      file, 1, reg, size, &data));
 
   if (status < 0) {
     std::cout << "Could not read block" << std::endl;
