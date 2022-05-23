@@ -128,6 +128,7 @@ void testAS7263()
     }
 }
 
+<<<<<<< HEAD
 void testPWM()
 {
     //
@@ -140,6 +141,19 @@ void testPWM()
     std::cout << "PWM active" << std::endl;
     // pwm.stop();  // to discontinue the pwm signal
     return;
+=======
+void testPWM(string pwm_channel){
+   // 
+    PWM pwm(pwm_channel);  // P9_42 MUST be loaded as a slot before use
+    pwm.setPeriod(1000000000);         // Set the period in ns
+    pwm.setDutyCycle(50.0f);       // Set the duty cycle as a percentage
+
+    pwm.setPolarity(PWM::ACTIVE_LOW);  // using active low PWM
+    pwm.run();                     // start the PWM output
+    std::cout << "PWM active" << std::endl; 
+    // pwm.stop();  // to discontinue the pwm signal 
+    return; 
+>>>>>>> main
 }
 
 void testBNO055()
@@ -213,8 +227,6 @@ void testGPS()
 int main()
 {
     //  testINA219();
-    testBNO055();
-
-    //testADS1015();
+    testBNO055();    
     return 0;
 }

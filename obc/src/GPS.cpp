@@ -72,12 +72,11 @@ void GPS::get_location(loc_t *coord){
     coord->epoch = convertToEpoch(coord->date, coord->time); 
 }
 
-long long int GPS::convertToEpoch(std::string date, std::string time){
+long int GPS::convertToEpoch(std::string date, std::string time){
     std::tm tmTime;
     long long int unix_seconds; 
-    long long int epoch_sec; 
-    int millisec; 
-    long long int offset = 946684800; // s between unix epoch and 1/1/2000
+    long int epoch_sec; 
+    long int offset = 946684800; // s between unix epoch and 1/1/2000
 
     tmTime.tm_mday = atoi(date.substr(0,2).c_str());
     tmTime.tm_mon = atoi(date.substr(2,2).c_str());
@@ -87,8 +86,6 @@ long long int GPS::convertToEpoch(std::string date, std::string time){
     tmTime.tm_min = atoi(time.substr(2,2).c_str());
     tmTime.tm_sec = atoi(time.substr(4,2).c_str());
     
-    millisec = atoi(time.substr(7,2).c_str());
-
     unix_seconds = (int)timegm(&tmTime);
     epoch_sec = unix_seconds - offset; 
 
