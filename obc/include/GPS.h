@@ -1,9 +1,15 @@
 #ifndef GPS_H
 #define GPS_H
 
-#include "UART.h"
 #include <cstdint>
 #include <inttypes.h>
+#include <string>
+
+#include "UART.h"
+
+// DEFAULT is Channel 4, baud 9600
+#define GPS_CHANNEL 4
+#define GPS_BAUD 9600 
 
 #define _EMPTY 0x00
 #define NMEA_GPRMC 0x01
@@ -16,9 +22,6 @@
 #define NMEA_CHECKSUM_ERR 0x80
 #define NMEA_MESSAGE_ERR 0xC0
 
-#define GPS_CHANNEL 2
-#define GPS_BAUD 9600 
-
 class GPS:public UARTDevice{
     
     public:
@@ -26,7 +29,9 @@ class GPS:public UARTDevice{
             double latitude;
             double longitude;
             double altitude;
-            double time; 
+            std::string time; 
+            std::string date; 
+            long int epoch;   // seconds since 01/01/2000 
         };
         typedef struct location loc_t;
 
@@ -48,9 +53,16 @@ class GPS:public UARTDevice{
             double altitude;
 
             //utc time
-            double time;
+            std::string time;
         };
         typedef struct gpgga gpgga_t;
+
+        struct gprmc {
+            double speed;
+            double course;
+            std::string date;   // date ddmmyy
+        };
+        typedef struct gprmc gprmc_t;
 
         // DEFAULT is Channel 4, baud 9600
         GPS( );
@@ -65,7 +77,8 @@ class GPS:public UARTDevice{
         void gps_convert_deg_to_dec(double *latitude, char ns,  double *longitude, char we);
         double gps_deg_dec(double deg_point);
         void nmea_parse_gpgga(char *nmea, gpgga_t *loc);
-
+        void nmea_parse_gprmc(char *nmea, gprmc_t *loc);
+        long int convertToEpoch(std::string date, std::string time);  // returns ms since 1/1/2000
 
 };
 
