@@ -1,15 +1,14 @@
 # Pre-compiler and Compiler flags
-CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb -Ibus/inc -Icomponent/inc -Ibeagle/inc
+CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb
 PRE_FLAGS := -MMD -MP -IC
+VPATH=bus/src
 
 # Project directory structure
 BIN := .
-SRC := .
-INC := .
-MAINFILE := $(SRC)/main.cpp
+SRC := src
+INC := ../bus/include include
 
 # Build directories and output
-TARGET := $(BIN)/main
 BUILD := obj
 
 # Library search directories and flags
@@ -26,25 +25,11 @@ SRCS := $(shell find $(SRC) -name *.cpp)
 OBJS := $(subst $(SRC)/,$(BUILD)/,$(addsuffix .o,$(basename $(SRCS))))
 DEPS := $(OBJS:.o=.d)
 
-# Run task
-run: build
-	@echo "Executing..."
-	./$(TARGET) $(ARGS)
-
 # Build task
 build: clean all
 
 # Main task
-all:
-	+$(MAKE) -C bus
-	+$(MAKE) -C components
-	+$(MAKE) -C beagle
-
-# Task producing target from built files
-$(TARGET): $(OBJS)
-	@echo "Building..."
-	mkdir -p $(dir $@)
-	$(CXX) $(OBJS) -o $@ $(LDPATHS) $(LDFLAGS)
+all: $(OBJS)
 
 # Compile all cpp files
 $(BUILD)/%.o: $(SRC)/%.cpp

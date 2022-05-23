@@ -17,6 +17,17 @@
 
 class Satellite {
    public:
+    struct payload_data{
+        uint16_t R;
+        uint16_t S;
+        uint16_t T;
+        uint16_t U;
+        uint16_t V;
+        uint16_t W;
+    };
+
+    typedef struct payload_data payload_data_t;
+
     Satellite();
     int detumbling();
     int payloadDataCollection();
@@ -32,10 +43,14 @@ class Satellite {
     ~Satellite();
 
    private:
+    // ADCS sensors
     ADS1015 adc1_;
     ADS1015 adc2_;
-    // AS7263 payload_;
     BNO055 imu_;
+
+    // Payload
+    // AS7263 payload_;
+    
     // GPS
     WholeOrbit wod_;
     std::queue<WholeOrbit::wod_t> wod_data_;

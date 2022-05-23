@@ -7,7 +7,9 @@ Satellite::~Satellite() {}
 
 int Satellite::detumbling() {}
 
-int Satellite::payloadDataCollection() {}
+int Satellite::payloadDataCollection() {
+    
+}
 
 int Satellite::payloadDataTransmission() {}
 
