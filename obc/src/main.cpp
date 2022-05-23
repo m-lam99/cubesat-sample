@@ -119,8 +119,8 @@ void testBNO055(){
 
 int main() {
     //  testINA219();
-    //testBNO055();
+    testBNO055();
 
-    testADS1015();
+    //testADS1015();
     return 0;
 }
