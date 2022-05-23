@@ -7,8 +7,7 @@ Transceiver::Transceiver():
 
 }
 
-Transceiver::~Transceiver():
-    UARTDevice(TTC_CHANNEL, TTC_BAUD)
+Transceiver::~Transceiver()
 {
 	if(this->serial_port!=-1) this->close();
 }
