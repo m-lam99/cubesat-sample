@@ -171,9 +171,9 @@ void testTransceiver(){
     //     comms.TransmitMessage(message);
     //     usleep(1000000);
     // }
-    std::vector<uint8_t> message = {'T', 'e', 's', 't'};
-    comms.TransmitMessage(message);
-    usleep(1000000);
+    // std::vector<uint8_t> message = {'T', 'e', 's', 't'};
+    // comms.TransmitMessage(message);
+    // usleep(1000000);
     
     while(1){
         std::vector<uint8_t> message = comms.ReceiveData();
