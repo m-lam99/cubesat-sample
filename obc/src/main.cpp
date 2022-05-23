@@ -169,12 +169,19 @@ void testBNO055()
     while (1)
     {
         // Display Quaternions
-        imu::Quaternion quat = bno.getQuat();
-        std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t\t";
+        // imu::Quaternion quat = bno.getQuat();
+        // std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t\t";
 
         /* Display calibration status for each sensor. */
         uint8_t system, gyro, accel, mag = 0;
         bno.getCalibration(&system, &gyro, &accel, &mag);
+        imu::Vector<3> euler = bno.getVector(BNO055::VECTOR_EULER);
+
+
+	    /* Display the floating point data */
+	    std::cout << "X: " << euler.x() <<  " Y: " << euler.y() << " Z: "
+	  	<< euler.z() << "\t\t";
+
         std::cout << "CALIBRATION: Sys=" << (int)system << " Gyro=" << (int)gyro
                   << " Accel=" << (int)accel << " Mag=" << (int)mag << std::endl;
 
