@@ -53,6 +53,8 @@ std::vector<uint8_t> Transceiver::ReceiveData(void)
     std::array<uint8_t, Transceiver::MAX_BYTES_AX25> buff;
     std::vector<uint8_t> output_buff;
     memset(&buff, '\0', sizeof(buff));
+    usleep(1000000);
+
     read(_serial_port, &buff, sizeof(buff));
     for (unsigned int i = 0; i < MAX_BYTES_AX25; i++)
     {
@@ -65,6 +67,7 @@ bool Transceiver::TestTransceiver(void)
 {
     SendCommand(CMD_FIRMWARE_VERSION);
     std::vector<uint8_t> buff;
+
     std::vector<uint8_t> version = ReceiveData();
     for (unsigned int i = 0; i < version.size(); i++)
     {
