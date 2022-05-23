@@ -464,101 +464,101 @@ Message * searchForMessage(unsigned char * stream, int nstream, int receiveState
     return NULL;
 }
 
-int main() {
-    // This is a sample use case, showing how the interface with the functions
-    // should be developed
-    // NOTE: all messaging is done with unsigned char, representing 1 byte
+// int main() {
+//     // This is a sample use case, showing how the interface with the functions
+//     // should be developed
+//     // NOTE: all messaging is done with unsigned char, representing 1 byte
 
-    // std::cout<<"Sending:\n";
-    std::string benchmarkMsg = "The quick brown fox jumps over the lazy dog";
-    // std::cout << benchmarkMsg << '\n';
+//     // std::cout<<"Sending:\n";
+//     std::string benchmarkMsg = "The quick brown fox jumps over the lazy dog";
+//     // std::cout << benchmarkMsg << '\n';
 
-    // Note: will need to be flipped on OBC code
-    unsigned char destaddr[6] = {
-        'N',
-        'I',
-        'C',
-        'E',
-        ' ',
-        ' '
-    };
-    unsigned char srcaddr[6] = {
-        'U',
-        'S',
-        'Y',
-        'D',
-        'G',
-        'S'
-    };
-    int sendState = 0;
-    int receiveState = 0;
+//     // Note: will need to be flipped on OBC code
+//     unsigned char destaddr[6] = {
+//         'N',
+//         'I',
+//         'C',
+//         'E',
+//         ' ',
+//         ' '
+//     };
+//     unsigned char srcaddr[6] = {
+//         'U',
+//         'S',
+//         'Y',
+//         'D',
+//         'G',
+//         'S'
+//     };
+//     int sendState = 0;
+//     int receiveState = 0;
 
-    // conv string to list of bytes
-    int nmsg = benchmarkMsg.size();
-    unsigned char msg[nmsg];
-    for (int i = 0; i < nmsg; i++) {
-        msg[i] = (unsigned char)(benchmarkMsg[i]);
-    }
+//     // conv string to list of bytes
+//     int nmsg = benchmarkMsg.size();
+//     unsigned char msg[nmsg];
+//     for (int i = 0; i < nmsg; i++) {
+//         msg[i] = (unsigned char)(benchmarkMsg[i]);
+//     }
 
-    Message sampleMessage = {
-        srcaddr,
-        destaddr,
-        1,
-        1,
-        2,
-        sendState,
-        receiveState,
-        nmsg,
-        msg
-    };
+//     Message sampleMessage = {
+//         srcaddr,
+//         destaddr,
+//         1,
+//         1,
+//         2,
+//         sendState,
+//         receiveState,
+//         nmsg,
+//         msg
+//     };
 
-    // Do the messaging
-    ByteArray * encodedMsg = encode( & sampleMessage);
-    if (encodedMsg != NULL) {
-        int success = sendMessage(encodedMsg);
-        if (success == 1) {
-            sendState++;
-            sendState %= SEQUENCE_MOD;
-        }
-    }
+//     // Do the messaging
+//     ByteArray * encodedMsg = encode( & sampleMessage);
+//     if (encodedMsg != NULL) {
+//         int success = sendMessage(encodedMsg);
+//         if (success == 1) {
+//             sendState++;
+//             sendState %= SEQUENCE_MOD;
+//         }
+//     }
 
-    // std::cout<<"\nEncoded:\n";
-    printListHex(encodedMsg -> bytes, encodedMsg -> nbytes);
+//     // std::cout<<"\nEncoded:\n";
+//     printListHex(encodedMsg -> bytes, encodedMsg -> nbytes);
 
-    // Simulate some noise
-    std::cout<<"\nGenerating 1mio bits of random noise and searching for packets\n";
-    unsigned char noisyMessage[1000000];
-    // TODO: move to backend of message once decoding is validated
-    memcpy( & noisyMessage[800000], encodedMsg -> bytes, encodedMsg -> nbytes);
-    Message * retrievedMsg = searchForMessage(noisyMessage, 1000000, receiveState);
-    if (retrievedMsg == NULL) {
-        std::cout<<"Failed to find message in noise\n";
-    } else {
-        receiveState++;
-        receiveState %= SEQUENCE_MOD;
-    }
+//     // Simulate some noise
+//     std::cout<<"\nGenerating 1mio bits of random noise and searching for packets\n";
+//     unsigned char noisyMessage[1000000];
+//     // TODO: move to backend of message once decoding is validated
+//     memcpy( & noisyMessage[800000], encodedMsg -> bytes, encodedMsg -> nbytes);
+//     Message * retrievedMsg = searchForMessage(noisyMessage, 1000000, receiveState);
+//     if (retrievedMsg == NULL) {
+//         std::cout<<"Failed to find message in noise\n";
+//     } else {
+//         receiveState++;
+//         receiveState %= SEQUENCE_MOD;
+//     }
 
-    std::cout<<"\nDecoded:\n";
-    std::cout<<"Source: ";
-    printList(retrievedMsg -> source, 6);
-    std::cout<<"Destination: ";
-    printList(retrievedMsg -> destination, 6);
-    std::cout<<"Data Type (0=WOD, 1=Science): "<< int(retrievedMsg->dataType) << '\n';
-    std::cout<<"Command(1)/Response(0) Type : "<< int(retrievedMsg->commandResponse) << '\n';
-    std::cout<<"Control Type (0=Info, 2=Unnumbered): "<< int(retrievedMsg->controlType) << '\n';
-    std::cout<<"Sequence Nos (Send, Receive): "<< int(retrievedMsg->sendSequence) << ',' << int(retrievedMsg->receiveSequence) << '\n';
-    std::cout<<"PAYLOAD: ";
-    printList(retrievedMsg -> payload, retrievedMsg -> npayload);
+//     std::cout<<"\nDecoded:\n";
+//     std::cout<<"Source: ";
+//     printList(retrievedMsg -> source, 6);
+//     std::cout<<"Destination: ";
+//     printList(retrievedMsg -> destination, 6);
+//     std::cout<<"Data Type (0=WOD, 1=Science): "<< int(retrievedMsg->dataType) << '\n';
+//     std::cout<<"Command(1)/Response(0) Type : "<< int(retrievedMsg->commandResponse) << '\n';
+//     std::cout<<"Control Type (0=Info, 2=Unnumbered): "<< int(retrievedMsg->controlType) << '\n';
+//     std::cout<<"Sequence Nos (Send, Receive): "<< int(retrievedMsg->sendSequence) << ',' << int(retrievedMsg->receiveSequence) << '\n';
+//     std::cout<<"PAYLOAD: ";
+//     printList(retrievedMsg -> payload, retrievedMsg -> npayload);
 
-    delete retrievedMsg -> payload;
-    delete retrievedMsg -> source;
-    delete retrievedMsg -> destination;
-    delete retrievedMsg;
-    delete encodedMsg -> bytes;
-    delete encodedMsg;
+//     delete retrievedMsg -> payload;
+//     delete retrievedMsg -> source;
+//     delete retrievedMsg -> destination;
+//     delete retrievedMsg;
+//     delete encodedMsg -> bytes;
+//     delete encodedMsg;
 
-    return 0;
-}
+//     return 0;
+// }
 
 // Python bindings
 extern "C" {

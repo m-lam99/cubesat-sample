@@ -166,7 +166,7 @@ void testGPS() {
 int main() {
     //  testINA219();
     //testBNO055();
-    testPWM();
+    // testPWM();
     //testADS1015();
 
     // testADS1015();
