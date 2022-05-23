@@ -1,4 +1,5 @@
 #include "Satellite.h"
+#include <unistd.h>
 
 Satellite::Satellite()
     : wod_(),
@@ -6,7 +7,11 @@ Satellite::Satellite()
       adc2_(2, ADC_ADDRESS2),
       imu_(2, 0x28),
       gps_(),
-      payload_(&gps_) {}
+      payload_(&gps_),
+      outGPIO(57) //change pin number!!!!!!!! 
+      {
+          outGPIO.setDirection(OUTPUT);
+      }
 
 Satellite::~Satellite() {}
 
@@ -67,8 +72,7 @@ int Satellite::wodTransmission() {
         // int success = sendMessage(encodedMsg);
         wod_data_.pop();
         return 1;
-    }
-    else {
+    } else {
         return 0;
     }
 }
@@ -77,4 +81,14 @@ int Satellite::deployment() {}
 
 int Satellite::checkTransceiver() {}
 
-int Satellite::initialize() {}
+int Satellite::propulsion(int* array) {
+    for (int i = 0; i < sizeof(array); i+= 2) {
+        // Turn on
+        outGPIO.setValue(HIGH);
+        usleep(array[i]*1000000);
+
+        // Turn off
+        outGPIO.setValue(LOW);
+        usleep(array[i+1]*1000000);
+    }
+}

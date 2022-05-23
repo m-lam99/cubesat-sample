@@ -13,6 +13,7 @@
 #include "WholeOrbit.h"
 #include "ax25.h"
 #include "Payload.h"
+#include "GPIO.h"
 
 #include <queue>
 
@@ -30,7 +31,7 @@ class Satellite {
     int wodTransmission();
     int deployment();
     int checkTransceiver();
-    int initialize();
+    int propulsion(int* array);
     ~Satellite();
 
    private:
@@ -49,6 +50,7 @@ class Satellite {
     std::queue<Payload::payload_data_t> payload_data_;
     ax25::Message message_;
 
+    GPIO outGPIO()
     unsigned char srcaddr[6] = {
         'N',
         'I',
