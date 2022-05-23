@@ -11,6 +11,7 @@
 #include "PWM.h"
 #include "Temperature.h"
 #include "WholeOrbit.h"
+#include "ax25.h"
 
 #include <queue>
 
@@ -38,6 +39,7 @@ class Satellite {
     // GPS
     WholeOrbit wod_;
     std::queue<WholeOrbit::wod_t> wod_data_;
+    ax25::Message message_;
     // PWM
 
 };
