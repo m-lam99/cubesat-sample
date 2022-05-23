@@ -7,6 +7,12 @@ Transceiver::Transceiver():
 
 }
 
+Transceiver::~Transceiver():
+    UARTDevice(TTC_CHANNEL, TTC_BAUD)
+{
+	if(this->serial_port!=-1) this->close();
+}
+
 
 void Transceiver::SendCommand(std::vector<uint8_t> data)
 {
