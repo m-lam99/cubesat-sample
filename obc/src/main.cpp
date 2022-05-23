@@ -96,9 +96,9 @@ void testAS7263() {
     }
 }
 
-void testPWM(){
+void testPWM(string pwm_channel){
    // 
-    PWM pwm(PWM_0B);  // P9_42 MUST be loaded as a slot before use
+    PWM pwm(pwm_channel);  // P9_42 MUST be loaded as a slot before use
     pwm.setPeriod(1000000000);         // Set the period in ns
     pwm.setDutyCycle(50.0f);       // Set the duty cycle as a percentage
 
@@ -164,8 +164,6 @@ void testGPS() {
 
 int main() {
     //  testINA219();
-    //testBNO055();
-    //testPWM();
-    testGPS();
+    testBNO055();    
     return 0;
 }
