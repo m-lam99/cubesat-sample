@@ -166,6 +166,8 @@ void testBNO055()
 
     std::cout << "Calibration status values: 0=uncalibrated, 3=fully calibrated" << std::endl;
 
+    bno.setExtCrystalUse(true);
+
     while (1)
     {
         // Display Quaternions
