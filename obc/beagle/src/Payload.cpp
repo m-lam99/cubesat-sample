@@ -13,9 +13,9 @@ Payload::payload_data_t Payload::getData(){
     GPS::loc_t *loc_data;
     gps_->get_location(loc_data);
 
-    data_buf_.lat = loc_data->latitude;
-    data_buf_.lon = loc_data->longitude;
-    data_buf_.alt = loc_data->altitude;
+    data_buf_.lat = (int16_t)loc_data->latitude * 32767/90;
+    data_buf_.lon = (int16_t)loc_data->longitude *32767/180;
+    data_buf_.alt = ((int16_t)loc_data->altitude - 250000)*(32767/50000);
 
 }
 
