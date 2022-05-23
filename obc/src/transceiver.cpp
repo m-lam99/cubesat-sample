@@ -3,7 +3,7 @@
 
 Transceiver::Transceiver()
 {
-    _serial_port = open("/dev/ttyS0", O_RDWR);
+    _serial_port = open("/dev/ttyS4", O_RDWR);
 
     if (tcgetattr(_serial_port, &_tty) != 0)
     {
