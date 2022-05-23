@@ -166,11 +166,19 @@ void testTransceiver(){
     Transceiver comms;
 
     comms.TestTransceiver();
-    std::vector<uint8_t> message = {'T', 'e', 's', 't'};
+    //std::vector<uint8_t> message = {'T', 'e', 's', 't'};
+
+    //comms.TransmitMessage(message);
     while(1){
-        comms.TransmitMessage(message);
-        usleep(2*1000000);
+        std::vector<uint8_t> message = comms.ReceiveData();
+        for (unsigned int i = 0; i < comms.MAX_BYTES_AX25; i++)
+            {
+                std::cout << message[i] << std::endl; 
+            }
+        
+        usleep(1000000);
     }
+    
 }
 
 int main() {
