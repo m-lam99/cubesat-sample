@@ -1,5 +1,7 @@
 #include "Satellite.h"
 #include <unistd.h>
+#include <iostream>
+
 
 Satellite::Satellite()
     : wod_(&gps_, mode_),
