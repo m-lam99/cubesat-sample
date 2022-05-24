@@ -4,9 +4,9 @@ PRE_FLAGS := -MMD -MP -IC
 
 # Project directory structure
 BIN := .
-SRC := .
+SRC := 
 INC := beagle/include bus/include components/include
-MAINFILE := $(SRC)/main.cpp
+MAINFILE := main.cpp
 
 # Build directories and output
 TARGET := $(BIN)/main
