@@ -256,8 +256,7 @@ void testTransceiver(){
 }
 
 int main() {
-
-    testPropulsion(); 
+    testPWM(PWM_1A);
     // testGPIO();
 
     return 0;
