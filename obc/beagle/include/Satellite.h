@@ -50,7 +50,7 @@ class Satellite {
     std::queue<Payload::payload_data_t> payload_data_;
     ax25::Message message_;
 
-    GPIO outGPIO()
+    GPIO outGPIO;
     unsigned char srcaddr[6] = {
         'N',
         'I',
