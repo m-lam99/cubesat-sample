@@ -28,15 +28,15 @@ int Satellite::payloadDataTransmission() {
     unsigned char data_transmit[sizeof(data_packet)];
     memcpy(data_transmit, &data_packet, sizeof(data_packet));
 
-    message_->payload = data_transmit;
-    message_->npayload = 18;
-    message_->source = srcaddr;
-    message_->destination = destaddr;
-    message_->dataType = 1;
-    message_->commandResponse = 0;
-    message_->controlType = 0;
-    message_->sendSequence = 0;
-    message_->receiveSequence = 0;
+    message_.payload = data_transmit;
+    message_.npayload = 18;
+    message_.source = srcaddr;
+    message_.destination = destaddr;
+    message_.dataType = 1;
+    message_.commandResponse = 0;
+    message_.controlType = 0;
+    message_.sendSequence = 0;
+    message_.receiveSequence = 0;
 }
 
 int Satellite::checkBattery() {}
@@ -56,15 +56,15 @@ int Satellite::wodTransmission() {
     unsigned char data_transmit[sizeof(data_packet)];
     memcpy(data_transmit, &data_packet, sizeof(data_packet));
 
-    message_->payload = data_transmit;  // double check
-    message_->npayload = 12;
-    message_->source = srcaddr;
-    message_->destination = destaddr;
-    message_->dataType = 0;
-    message_->commandResponse = 0;
-    message_->controlType = 0;
-    message_->sendSequence = 0;
-    message_->receiveSequence = 0;
+    message_.payload = data_transmit;  // double check
+    message_.npayload = 12;
+    message_.source = srcaddr;
+    message_.destination = destaddr;
+    message_.dataType = 0;
+    message_.commandResponse = 0;
+    message_.controlType = 0;
+    message_.sendSequence = 0;
+    message_.receiveSequence = 0;
 
     // Transmit
     // ax25::Message msg = {
