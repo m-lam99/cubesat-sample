@@ -66,27 +66,14 @@ int Satellite::wodTransmission() {
     message_.sendSequence = 0;
     message_.receiveSequence = 0;
 
-    // Transmit
-    // ax25::Message msg = {
-    //     srcaddr,
-    //     destaddr,
-    //     1,
-    //     1,
-    //     2,
-    //     0,
-    //     0,
-    //     1,
-    //     1
-    // };
-
-    ax25::ByteArray* encodedMsg = ax25::encode(&message_);
-    if (encodedMsg != NULL) {
-        // int success = sendMessage(encodedMsg);
-        wod_data_.pop();
-        return 1;
-    } else {
-        return 0;
-    }
+    // ax25::ByteArray* encodedMsg = ax25::encode(&message_);
+    // if (encodedMsg != NULL) {
+    //     // int success = sendMessage(encodedMsg);
+    //     wod_data_.pop();
+    //     return 1;
+    // } else {
+    //     return 0;
+    // }
 }
 
 int Satellite::deployment() {}
