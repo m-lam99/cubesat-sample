@@ -51,8 +51,8 @@ def main():
     while True:
         setup_transceiver(True)
         # test_transceiver()
-        # message = "Hello there,".encode()
-        # test_message = [int(hex(x), 16) for x in message]
+        message = "Hello there,".encode()
+        test_message = [int(hex(x), 16) for x in message]
         received_data = receive_data(packet_size=15)
         hash_confirm = False
         r_confirm = False

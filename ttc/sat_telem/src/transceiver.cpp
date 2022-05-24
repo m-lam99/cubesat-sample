@@ -42,16 +42,11 @@ Transceiver::~Transceiver()
 void Transceiver::SendCommand(std::vector<uint8_t> data)
 {
     uint8_t *data_ptr = static_cast<uint8_t *>(data.data());
-    for (unsigned int i = 0; i < 9; i++)
-    {
-        std::cout << data_ptr[i];
-    }
-    std::cout << std::endl;
-    // write(_serial_port,data_ptr, sizeof(data_ptr));
-    write(_serial_port,
-          data_ptr, sizeof(data_ptr));
 
-    sleep(0.5);
+    write(_serial_port, data_ptr, 1000 * sizeof(data_ptr));
+    // write(_serial_port, data_ptr, sizeof(data_ptr));
+
+    sleep(1);
 }
 
 std::vector<uint8_t> Transceiver::ReceiveData(void)
@@ -65,6 +60,7 @@ std::vector<uint8_t> Transceiver::ReceiveData(void)
     {
         output_buff.push_back(buff[i]);
     }
+    sleep(1);
     return output_buff;
 }
 
@@ -78,6 +74,7 @@ bool Transceiver::TestTransceiver(void)
         std::cout << version[i];
     }
     std::cout << std::endl;
+    sleep(1);
     return true;
 }
 
