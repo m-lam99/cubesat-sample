@@ -21,6 +21,7 @@
 #include <limits.h>
 #include <iostream>
 #include <unistd.h> // for usleep 
+#include <sys/ioctl.h>
 
 #include "BNO055.h"
 #include "I2C.h"
@@ -83,7 +84,7 @@ bool BNO055::begin(adafruit_bno055_opmode_t mode)
 
   while (read8(BNO055_CHIP_ID_ADDR) != BNO055_ID)
   {
-    usleep(1000*100);
+    usleep(100000*5);
       std::cout << "Read Chip addr id : " << BNO055_CHIP_ID_ADDR <<  std::endl; 
   }
   usleep(1000*50); 
@@ -582,6 +583,15 @@ int BNO055::i2cReadI2CBlockData(unsigned reg, char *buf, unsigned count)
   
   data.block[0] = count;
 
+  int status;
+
+  status = (my_smbus_access(
+      file, 1, reg, size, &data));
+
+  if (status < 0) {
+    std::cout << "Could not read block" << std::endl;
+  }
+
   if (data.block[0] <= 32)
   {
     for (int i=0; i<data.block[0]; i++){
@@ -594,4 +604,20 @@ int BNO055::i2cReadI2CBlockData(unsigned reg, char *buf, unsigned count)
   }
   
   return data.block[0];
+}
+
+int BNO055::my_smbus_access(
+   int fd, char rw, uint8_t cmd, int size, union BNO055::my_smbus_data *data)
+{
+   struct my_smbus_ioctl_data args;
+
+  //  DBG(DBG_INTERNAL, "rw=%d reg=%d cmd=%d data=%s",
+  //     rw, cmd, size, myBuf2Str(data->byte+1, (char*)data));
+
+   args.read_write = rw;
+   args.command    = cmd;
+   args.size       = size;
+   args.data       = data;
+
+   return ioctl(fd, 0x0720, &args);
 }

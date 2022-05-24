@@ -27,7 +27,7 @@ void GPS::print_GPS(){
 
     while (1) {
         get_location(&data);
-        printf("%lf %lf %lf %lf\n", data.time, data.latitude, data.longitude, data.altitude);
+        printf("%lf %lf %lf\n", data.latitude, data.longitude, data.altitude);
         std::cout << "seconds since 1/1/2000: " << data.epoch << std::endl; 
 
     }

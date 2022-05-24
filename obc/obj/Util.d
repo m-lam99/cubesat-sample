@@ -1,3 +1,3 @@
-obj/Util.o: src/Util.cpp include/Util.h
+obj/util.o: src/util.cpp include/util.h
 
-include/Util.h:
+include/util.h:
