@@ -67,7 +67,7 @@ int Satellite::wodTransmission() {
     message_.receiveSequence = 0;
 
     // transmit(data_packet)
-    ax25::ByteArray* encodedMsg = ax25::encode(&message_);
+    ax25::ByteArray* encodedMsg = ax25::encode(*message_);
     if (encodedMsg != NULL) {
         // int success = sendMessage(encodedMsg);
         wod_data_.pop();
