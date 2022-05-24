@@ -25,10 +25,10 @@ public:
     std::vector<uint8_t> ReceiveData(void);
     bool TestTransceiver(void);
     void TransmitMessage(std::vector<uint8_t> message);
+    std::vector<uint8_t> CMD_RECEIVE_MODE_CONFIG = {0x41, 0x54, 0x52, 0, CMD_MAX_LENGTH};
 
 private:
     const char CMD_OPERATING_MODE[3] = {0x41, 0x54, 0x4D};
-    const char CMD_RECEIVE_MODE_CONFIG[3] = {0x41, 0x54, 0x52};
     std::vector<uint8_t> CMD_TRANSMIT_MODE_CONFIG = {0x41, 0x54, 0x53, 0, CMD_MAX_LENGTH};
     const char CMD_SYNC_BYTES[3] = {0x41, 0x54, 0x41};
     const char CMD_HOST_BAUD_RATE[3] = {0x41, 0x54, 0x48};

@@ -174,8 +174,8 @@ void testTransceiver(){
     // std::vector<uint8_t> message = {'T', 'e', 's', 't'};
     // comms.TransmitMessage(message);
     // usleep(1000000);
-    
     while(1){
+        comms.SendCommand(comms.CMD_RECEIVE_MODE_CONFIG);
         std::vector<uint8_t> message = comms.ReceiveData();
         std::cout << "MESSAGE: "; 
 
