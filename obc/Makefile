@@ -6,7 +6,7 @@ PRE_FLAGS := -MMD -MP -IC
 BIN := .
 SRC := .
 INC := .
-MAINFILE := main.cpp
+MAINFILE := $(SRC)/main.cpp
 
 # Build directories and output
 TARGET := $(BIN)/main
