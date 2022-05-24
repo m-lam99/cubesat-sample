@@ -163,17 +163,15 @@ void testGPS() {
 }
 
 
-int main() {
-    //  testINA219();
-    //testBNO055();
-    // testPWM();
-    //testADS1015();
+void testPropulsion(){
+    Satellite NICE; 
+    int prop_vals[1, 9, 0, 5, 6];
+    NICE.propulsion(prop_vals);
+}
 
-    // testADS1015();
-    // testAS7263();
-    Satellite NICE;
-    NICE.wodCollection();
-    NICE.wodTransmission();
+int main() {
+
+    testPropulsion(); 
 
     return 0;
 }
