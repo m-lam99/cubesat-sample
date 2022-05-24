@@ -3,7 +3,8 @@
 #include <cmath>
 
 
-WholeOrbit::WholeOrbit(): 
+WholeOrbit::WholeOrbit(GPS* gps): 
+    Ggps_(gps),
     current_sensor_batt_(1, INA219_ADDRESS_BATT),
     current_sensor_3v3_(1, INA219_ADDRESS_3V3),
     current_sensor_5v_(1, INA219_ADDRESS_5V),
@@ -12,6 +13,9 @@ WholeOrbit::WholeOrbit():
     thermistor_batt_(0) {
 
         // Do some config stuff for current sensors
+        current_sensor_batt_.writeRegister(INA219::REGISTERS::CALIBRATION, 4096);
+        current_sensor_3v3_.writeRegister(INA219::REGISTERS::CALIBRATION, 4096);
+        
 }
 
 WholeOrbit::wod_t WholeOrbit::GetData(){
