@@ -16,6 +16,7 @@
 #include "GPIO.h"
 
 #include <queue>
+#include <vector>
 
 class Satellite {
    public:
@@ -31,7 +32,7 @@ class Satellite {
     int wodTransmission();
     int deployment();
     int checkTransceiver();
-    int propulsion(int* array);
+    int propulsion(std::vector<int> array);
     ~Satellite();
 
    private:

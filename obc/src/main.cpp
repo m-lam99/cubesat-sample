@@ -23,6 +23,8 @@
 // For the PWM
 #include "PWM.h"
 
+#include <vector>
+
 using namespace exploringBB;
 
 void testGPIO() {
@@ -172,10 +174,8 @@ void wodTest() {
 
 void testPropulsion(){
     Satellite NICE; 
-    int prop_vals[6] = {1, 3, 9, 5, 6, 2};
-    int *p;
-    p = prop_vals;
-    NICE.propulsion(p);
+    std::vector<int> prop_vals{1, 3, 9, 5, 6, 2};
+    NICE.propulsion(prop_vals);
 }
 
 int main() {

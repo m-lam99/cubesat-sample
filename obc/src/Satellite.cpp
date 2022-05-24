@@ -82,9 +82,9 @@ int Satellite::deployment() {}
 
 int Satellite::checkTransceiver() {}
 
-int Satellite::propulsion(int* array) {
+int Satellite::propulsion(std::vector<int> array) {
     
-    int n = sizeof(array)/sizeof(*array);
+    int n = array.size();
     for (int i = 0; i < n; ++i) {
         
         if (i % 2 == 0) {   
