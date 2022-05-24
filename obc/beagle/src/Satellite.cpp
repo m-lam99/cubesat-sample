@@ -8,7 +8,7 @@ Satellite::Satellite()
       imu_(2, 0x28),
       gps_(),
       payload_(&gps_),
-      outGPIO(57) //change pin number!!!!!!!! 
+      outGPIO(23) //change pin number!!!!!!!! 
       {
           outGPIO.setDirection(OUTPUT);
       }
@@ -91,4 +91,5 @@ int Satellite::propulsion(int* array) {
         outGPIO.setValue(LOW);
         usleep(array[i+1]*1000000);
     }
+    return 1;
 }
