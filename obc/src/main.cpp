@@ -133,7 +133,7 @@ void testAS7263()
 void testPWM(string pwm_channel){
    // 
     PWM pwm(pwm_channel);  // P9_42 MUST be loaded as a slot before use
-    pwm.setPeriod(505032805);         // Set the period in ns
+    pwm.setPeriod(405032805);         // Set the period in ns
     pwm.setDutyCycle(50.0f);       // Set the duty cycle as a percentage
 
     pwm.setPolarity(PWM::ACTIVE_LOW);  // using active low PWM
