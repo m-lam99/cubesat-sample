@@ -138,7 +138,7 @@ void testPWM(string pwm_channel){
 
     pwm.setPolarity(PWM::ACTIVE_LOW);  // using active low PWM
     pwm.run();                     // start the PWM output
-    std::cout << "PWM active" << std::endl; 
+    std::cout << "PWM active" <<  pwm.getPeriod() << std::endl; 
     // pwm.stop();  // to discontinue the pwm signal 
     while(1);
     return; 
