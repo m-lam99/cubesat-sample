@@ -3,7 +3,7 @@ CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb
 PRE_FLAGS := -MMD -MP -IC
 
 # Project directory structure
-BIN := .
+BIN := 
 SRC := 
 INC := beagle/include bus/include components/include
 MAINFILE := main.cpp
