@@ -2,7 +2,7 @@
 #include <unistd.h>
 
 Satellite::Satellite()
-    : wod_(),
+    : wod_(&gps_, mode_),
       adc1_(2, ADC_ADDRESS1),
       adc2_(2, ADC_ADDRESS2),
       imu_(2, 0x28),

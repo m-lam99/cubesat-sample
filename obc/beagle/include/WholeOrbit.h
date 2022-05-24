@@ -24,7 +24,7 @@ class WholeOrbit {
     };
 
     typedef struct wod wod_t;
-    WholeOrbit(GPS* gps);
+    WholeOrbit(GPS* gps, uint8_t);
     wod_t GetData();
     void TransmitData();
     ~WholeOrbit();
@@ -41,6 +41,8 @@ class WholeOrbit {
     // uint8_t temp_batt_ = 0;
 
     GPS* gps_;
+
+    uint8_t mode_;
 
     wod_t wod_;
 

@@ -3,8 +3,9 @@
 #include <cmath>
 
 
-WholeOrbit::WholeOrbit(GPS* gps): 
-    Ggps_(gps),
+WholeOrbit::WholeOrbit(GPS* gps, uint8_t mode): 
+    gps_(gps),
+    mode_(mode),
     current_sensor_batt_(1, INA219_ADDRESS_BATT),
     current_sensor_3v3_(1, INA219_ADDRESS_3V3),
     current_sensor_5v_(1, INA219_ADDRESS_5V),
@@ -15,10 +16,17 @@ WholeOrbit::WholeOrbit(GPS* gps):
         // Do some config stuff for current sensors
         current_sensor_batt_.writeRegister(INA219::REGISTERS::CALIBRATION, 4096);
         current_sensor_3v3_.writeRegister(INA219::REGISTERS::CALIBRATION, 4096);
-        
+        current_sensor_5v_.writeRegister(INA219::REGISTERS::CALIBRATION, 4096);
 }
 
 WholeOrbit::wod_t WholeOrbit::GetData(){
+    // Time
+    GPS::loc_t location_data = gps_->get_location();
+    uint32_t time = location_data.epoch();
+
+    // Mode
+    wod.mode = mode_;
+
     // UUI8 = min(0, max(28-1, floor( (20 * U) - 60) ) ) 
     float voltage_batt_f = current_sensor_batt_.busVoltage();
     wod_.voltage_batt = std::min(0, std::max(1<<8 -1, (int)floor((20*voltage_batt_f) - 60)));

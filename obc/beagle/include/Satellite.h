@@ -69,6 +69,8 @@ class Satellite {
     };
     // PWM
 
+    uint8_t mode_;
+
 };
 
 #endif
