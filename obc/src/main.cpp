@@ -180,8 +180,8 @@ void testPropulsion(){
 
 int main() {
 
-    // testPropulsion(); 
-    testGPIO();
+    testPropulsion(); 
+    // testGPIO();
 
     return 0;
 }
