@@ -181,7 +181,10 @@ void testTransceiver(){
 
        for (unsigned int i = 0; i < comms.MAX_BYTES_AX25; i++)
             {
-                std::cout << message[i]; 
+                if(message[0] == '#' && message[1] == 'R'){
+                    std::cout << message[i]; 
+
+                }
             }
         std::cout << std::endl; 
         usleep(1000000);
