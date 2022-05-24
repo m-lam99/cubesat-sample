@@ -73,7 +73,7 @@ std::vector<uint8_t> Transceiver::ReceiveData(void)
     memset(&buff, '\0', sizeof(buff));
     usleep(50000);
 
-    read(serial_port, &buff, 100*sizeof(buff));
+    read(serial_port, &buff, sizeof(buff));
     //readln(buff2);
     for (unsigned int i = 0; i < MAX_BYTES_AX25; i++)
     {
