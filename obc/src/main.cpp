@@ -23,10 +23,12 @@
 // For the PWM
 #include "PWM.h"
 
+#include <vector>
+
 using namespace exploringBB;
 
 void testGPIO() {
-    GPIO outGPIO(59), inGPIO(46);
+    GPIO outGPIO(23), inGPIO(46);
 
     // Basic Output - Flash the LED 10 times, once per second
     outGPIO.setDirection(OUTPUT);
@@ -172,7 +174,7 @@ void wodTest() {
 
 void testPropulsion(){
     Satellite NICE; 
-    int prop_vals[1, 9, 0, 5, 6];
+    std::vector<int> prop_vals{1, 3, 9, 5, 6, 2};
     NICE.propulsion(prop_vals);
 }
 
@@ -209,6 +211,7 @@ void testTransceiver(){
 int main() {
 
     testPropulsion(); 
+    // testGPIO();
 
     return 0;
 }

@@ -1,5 +1,7 @@
 #include "Satellite.h"
 #include <unistd.h>
+#include <iostream>
+
 
 Satellite::Satellite()
     : wod_(&gps_, mode_),
@@ -66,30 +68,36 @@ int Satellite::wodTransmission() {
     message_.sendSequence = 0;
     message_.receiveSequence = 0;
 
-    // transmit(data_packet)
-    ax25::ByteArray* encodedMsg = encode(&message_);
-    if (encodedMsg != NULL) {
-        // int success = sendMessage(encodedMsg);
-        wod_data_.pop();
-        return 1;
-    } else {
-        return 0;
-    }
+    // ax25::ByteArray* encodedMsg = ax25::encode(&message_);
+    // if (encodedMsg != NULL) {
+    //     // int success = sendMessage(encodedMsg);
+    //     wod_data_.pop();
+    //     return 1;
+    // } else {
+    //     return 0;
+    // }
 }
 
 int Satellite::deployment() {}
 
 int Satellite::checkTransceiver() {}
 
-int Satellite::propulsion(int* array) {
-    for (int i = 0; i < sizeof(array); i+= 2) {
-        // Turn on
-        outGPIO.setValue(HIGH);
+int Satellite::propulsion(std::vector<int> array) {
+    
+    int n = array.size();
+    for (int i = 0; i < n; ++i) {
+        
+        if (i % 2 == 0) {   
+            // Turn on
+            outGPIO.setValue(HIGH);
+        } else {
+            // Turn off
+            outGPIO.setValue(LOW);
+        }
         usleep(array[i]*1000000);
 
-        // Turn off
-        outGPIO.setValue(LOW);
-        usleep(array[i+1]*1000000);
+        std::cout << array[i] << std::endl;
+        
     }
     return 1;
 }

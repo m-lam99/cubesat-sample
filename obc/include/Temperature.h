@@ -6,6 +6,8 @@
 #include <sstream>
 #include <string>
 #include <fstream>
+#include <cmath>
+
 #define LDR_PATH "/sys/bus/iio/devices/iio:device0/in_voltage"
 
 class Temperature {
