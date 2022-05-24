@@ -5,11 +5,9 @@ PRE_FLAGS := -MMD -MP -IC
 # Project directory structure
 BIN := .
 SRC := src
-INC := include components/include components/src bus/include beagle/include
-MAINFILE := $(SRC)/main.cpp
+INC := include
 
 # Build directories and output
-TARGET := $(BIN)/main
 BUILD := obj
 
 # Library search directories and flags
@@ -26,26 +24,11 @@ SRCS := $(shell find $(SRC) -name *.cpp)
 OBJS := $(subst $(SRC)/,$(BUILD)/,$(addsuffix .o,$(basename $(SRCS))))
 DEPS := $(OBJS:.o=.d)
 
-# Run task
-run: build
-	@echo "Executing..."
-	./$(TARGET) $(ARGS)
-
 # Build task
 build: clean all
 
 # Main task
-all:
-	+$(MAKE) -C bus 
-	+$(MAKE) -C components 
-	+$(MAKE) -C beagle 
-	+$(TARGET)
-
-# Task producing target from built files
-$(TARGET): $(OBJS)
-	@echo "Building..."
-	mkdir -p $(dir $@)
-	$(CXX) $(OBJS) -o $@ $(LDPATHS) $(LDFLAGS)
+all: $(OBJS)
 
 # Compile all cpp files
 $(BUILD)/%.o: $(SRC)/%.cpp

@@ -18,6 +18,7 @@
 #include "AS7263.h"
 #include "transceiver.h"
 #include "BNO055.h"
+#include "Satellite.h"
 
 // For the PWM
 #include "PWM.h"
@@ -96,9 +97,9 @@ void testAS7263() {
     }
 }
 
-void testPWM(){
+void testPWM(string pwm_channel){
    // 
-    PWM pwm(PWM_0B);  // P9_42 MUST be loaded as a slot before use
+    PWM pwm(pwm_channel);  // P9_42 MUST be loaded as a slot before use
     pwm.setPeriod(1000000000);         // Set the period in ns
     pwm.setDutyCycle(50.0f);       // Set the duty cycle as a percentage
 
@@ -161,6 +162,19 @@ void testGPS() {
     return; 
 }
 
+void wodTest() {
+    Satellite NICE;
+    NICE.wodCollection();
+    NICE.wodTransmission();
+    
+}
+
+
+void testPropulsion(){
+    Satellite NICE; 
+    int prop_vals[1, 9, 0, 5, 6];
+    NICE.propulsion(prop_vals);
+}
 
 void testTransceiver(){
     Transceiver comms;
@@ -194,6 +208,7 @@ void testTransceiver(){
 
 int main() {
 
-    testTransceiver();
+    testPropulsion(); 
+
     return 0;
 }

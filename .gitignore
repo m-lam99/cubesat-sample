@@ -137,3 +137,5 @@ dmypy.json
 # Build files
 *.o
 *.d
+
+*/obj
