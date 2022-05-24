@@ -86,9 +86,14 @@ int Satellite::propulsion(int* array) {
         outGPIO.setValue(HIGH);
         usleep(array[i]*1000000);
 
+        std::cout << array[i] << std::endl;
+
         // Turn off
         outGPIO.setValue(LOW);
         usleep(array[i+1]*1000000);
+
+        std::cout << array[i+1] <<std::endl;
+        
     }
     return 1;
 }
