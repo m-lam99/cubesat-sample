@@ -83,18 +83,19 @@ int Satellite::deployment() {}
 int Satellite::checkTransceiver() {}
 
 int Satellite::propulsion(int* array) {
-    for (int i = 0; i < sizeof(array); i+= 2) {
-        // Turn on
-        outGPIO.setValue(HIGH);
+    
+    for (int i = 0; i < sizeof(array); ++i) {
+        
+        if (i % 2 == 0) {   
+            // Turn on
+            outGPIO.setValue(HIGH);
+        } else {
+            // Turn off
+            outGPIO.setValue(LOW);
+        }
         usleep(array[i]*1000000);
 
         std::cout << array[i] << std::endl;
-
-        // Turn off
-        outGPIO.setValue(LOW);
-        usleep(array[i+1]*1000000);
-
-        std::cout << array[i+1] <<std::endl;
         
     }
     return 1;
