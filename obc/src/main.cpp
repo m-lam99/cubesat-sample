@@ -172,7 +172,7 @@ void wodTest() {
 
 void testPropulsion(){
     Satellite NICE; 
-    int prop_vals[1, 9, 0, 5, 6];
+    int *prop_vals[1, 9, 0, 5, 6];
     NICE.propulsion(prop_vals);
 }
 
