@@ -5,6 +5,7 @@
 
 #include <stdint.h>
 
+#include "GPS.h"
 #include "INA219.h"
 #include "Temperature.h"
 
@@ -23,7 +24,7 @@ class WholeOrbit {
     };
 
     typedef struct wod wod_t;
-    WholeOrbit();
+    WholeOrbit(GPS* gps);
     wod_t GetData();
     void TransmitData();
     ~WholeOrbit();
@@ -38,6 +39,8 @@ class WholeOrbit {
     // uint8_t temp_comms_ = 0;
     // uint8_t temp_eps_ = 0;
     // uint8_t temp_batt_ = 0;
+
+    GPS* gps_;
 
     wod_t wod_;
 

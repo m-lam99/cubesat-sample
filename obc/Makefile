@@ -1,11 +1,11 @@
 # Pre-compiler and Compiler flags
-CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb -Ibus/inc -Icomponent/inc -Ibeagle/inc
+CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb
 PRE_FLAGS := -MMD -MP -IC
 
 # Project directory structure
 BIN := .
 SRC := .
-INC := .
+INC := beagle/include bus/include components/include
 MAINFILE := $(SRC)/main.cpp
 
 # Build directories and output

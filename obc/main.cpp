@@ -162,6 +162,13 @@ void testGPS() {
     return; 
 }
 
+void wodTest() {
+    Satellite NICE;
+    NICE.wodCollection();
+    NICE.wodTransmission();
+    
+}
+
 
 int main() {
     //  testINA219();
