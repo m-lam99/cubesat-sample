@@ -140,7 +140,8 @@ void testPWM(string pwm_channel){
     pwm.run();                     // start the PWM output
     std::cout << "PWM active : " <<  pwm.getPeriod() << std::endl; 
     // pwm.stop();  // to discontinue the pwm signal 
-    while(1);
+    usleep(10000000*10);
+    pwm.stop();
     return; 
 }
 
