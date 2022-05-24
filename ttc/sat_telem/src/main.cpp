@@ -12,7 +12,13 @@ int main()
     Transceiver comms;
 
     comms.TestTransceiver();
-    std::vector<uint8_t> message = {'T', 'e', 's', 't'};
-    std::cout << "Test1" << std::endl;
-    comms.TransmitMessage(message);
+    while (1)
+    {
+        std::cout << "Starting" << std::endl;
+        std::vector<uint8_t> message = {'T', 'e', 's', 't'};
+        // comms.TransmitMessage(message);
+        comms.ReceiveData();
+        std::cout << "Done!" << std::endl;
+        sleep(2);
+    }
 }

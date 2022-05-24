@@ -1,9 +1,7 @@
 import serial
 from time import sleep
 
-# from ax25 import bindings
-# from db import db
-# from decode import decode_wod, decode_science
+from ax25 import bindings
 
 CMD_OPERATING_MODE = [0x41, 0x54, 0x4D]
 CMD_RECEIVE_MODE_CONFIG = [0x41, 0x54, 0x52]
