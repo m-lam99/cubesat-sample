@@ -181,7 +181,7 @@ void testTransceiver(){
 
        for (unsigned int i = 0; i < comms.MAX_BYTES_AX25; i++)
             {
-                if(message[0] == '#' && message[1] == 'R'){
+                if(message[0] == '#' && message[1] == 'R' && i>3 && i<18){
                     std::cout << message[i]; 
 
                 }
