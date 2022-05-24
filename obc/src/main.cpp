@@ -134,7 +134,7 @@ void testPWM(string pwm_channel){
    // 
     PWM pwm(pwm_channel);  // P9_42 MUST be loaded as a slot before use
     pwm.setPeriod(3345678);         // Set the period in ns
-    pwm.setDutyCycle(100.0f);       // Set the duty cycle as a percentage
+    pwm.setDutyCycle(50.0f);       // Set the duty cycle as a percentage
 
     pwm.setPolarity(PWM::ACTIVE_LOW);  // using active low PWM
     pwm.run();                     // start the PWM output
@@ -258,7 +258,7 @@ void testTransceiver(){
 }
 
 int main() {
-    testPWM(PWM_1A);
+    testPWM(PWM_0A);
     // testGPIO();
 
     return 0;
