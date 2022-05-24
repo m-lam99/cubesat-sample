@@ -1,15 +1,15 @@
 # Pre-compiler and Compiler flags
 CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb
-PRE_FLAGS := -MMD -MP -IC
+PRE_FLAGS := -MMD -MP
 
 # Project directory structure
-BIN := 
-SRC := 
-INC := beagle/include bus/include components/include
-MAINFILE := main.cpp
+BIN := .
+SRC := src
+INC := include
+MAINFILE := $(SRC)/main.cpp
 
 # Build directories and output
-TARGET := main
+TARGET := $(BIN)/main
 BUILD := obj
 
 # Library search directories and flags
@@ -27,18 +27,18 @@ OBJS := $(subst $(SRC)/,$(BUILD)/,$(addsuffix .o,$(basename $(SRCS))))
 DEPS := $(OBJS:.o=.d)
 
 # Run task
-#run: build
-#	@echo "Executing..."
-#	./$(TARGET) $(ARGS)
+run: build
+	@echo "Executing..."
+	./$(TARGET) $(ARGS)
 
 # Build task
 build: clean all
 
 # Main task
 all:
-	+$(MAKE) -C bus
-	+$(MAKE) -C components
-	+$(MAKE) -C beagle
+	+$(MAKE) -C bus 
+	+$(MAKE) -C components 
+	+$(MAKE) -C beagle 
 
 # Task producing target from built files
 $(TARGET): $(OBJS)
