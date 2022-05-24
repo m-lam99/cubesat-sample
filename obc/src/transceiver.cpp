@@ -60,7 +60,7 @@ void Transceiver::SendCommand(std::vector<uint8_t> data)
 {
     uint8_t *data_ptr = static_cast<uint8_t *>(data.data());
     write(serial_port,
-          data_ptr, sizeof(data_ptr));
+          data_ptr, 1000* sizeof(data_ptr));
     sleep(1);
 }
 
