@@ -148,7 +148,7 @@ void UARTDevice::readln(char* buffer){
             *b++ = c;
         }
     }
- 
+    std::cout << buffer << std::endl; 
     return;
 }
 
