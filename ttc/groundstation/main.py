@@ -1,6 +1,6 @@
 import sys
 from transceiver import test_data_pipeline
-from transceiver.ax25 import bindings
+from transceiver.ax25 import bindings, create_mock_science_data, create_mock_wod
 from gui import gui
 
 HELP_MSG = """
@@ -13,12 +13,12 @@ Usage: python3 main.py [live|demo|import]
 """
 
 if __name__ == '__main__':
-    print("""
-        IMPORTANT: FOR THIS TO WORK
-        You must have compiled the ax25 C++ layer (go to `transceiver/ax25` and run `make`)
-        You must run this with the same processing bits as you compiled ax25 with (32bit vs 64bit)
-                I (Adam) use 32bit Python because my C++ compiler was being a bitch
-          """)
+    # print("""
+    #     IMPORTANT: FOR THIS TO WORK
+    #     You must have compiled the ax25 C++ layer (go to `transceiver/ax25` and run `make`)
+    #     You must run this with the same processing bits as you compiled ax25 with (32bit vs 64bit)
+    #             I (Adam) use 32bit Python because my C++ compiler was being a bitch
+    #       """)
     
     if len(sys.argv) < 2:
         print(HELP_MSG)
@@ -26,6 +26,11 @@ if __name__ == '__main__':
 
     if sys.argv[1] == "import":
         print("Running data import test")
+        print("\n1: Creating and AX.25-encoding mock WOD packets")
+        create_mock_wod.generate()
+        print("\n2: Creating and AX.25-encoding mock Science packets")
+        create_mock_science_data.generate()
+        print("\n3: AX.25-Decoding and inserting mock packets")
         test_data_pipeline.run()
     elif sys.argv[1] == "live":
         # TODO: launch transceiver listening stuff on a different thread

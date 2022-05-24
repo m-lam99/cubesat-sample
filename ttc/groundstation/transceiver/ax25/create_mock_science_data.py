@@ -1,7 +1,7 @@
 import math
 import random
 from numpy import float16, array, frombuffer
-import bindings
+from transceiver.ax25 import bindings
 import pickle
 
 # FORMAT:
@@ -12,67 +12,69 @@ import pickle
 # alt - 2 bytes, float16
 # read float16 by np.frombuffer(reading, dtype=float16)
 
-times = range(0, 24*60*60, 2)  # 1 day, every 2 secs
+def generate():
 
-current_lat = -60
-current_long = 30
-current_alt = 250000
+    times = range(0, 24*60*60, 2)  # 1 day, every 2 secs
 
-ref_t = 705438821
+    current_lat = -60
+    current_long = 30
+    current_alt = 250000
 
-msgs = []
-samples_per_orbit = 90*60/2
-send_seq = 0
-for t in times:
-    packet = []
-    time = bytearray(int(t + ref_t).to_bytes(4, byteorder='big', signed=True))
-    for b in time:
-        packet.append(b)
-    math.sin(t/samples_per_orbit), current_lat, current_long, current_alt
+    ref_t = 706278000
 
-    reading = array(float16(math.sin(t/samples_per_orbit))).tobytes()
-    for b in reading:
-        packet.append(b)
+    msgs = []
+    samples_per_orbit = 90*60/2
+    send_seq = 0
+    for t in times:
+        packet = []
+        time = bytearray(int(t + ref_t).to_bytes(4, byteorder='big', signed=True))
+        for b in time:
+            packet.append(b)
+        math.sin(t/samples_per_orbit), current_lat, current_long, current_alt
 
-    lat = array(float16(current_lat)).tobytes()
-    for b in lat:
-        packet.append(b)
+        reading = array(float16(math.sin(t/samples_per_orbit))).tobytes()
+        for b in reading:
+            packet.append(b)
 
-    lon = array(float16(current_long)).tobytes()
-    for b in lon:
-        packet.append(b)
+        lat = array(float16(current_lat)).tobytes()
+        for b in lat:
+            packet.append(b)
 
-    alt = array(float16(current_alt-250000)).tobytes()
-    for b in alt:
-        packet.append(b)
+        lon = array(float16(current_long)).tobytes()
+        for b in lon:
+            packet.append(b)
 
-    msg = bindings.Message(
-        packet,
-        "NICE",
-        "USYDGS",
-        0,
-        0,
-        0,
-        send_seq,
-        0
-    )
+        alt = array(float16(current_alt-250000)).tobytes()
+        for b in alt:
+            packet.append(b)
 
-    b = bindings.ax25._encode(msg.obj)
-    nbytes = bindings.ax25.ByteArray_getnbytes(b)
-    _bytes = bindings.ax25.ByteArray_getbytes(b)
-    encoded_msg = [_bytes[i] for i in range(nbytes)]
+        msg = bindings.Message(
+            packet,
+            "NICE",
+            "USYDGS",
+            0,
+            0,
+            0,
+            send_seq,
+            0
+        )
 
-    send_seq += 1
-    send_seq %= 8
-    msgs.append(encoded_msg)
+        b = bindings.ax25._encode(msg.obj)
+        nbytes = bindings.ax25.ByteArray_getnbytes(b)
+        _bytes = bindings.ax25.ByteArray_getbytes(b)
+        encoded_msg = [_bytes[i] for i in range(nbytes)]
 
-    current_lat += 0.76543*90/samples_per_orbit*2
-    if current_lat > 90:
-        current_lat -= 180
-    current_long += 1.23456*180/samples_per_orbit*2
-    if current_long > 180:
-        current_long -= 360
-    current_alt += (random.randint(-250000, 250000)/10000)
+        send_seq += 1
+        send_seq %= 8
+        msgs.append(encoded_msg)
 
-with open("sample-science.pickle", "wb") as p:
-    pickle.dump(msgs, p)
+        current_lat += 0.76543*90/samples_per_orbit*2
+        if current_lat > 90:
+            current_lat -= 180
+        current_long += 1.23456*180/samples_per_orbit*2
+        if current_long > 180:
+            current_long -= 360
+        current_alt += (random.randint(-250000, 250000)/10000)
+
+    with open("sample-science.pickle", "wb") as p:
+        pickle.dump(msgs, p)

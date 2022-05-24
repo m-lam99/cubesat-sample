@@ -175,4 +175,4 @@ def send_mode_command(mode):
     return f"Mode command {mode} sent successfully"
 
 def run():
-    app.run_server(debug=True, dev_tools_props_check=False)
+    app.run_server(dev_tools_props_check=False)
