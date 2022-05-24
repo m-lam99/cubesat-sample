@@ -1,4 +1,5 @@
 #include "Satellite.h"
+#include "ax25.h"
 #include <unistd.h>
 
 Satellite::Satellite()
