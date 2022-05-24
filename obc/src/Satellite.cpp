@@ -84,6 +84,7 @@ int Satellite::checkTransceiver() {}
 
 int Satellite::propulsion(int* array) {
     
+    std::cout << "n = " << sizeof(array) << std::endl;
     for (int i = 0; i < sizeof(array); ++i) {
         
         if (i % 2 == 0) {   
