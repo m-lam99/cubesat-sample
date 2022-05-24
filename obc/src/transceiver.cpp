@@ -70,10 +70,10 @@ std::vector<uint8_t> Transceiver::ReceiveData(void)
     std::array<uint8_t, Transceiver::MAX_BYTES_AX25> buff;
     //char buff2[256]; 
     std::vector<uint8_t> output_buff;
-    memset(&buff, '\0', sizeof(buff));
+    memset(&buff, '\0', 100*sizeof(buff));
     usleep(50000);
 
-    read(serial_port, &buff, sizeof(buff));
+    read(serial_port, &buff, 100*sizeof(buff));
     //readln(buff2);
     for (unsigned int i = 0; i < MAX_BYTES_AX25; i++)
     {
