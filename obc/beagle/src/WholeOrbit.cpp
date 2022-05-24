@@ -21,11 +21,12 @@ WholeOrbit::WholeOrbit(GPS* gps, uint8_t mode):
 
 WholeOrbit::wod_t WholeOrbit::GetData(){
     // Time
-    GPS::loc_t location_data = gps_->get_location();
-    uint32_t time = location_data.epoch();
+    GPS::loc_t* location_data;
+    gps_->get_location(location_data);
+    uint32_t time = location_data->epoch;
 
     // Mode
-    wod.mode = mode_;
+    wod_.mode = mode_;
 
     // UUI8 = min(0, max(28-1, floor( (20 * U) - 60) ) ) 
     float voltage_batt_f = current_sensor_batt_.busVoltage();
