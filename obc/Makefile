@@ -9,7 +9,7 @@ INC := beagle/include bus/include components/include
 MAINFILE := main.cpp
 
 # Build directories and output
-TARGET := $(BIN)/main
+TARGET := main
 BUILD := obj
 
 # Library search directories and flags
