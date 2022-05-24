@@ -133,14 +133,14 @@ void testAS7263()
 void testPWM(string pwm_channel){
    // 
     PWM pwm(pwm_channel);  // P9_42 MUST be loaded as a slot before use
-    pwm.setPeriod(50503280);         // Set the period in ns
+    pwm.setPeriod(40503280);         // Set the period in ns
     pwm.setDutyCycle(50.0f);       // Set the duty cycle as a percentage
 
     pwm.setPolarity(PWM::ACTIVE_LOW);  // using active low PWM
     pwm.run();                     // start the PWM output
     std::cout << "PWM active : " <<  pwm.getPeriod() << std::endl; 
     // pwm.stop();  // to discontinue the pwm signal 
-    usleep(10000000*10);
+    usleep(1000000*10);
     pwm.stop();
     return; 
 }
