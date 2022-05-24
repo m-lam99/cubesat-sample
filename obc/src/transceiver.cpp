@@ -74,7 +74,7 @@ std::vector<uint8_t> Transceiver::ReceiveData(void)
     usleep(50000);
 
     read(serial_port, &buff, 100*sizeof(buff));
-    readln(buff2);
+    //readln(buff2);
     for (unsigned int i = 0; i < MAX_BYTES_AX25; i++)
     {
         output_buff.push_back(buff[i]);
