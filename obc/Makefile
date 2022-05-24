@@ -1,11 +1,11 @@
 # Pre-compiler and Compiler flags
 CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb
-PRE_FLAGS := -MMD -MP -IC
+PRE_FLAGS := -MMD -MP
 
 # Project directory structure
 BIN := .
 SRC := src
-INC := include components/include components/src bus/include beagle/include
+INC := include
 MAINFILE := $(SRC)/main.cpp
 
 # Build directories and output
@@ -35,11 +35,7 @@ run: build
 build: clean all
 
 # Main task
-all:
-	+$(MAKE) -C bus 
-	+$(MAKE) -C components 
-	+$(MAKE) -C beagle 
-	+$(TARGET)
+all: $(TARGET)
 
 # Task producing target from built files
 $(TARGET): $(OBJS)
