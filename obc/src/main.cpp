@@ -26,7 +26,7 @@
 using namespace exploringBB;
 
 void testGPIO() {
-    GPIO outGPIO(59), inGPIO(46);
+    GPIO outGPIO(23), inGPIO(46);
 
     // Basic Output - Flash the LED 10 times, once per second
     outGPIO.setDirection(OUTPUT);
@@ -180,7 +180,8 @@ void testPropulsion(){
 
 int main() {
 
-    testPropulsion(); 
+    // testPropulsion(); 
+    testGPIO();
 
     return 0;
 }
