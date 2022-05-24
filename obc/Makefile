@@ -5,7 +5,7 @@ PRE_FLAGS := -MMD -MP
 # Project directory structure
 BIN := .
 SRC := src
-INC := include
+INC := include components/include components/src bus/include beagle/include
 MAINFILE := $(SRC)/main.cpp
 
 # Build directories and output
