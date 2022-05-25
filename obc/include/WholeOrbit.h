@@ -54,6 +54,12 @@ class WholeOrbit {
     Temperature thermistor_eps_;
     Temperature thermistor_batt_;
     
+    // 0 if valid, 1 if invalid
+    int current_sensor_batt_valid_;
+    int current_sensor_3v3_valid_;
+    int current_sensor_5v_valid_;
+    
+    
 };
 
 #endif

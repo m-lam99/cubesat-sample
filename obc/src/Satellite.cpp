@@ -5,7 +5,8 @@
 
 
 Satellite::Satellite()
-    : wod_(&gps_, mode_),
+    : mode_(0), 
+    wod_(&gps_, mode_),
       adc1_(2, ADC_ADDRESS1),
       adc2_(2, ADC_ADDRESS2),
       imu_(2, 0x28),
@@ -59,6 +60,7 @@ int Satellite::orbitCorrection() {}
 
 int Satellite::wodCollection() {
     wod_data_.push(wod_.GetData());
+    std::cout << (int)wod_data_.back().current_3v3 << std::endl;
     return 1;
 }
 
