@@ -61,6 +61,7 @@ class Satellite {
     std::queue<WholeOrbit::wod_t> wod_data_;
     std::queue<Payload::payload_data_t> payload_data_;
     ax25::Message message_;
+    ax25::ByteArray* encodedMsg_;
 
     GPIO outGPIO;
     unsigned char srcaddr[6] = {

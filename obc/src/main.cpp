@@ -215,8 +215,9 @@ void testGPS()
 
 void wodTest() {
     Satellite NICE;
+    std::cout << "test" << std::endl;
     NICE.wodCollection();
-    NICE.wodTransmission();
+    // NICE.wodTransmission();
     
 }
 
@@ -258,8 +259,9 @@ void testTransceiver(){
 }
 
 int main() {
-    testPWM(PWM_0A);
+    // testPWM(PWM_0A);
     // testGPIO();
+    wodTest();
 
     return 0;
 }

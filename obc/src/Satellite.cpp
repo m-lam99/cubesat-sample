@@ -1,10 +1,12 @@
 #include "Satellite.h"
 #include <unistd.h>
 #include <iostream>
+#include <string>
 
 
 Satellite::Satellite()
-    : wod_(&gps_, mode_),
+    : mode_(0), 
+    wod_(&gps_, mode_),
       adc1_(2, ADC_ADDRESS1),
       adc2_(2, ADC_ADDRESS2),
       imu_(2, 0x28),
@@ -39,6 +41,15 @@ int Satellite::payloadDataTransmission() {
     message_.controlType = 0;
     message_.sendSequence = 0;
     message_.receiveSequence = 0;
+
+    encodedMsg_ = ax25::encode(&message_);
+    if (encodedMsg_ != NULL) {
+        // int success = sendMessage(encodedMsg);
+        wod_data_.pop();
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 int Satellite::checkBattery() {}
@@ -49,6 +60,7 @@ int Satellite::orbitCorrection() {}
 
 int Satellite::wodCollection() {
     wod_data_.push(wod_.GetData());
+    std::cout << (int)wod_data_.back().current_3v3 << std::endl;
     return 1;
 }
 
@@ -68,14 +80,14 @@ int Satellite::wodTransmission() {
     message_.sendSequence = 0;
     message_.receiveSequence = 0;
 
-    // ax25::ByteArray* encodedMsg = ax25::encode(&message_);
-    // if (encodedMsg != NULL) {
-    //     // int success = sendMessage(encodedMsg);
-    //     wod_data_.pop();
-    //     return 1;
-    // } else {
-    //     return 0;
-    // }
+    encodedMsg_ = ax25::encode(&message_);
+    if (encodedMsg_ != NULL) {
+        // int success = sendMessage(encodedMsg);
+        wod_data_.pop();
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 int Satellite::deployment() {}
