@@ -37,7 +37,7 @@
         // error quaternion
         double qErr[4];
 
-        // control signal ouputted to system
+        // control signal ouputted to system as Euler angles
         double output[3];
 
         // tolerance value
@@ -54,6 +54,9 @@
 
         // calculate control signal and store as 3 by 1 matrix
         void getControlSignal(void);
+
+        // convert quaternion to euler angle
+        void quatToEuler(double q[4]);
     };
 
 #endif

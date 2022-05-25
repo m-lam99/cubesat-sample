@@ -42,10 +42,10 @@ int CControl::runControlAlgorithm(void)
 {
     // SIMULATION MODE - update measurements from code
     // if in real time mode, get measurements in each iteration
-    
-    // get current state measurement and store as well as conjugate
+
+    // get current state measurement in quaternions and store as well as conjugate
     // DUMMY VALUE
-    double measurements[4] = {1, 2, 3, 4};
+    double measurements[4] = {-0.163513, -0.00360107, 0.0134277, -0.98645};
     for (int i = 0; i < 4; i++)
     {
         qM[i] = measurements[i];
@@ -59,7 +59,7 @@ int CControl::runControlAlgorithm(void)
 
     // get current angular velocity measurements and store in variable
     // DUMMY VALUE assuming constant maximum speed required
-    double velocities[3] = {1.5, 1.5, 1.5};
+    double velocities[3] = {0.02, 0.0017, 0.014};
     for (int i = 0; i < 3; i++)
     {
         angVels[i] = velocities[i];
@@ -88,10 +88,10 @@ int CControl::runControlAlgorithm(void)
             std::cout << output[i] << std::endl;
         }
         std::cout << "---" << std::endl;
-        // ideally you would be outputting euclidean coords
 
         // NOT PART OF ALGORITHM
         // get new measurement
+        // will need IMU reading
         for (int i = 1; i < 4; i++)
         {
             qM[i] = qM[i] + output[i-1];
@@ -163,9 +163,22 @@ void CControl::getControlSignal(void)
         b[i] = gainW * angVels[i];
     }
 
-    // calculate final control signal
+    // calculate final control signal in quaternion form
+    double controlQuat[4];
+    controlQuat[0] = qErr[0];
     for (int i = 0; i < 3; i++)
     {
-        output[i] = -a[i] - b[i];
+        controlQuat[i+1] = -a[i] - b[i];
     }
+
+    // obtain control signal as Euler angles
+    quatToEuler(controlQuat);
+}
+
+// convert control signal from quaternion form to Euler angles
+void CControl::quatToEuler(double q[4])
+{
+    output[0] = atan2(2*(q[0]*q[1] + q[2]*q[3]), pow(q[0],2.0) - pow(q[1],2.0) - pow(q[2],2.0) - pow(q[3],2.0));
+    output[1] = asin(2*(q[0]*q[2] - q[3]*q[1]));
+    output[2] = atan2(2*(q[0]*q[3] + q[1]*q[2]), pow(q[0],2) + pow(q[1],2) + pow(q[2],2) + pow(q[3],2));
 }
