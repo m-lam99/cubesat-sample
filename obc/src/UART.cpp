@@ -57,7 +57,7 @@ int UARTDevice::init(){
     }
 
     this->serial_port = open(name, O_RDWR | O_NOCTTY | O_NDELAY);
-    cout << "UART " << serial_port << " opened" << endl; 
+    cout << "UART opened" << endl; 
 
     if(this->serial_port < 0){
         cout << "UART failed to open" << endl; 
@@ -93,6 +93,27 @@ int UARTDevice::config(){
     tty.c_oflag = 0;
     tty.c_lflag = 0;
 
+    // // FOR TTC 
+    // tty.c_cflag &= ~PARENB;
+    // tty.c_cflag &= ~CSTOPB;
+    // tty.c_cflag &= ~CSIZE;
+    // tty.c_cflag |= CS8;
+    // tty.c_cflag &= ~CRTSCTS;
+    // tty.c_cflag |= CREAD | CLOCAL;
+    // tty.c_lflag &= ~ICANON;
+    // tty.c_lflag &= ~ECHO;
+    // tty.c_lflag &= ~ECHOE;
+    // tty.c_lflag &= ~ECHONL;
+    // tty.c_lflag &= ~ISIG;
+    // tty.c_iflag &= ~(IXON | IXOFF | IXANY);
+    // tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL);
+    // tty.c_oflag &= ~OPOST;
+    // tty.c_oflag &= ~ONLCR;
+    // tty.c_cc[VTIME] = 10;
+    // tty.c_cc[VMIN] = 0;
+    // cfsetispeed(&tty, B19200);
+    // cfsetospeed(&tty, B19200);
+
     tcflush(serial_port, TCIFLUSH);
     tcsetattr(serial_port, TCSANOW, &tty);
 
@@ -127,7 +148,7 @@ void UARTDevice::readln(char* buffer){
             *b++ = c;
         }
     }
- 
+    std::cout << buffer << std::endl; 
     return;
 }
 

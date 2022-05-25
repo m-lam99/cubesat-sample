@@ -16,17 +16,19 @@
 #include "INA219.h"
 #include "GPS.h"
 #include "AS7263.h"
-
+#include "transceiver.h"
 #include "BNO055.h"
+#include "Satellite.h"
 
 // For the PWM
 #include "PWM.h"
 
+#include <vector>
+
 using namespace exploringBB;
 
-void testGPIO()
-{
-    GPIO outGPIO(59), inGPIO(46);
+void testGPIO() {
+    GPIO outGPIO(23), inGPIO(46);
 
     // Basic Output - Flash the LED 10 times, once per second
     outGPIO.setDirection(OUTPUT);
@@ -214,9 +216,54 @@ void testGPS()
     return;
 }
 
-int main()
-{
-    //  testINA219();
-    testBNO055();    
+void wodTest() {
+    Satellite NICE;
+    NICE.wodCollection();
+    NICE.wodTransmission();
+    
+}
+
+
+void testPropulsion(){
+    Satellite NICE; 
+    std::vector<int> prop_vals{1, 3, 9, 5, 6, 2};
+    NICE.propulsion(prop_vals);
+}
+
+void testTransceiver(){
+    Transceiver comms;
+
+    comms.TestTransceiver();
+    // while(1){
+    //     std::vector<uint8_t> message = {'T', 'e', 's', 't'};
+    //     comms.TransmitMessage(message);
+    //     usleep(1000000);
+    // }
+    // std::vector<uint8_t> message = {'T', 'e', 's', 't'};
+    // comms.TransmitMessage(message);
+    // usleep(1000000);
+    while(1){
+        comms.SendCommand(comms.CMD_RECEIVE_MODE_CONFIG);
+        std::vector<uint8_t> message = comms.ReceiveData();
+        std::cout << "MESSAGE: "; 
+
+       for (unsigned int i = 0; i < comms.MAX_BYTES_AX25; i++)
+            {
+                if(message[0] == '#' && message[1] == 'R' && i>3 && i<18){
+                    std::cout << message[i]; 
+
+                }
+            }
+        std::cout << std::endl; 
+        usleep(1000000);
+    }
+    
+}
+
+int main() {
+
+    testPropulsion(); 
+    // testGPIO();
+
     return 0;
 }

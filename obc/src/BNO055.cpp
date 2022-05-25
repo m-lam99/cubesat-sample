@@ -609,6 +609,7 @@ int BNO055::i2cReadI2CBlockData(unsigned reg, char *buf, unsigned count)
     for (int i=0; i<data.block[0]; i++){
       buf[i] = data.block[i+1];
     }
+
   } 
   else {
     std::cout << "I2C read block data failed" << std::endl;
