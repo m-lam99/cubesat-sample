@@ -1,6 +1,7 @@
 #include "Satellite.h"
 #include <unistd.h>
 #include <iostream>
+#include <string>
 
 
 Satellite::Satellite()
@@ -39,6 +40,15 @@ int Satellite::payloadDataTransmission() {
     message_.controlType = 0;
     message_.sendSequence = 0;
     message_.receiveSequence = 0;
+
+    encodedMsg_ = ax25::encode(&message_);
+    if (encodedMsg_ != NULL) {
+        // int success = sendMessage(encodedMsg);
+        wod_data_.pop();
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 int Satellite::checkBattery() {}
@@ -68,14 +78,14 @@ int Satellite::wodTransmission() {
     message_.sendSequence = 0;
     message_.receiveSequence = 0;
 
-    // ax25::ByteArray* encodedMsg = ax25::encode(&message_);
-    // if (encodedMsg != NULL) {
-    //     // int success = sendMessage(encodedMsg);
-    //     wod_data_.pop();
-    //     return 1;
-    // } else {
-    //     return 0;
-    // }
+    encodedMsg_ = ax25::encode(&message_);
+    if (encodedMsg_ != NULL) {
+        // int success = sendMessage(encodedMsg);
+        wod_data_.pop();
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 int Satellite::deployment() {}

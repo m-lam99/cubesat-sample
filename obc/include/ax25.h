@@ -1,4 +1,5 @@
-
+#ifndef AX25_H
+#define AX25_H
 
 namespace ax25 {
 
@@ -38,8 +39,10 @@ namespace ax25 {
         unsigned char * bytes;
     };
 
-    ByteArray * encode(Message * message);
+    ByteArray* encode(Message* message);
 
     Message * searchForMessage(unsigned char * stream, int nstream, int receiveState);
 
-}
+};
+
+#endif
