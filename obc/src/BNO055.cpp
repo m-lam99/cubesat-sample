@@ -357,6 +357,18 @@ imu::Quaternion BNO055::getQuat(void)
 
 /**************************************************************************/
 /*!
+    @brief  Gets a angular velocity reading from the gyros
+*/
+/**************************************************************************/
+imu::Vector<3> BNO055::getRPS(void) 
+{
+
+  imu::Vector<3> rps = getVector(VECTOR_GYROSCOPE);
+  return rps;
+}
+
+/**************************************************************************/
+/*!
     @brief  Provides the sensor_t data for this sensor
 */
 /**************************************************************************/

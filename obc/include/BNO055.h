@@ -297,6 +297,7 @@ public:
 
   imu::Vector<3> getVector(adafruit_vector_type_t vector_type);
   imu::Quaternion getQuat(void);
+  imu::Vector<3> getRPS(void);
   int8_t getTemp(void);
 
   /* Adafruit_Sensor implementation */

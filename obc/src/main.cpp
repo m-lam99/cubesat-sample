@@ -181,12 +181,17 @@ void testBNO055()
         /* Display calibration status for each sensor. */
         uint8_t system, gyro, accel, mag = 0;
         bno.getCalibration(&system, &gyro, &accel, &mag);
-        imu::Vector<3> euler = bno.getVector(BNO055::VECTOR_EULER);
 
 
 	    /* Display the floating point data */
+        imu::Vector<3> euler = bno.getVector(BNO055::VECTOR_EULER);
 	    std::cout << "X: " << euler.x() <<  " Y: " << euler.y() << " Z: "
 	  	<< euler.z() << "\t\t";
+
+        /* Display Angular Velocities */
+        imu::Vector<3> rps = bno.getRPS();
+        std::cout << "X: " << rps.x() <<  " Y: " << rps.y() << " Z: "
+	  	<< rps.z() << "\t\t";
 
         std::cout << "CALIBRATION: Sys=" << (int)system << " Gyro=" << (int)gyro
                   << " Accel=" << (int)accel << " Mag=" << (int)mag << std::endl;
