@@ -38,6 +38,8 @@ class Satellite {
     int deployment();
     int checkTransceiver();
     int propulsion(std::vector<int> array);
+    uint32_t getTime(); 
+
     ~Satellite();
 
    private:

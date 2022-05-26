@@ -19,6 +19,7 @@
 #include "transceiver.h"
 #include "BNO055.h"
 #include "Satellite.h"
+#include "Computer.h"
 
 // For the PWM
 #include "PWM.h"
@@ -262,7 +263,8 @@ int main() {
     // testPWM(PWM_0A);
     // testGPIO();
     // wodTest();
-    testPropulsion();
+    Computer beaglebone; 
+    beaglebone.runSatellite(); 
 
     return 0;
 }

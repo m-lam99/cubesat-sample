@@ -13,7 +13,12 @@ using namespace std;
 // DEFAULT is Channel 4, baud 9600
 GPS::GPS( ):
     UARTDevice(GPS_CHANNEL, GPS_BAUD){
-   
+   gps_on(); 
+}
+
+GPS::~GPS( )
+{
+   gps_off(); 
 }
 
 void GPS::gps_on( ){

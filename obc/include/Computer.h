@@ -8,6 +8,8 @@
 #include <queue>
 #include <vector>
 
+#define MAX_LIFETIME 2630000 // in seconds 
+
 #define START_MODE 0
 #define EJECTION_MODE 1
 #define ORBIT_INSERTION_MODE 2
@@ -46,6 +48,10 @@ class Computer {
     uint8_t mode_;
     bool stop_continuousWOD; // overall control of the continuousWO
     
+    uint32_t start_time; 
+    bool orbit_insertion_complete; 
+
+    // command mode 
     bool WOD_transmit; // set by command
     bool collect_data; 
     bool transmit_data;     // to ground station

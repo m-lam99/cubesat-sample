@@ -86,6 +86,12 @@ int Satellite::wodCollection() {
     return 1;
 }
 
+uint32_t Satellite::getTime(){ // from gps 
+    GPS::loc_t* location_data;
+    gps_.get_location(location_data); 
+    return location_data->epoch; 
+}
+
 int Satellite::wodTransmission() {
     WholeOrbit::wod_t data_packet = wod_data_.front();
 
@@ -103,6 +109,8 @@ int Satellite::wodTransmission() {
     message_.receiveSequence = 0;
 
     encodedMsg_ = ax25::encode(&message_);
+
+    std::cout << "WOD transmit" << std::endl; 
     if (encodedMsg_ != NULL) {
         // int success = sendMessage(encodedMsg);
         wod_data_.pop();
@@ -123,7 +131,10 @@ int Satellite::deployment() {
     }
 }
 
-int Satellite::checkTransceiver() {}
+int Satellite::checkTransceiver() {
+    // checks for messages 
+    
+}
 
 int Satellite::propulsion(std::vector<int> array) {
     int n = array.size();
