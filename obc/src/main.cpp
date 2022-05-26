@@ -19,6 +19,7 @@
 #include "transceiver.h"
 #include "BNO055.h"
 #include "Satellite.h"
+#include "controller.h"
 
 // For the PWM
 #include "PWM.h"
@@ -139,7 +140,7 @@ void testPWM(string pwm_channel){
     pwm.setPolarity(PWM::ACTIVE_LOW);  // using active low PWM
     pwm.run();                     // start the PWM output
     std::cout << "PWM active" << std::endl; 
-    // pwm.stop();  // to discontinue the pwm signal 
+    //pwm.stop();  // to discontinue the pwm signal 
     return; 
 }
 
@@ -169,35 +170,49 @@ void testBNO055()
 
     bno.setExtCrystalUse(true);
 
+
+    // SETUP: Initiate the Controller Object, and hardcode desired atittude
+    imu::Vector<3> signal;
+    double references[3] = {0, 1.57, 0};
+    CControl Controller(references);
+
     while(1)
     {
-
-        // imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
-        // std::cout << "X: " << euler.x() <<  " Y: " << euler.y() << " Z: "
-	    //	<< euler.z() << "\t\t";
 
         // Display Quaternions
         imu::Quaternion quat = bno.getQuat();
         std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t\t";
 
-        /* Display calibration status for each sensor. */
-        uint8_t system, gyro, accel, mag = 0;
-        bno.getCalibration(&system, &gyro, &accel, &mag);
-
-
-	    /* Display the floating point data */
+	    /* Display Euler Angles deg */
         imu::Vector<3> euler = bno.getVector(BNO055::VECTOR_EULER);
 	    std::cout << "X: " << euler.x() <<  " Y: " << euler.y() << " Z: "
 	  	<< euler.z() << "\t\t";
 
-        /* Display Angular Velocities */
+        /* Display Angular Velocities rad/s */
         imu::Vector<3> rps = bno.getRPS();
         std::cout << "X: " << rps.x() <<  " Y: " << rps.y() << " Z: "
 	  	<< rps.z() << "\t\t";
 
+        /* Display Magnetometer Reading uT */
+        imu::Vector<3> magfield = bno.getVector(BNO055::VECTOR_MAGNETOMETER);
+        std::cout << "X: " << magfield.x() <<  " Y: " << magfield.y() << " Z: "
+	  	<< magfield.z() << "\t\t";
+ 
+        /* Display calibration status for each sensor. */
+        uint8_t system, gyro, accel, mag = 0;
+        bno.getCalibration(&system, &gyro, &accel, &mag);
         std::cout << "CALIBRATION: Sys=" << (int)system << " Gyro=" << (int)gyro
                   << " Accel=" << (int)accel << " Mag=" << (int)mag << std::endl;
 
+        signal = Controller.runControlAlgorithm(quat, rps);
+        if (Controller.getTolerance()) {
+            break;
+        }
+        // double out[3] = convertToCurrent(signal)
+        testPWM(PWM_0A);
+        testPWM(PWM_1A);
+        testPWM(PWM_2B);
+        
         usleep(10000 * BNO055_SAMPLERATE_DELAY_MS);
     }
 }
