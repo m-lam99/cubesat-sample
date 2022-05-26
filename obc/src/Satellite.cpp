@@ -131,9 +131,34 @@ int Satellite::deployment() {
     }
 }
 
+int Satellite::checkDayTime(){
+    int isDaytime = 1; 
+
+    // All channels 
+    float max_voltage = 0.0; 
+
+    for(int i = 0; i < 3; i++){
+        if(adc1_.getVoltage(i) > max_voltage){
+            max_voltage = adc1_.getVoltage(i);
+        }
+
+        if(adc2_.getVoltage(i) > max_voltage){
+            max_voltage = adc2_.getVoltage(i);
+        }
+
+    }
+
+    if(max_voltage < SUN_SENOR_THRESHOLD){
+        isDaytime = 0; 
+    }
+
+    return isDaytime; 
+
+}
+
 int Satellite::checkTransceiver() {
     // checks for messages 
-    
+
 }
 
 int Satellite::propulsion(std::vector<int> array) {

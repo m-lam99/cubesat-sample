@@ -18,6 +18,8 @@
 #include <queue>
 #include <vector>
 
+#define SUN_SENOR_THRESHOLD 0.5
+
 // Each function in Satellite class either returns a 0 or 1
 // 0: error
 // 1: smooth sailing
@@ -37,6 +39,7 @@ class Satellite {
     int wodTransmission();
     int deployment();
     int checkTransceiver();
+    int checkDayTime(); 
     int propulsion(std::vector<int> array);
     uint32_t getTime(); 
 
@@ -46,6 +49,7 @@ class Satellite {
     // ADCS sensors
     ADS1015 adc1_;
     ADS1015 adc2_;
+
     BNO055 imu_;
     GPS gps_;
 

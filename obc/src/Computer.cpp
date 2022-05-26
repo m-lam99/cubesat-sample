@@ -89,7 +89,7 @@ void Computer::orbitalInsertion(){
 
 void Computer::deployment(){
     // deploy things 
-
+    satellite.deployment(); 
     is_deployed = true; 
 }
 
@@ -105,7 +105,7 @@ void Computer::idle(){
     else if(satellite.checkOrbit() == 0){        //in a bad orbit 
         mode_ = STATION_KEEPING_MODE;
     }
-    else if(collect_data){
+    else if(collect_data && satellite.checkDayTime()){
         mode_ = NORMAL_MODE; 
     }
     else if(transmit_data){
@@ -127,7 +127,9 @@ void Computer::normal(){
 
 void Computer::stationKeeping(){}
 
-void Computer::transmit(){}
+void Computer::transmit(){
+    
+}
 
 void Computer::safe(){
 
