@@ -18,16 +18,6 @@
 #include <queue>
 #include <vector>
 
-#define EJECTION_MODE 1
-#define ORBIT_INSERTION_MODE 2
-#define DEPLOYMENT_MODE 3
-#define IDLE_MODE 4
-#define NORMAL_MODE 5
-#define TRANSMIT_MODE 6
-#define STATION_KEEPING_MODE 7
-#define SAFE_MODE 8
-#define END_OF_LIFE 9 
-
 class Satellite {
    public:
 
