@@ -26,7 +26,7 @@ class WholeOrbit {
     typedef struct wod wod_t;
     WholeOrbit(GPS* gps, uint8_t mode, INA219* current_sensor_batt);
     wod_t GetData();
-    void TransmitData();
+    void ChangeMode(int mode);
     ~WholeOrbit();
 
    private:
@@ -44,7 +44,7 @@ class WholeOrbit {
     Temperature thermistor_eps_;
     Temperature thermistor_batt_;
     
-    // 0 if valid, 1 if invalid
+    // 1 if valid, 0 if invalid
     int current_sensor_batt_valid_;
     int current_sensor_3v3_valid_;
     int current_sensor_5v_valid_;

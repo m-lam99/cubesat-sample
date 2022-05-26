@@ -18,7 +18,7 @@ int Computer::runSatellite(){
         orbitalInsertion();
         break;
     case EJECTION_MODE:
-        ejection;
+        ejection();
         break;
     case DEPLOYMENT_MODE:
         deployment();

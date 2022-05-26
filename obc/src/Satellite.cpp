@@ -6,6 +6,7 @@
 
 #include <iostream>
 
+
 Satellite::Satellite()
     : current_sensor_batt_(1, INA219_ADDRESS_BATT),
       gps_(),
@@ -14,9 +15,21 @@ Satellite::Satellite()
       adc2_(2, ADC_ADDRESS2),
       imu_(2, 0x28),
       payload_(&gps_),
-      outGPIO(23)
+      prop_GPIO_(23),
+      burn_GPIO_(59)
 {
-    outGPIO.setDirection(OUTPUT);
+    if (prop_GPIO_.setDirection(OUTPUT) == -1){
+        prop_valid_ = 0;
+    } else {
+        prop_valid_ = 1;
+    }
+
+    if (burn_GPIO_.setDirection(OUTPUT) == -1){
+        burn_valid_ = 0;
+    } else {
+        burn_valid_ = 1;
+        burn_GPIO_.setValue(LOW);
+    }
 }
 
 Satellite::~Satellite() {}
@@ -54,15 +67,12 @@ int Satellite::payloadDataTransmission() {
     }
 }
 
-// check logic
 int Satellite::checkBattery() {
     if (current_sensor_batt_.busVoltage() < BATTERY_THRESHOLD){
         // GO INTO IDLE MODE
-
-        return 1;
+        return 0;
     }
-
-    return 0;
+    return 1;
 }
 
 int Satellite::checkOrbit() {}
@@ -101,7 +111,15 @@ int Satellite::wodTransmission() {
     }
 }
 
-int Satellite::deployment() {}
+int Satellite::deployment() {
+    if (burn_GPIO_.setValue(HIGH) == -1 || !burn_valid_){
+        return 0;
+    } else {
+        usleep(1000000);
+        burn_GPIO_.setValue(LOW);
+        return 1;
+    }
+}
 
 int Satellite::checkTransceiver() {}
 
@@ -110,14 +128,18 @@ int Satellite::propulsion(std::vector<int> array) {
     for (int i = 0; i < n; ++i) {
         if (i % 2 == 0) {
             // Turn on
-            outGPIO.setValue(HIGH);
+            if (prop_GPIO_.setValue(HIGH) == -1 || !prop_valid_){
+                return 0;
+            }
         } else {
             // Turn off
-            outGPIO.setValue(LOW);
+            if (prop_GPIO_.setValue(LOW) == -1 || !prop_valid_){
+                return 0;
+            }
         }
         usleep(array[i] * 1000000);
 
-        std::cout << array[i] << std::endl;
+        // std::cout << array[i] << std::endl;
     }
     return 1;
 }

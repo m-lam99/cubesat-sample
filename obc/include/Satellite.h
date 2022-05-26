@@ -18,6 +18,10 @@
 #include <queue>
 #include <vector>
 
+// Each function in Satellite class either returns a 0 or 1
+// 0: error
+// 1: smooth sailing
+
 class Satellite {
    public:
 
@@ -49,14 +53,25 @@ class Satellite {
     // Current sensor for battery
     INA219 current_sensor_batt_;
     
-    // GPS
+    // WOD
     WholeOrbit wod_;
+
+    // Data collection
     std::queue<WholeOrbit::wod_t> wod_data_;
     std::queue<Payload::payload_data_t> payload_data_;
+
+    // AX25
     ax25::Message message_;
     ax25::ByteArray* encodedMsg_;
 
-    GPIO outGPIO;
+    // GPIO
+    GPIO prop_GPIO_;
+    GPIO burn_GPIO_;
+
+    // 0 if invalid, 1 if valid
+    int prop_valid_;
+    int burn_valid_;
+
     unsigned char srcaddr[6] = {
         'N',
         'I',

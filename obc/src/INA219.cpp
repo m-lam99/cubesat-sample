@@ -156,7 +156,6 @@ float INA219::current(){
       //    current -= 65536;
       // }
       
-      
       // std::cout << current << std::endl;
       return (float)(current)/current_lsb_;
       
