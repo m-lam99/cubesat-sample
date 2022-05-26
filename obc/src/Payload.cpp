@@ -1,15 +1,25 @@
 #include "Payload.h"
 
-Payload::Payload(GPS* gps) : gps_(gps), sensor_(2, AS7263_ADDRESS) {}
+Payload::Payload(GPS* gps) : gps_(gps), sensor_(2, AS7263_ADDRESS) {
+    // Check if correct device
+    if (sensor_.readVirtualReg(AS7263::VIRTUAL_REG::HW_VERSION) != 0x20){
+        valid_ = 0;
+    } else {
+        valid_ = 1;
+    }
+}
 
 Payload::payload_data_t Payload::getData(){
-    data_buf_.R = sensor_.getR();
-    data_buf_.S = sensor_.getS();
-    data_buf_.T = sensor_.getT();
-    data_buf_.U = sensor_.getU();
-    data_buf_.V = sensor_.getV();
-    data_buf_.W = sensor_.getW();
-
+    if (valid_){
+        // Automatically returns 0 if particular channel is not working
+        data_buf_.R = sensor_.getR();
+        data_buf_.S = sensor_.getS();
+        data_buf_.T = sensor_.getT();
+        data_buf_.U = sensor_.getU();
+        data_buf_.V = sensor_.getV();
+        data_buf_.W = sensor_.getW();
+    }
+    
     GPS::loc_t *loc_data;
     gps_->get_location(loc_data);
 

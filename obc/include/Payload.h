@@ -31,6 +31,7 @@ class Payload {
     AS7263 sensor_;
     GPS* gps_;
     payload_data_t data_buf_;
+    int valid_;
 };
 
 #endif
