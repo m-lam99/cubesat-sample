@@ -35,7 +35,12 @@ Satellite::Satellite()
 
 Satellite::~Satellite() {}
 
-int Satellite::detumbling() {}
+int Satellite::detumbling() {
+
+    // return true if finished 
+    return true; 
+
+}
 
 
 int Satellite::payloadDataCollection() {

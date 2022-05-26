@@ -147,7 +147,9 @@ void Computer::normal(){
     // 
 }
 
-void Computer::stationKeeping(){}
+void Computer::stationKeeping(){
+    
+}
 
 void Computer::transmit(){
     // transmits payload 
