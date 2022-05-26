@@ -3,17 +3,6 @@
 #ifndef COMPUTER_H
 #define COMPUTER_H
 
-#include "ADS1015.h"
-#include "AS7263.h"
-#include "BNO055.h"
-#include "GPS.h"
-#include "INA219.h"
-#include "PWM.h"
-#include "Temperature.h"
-#include "WholeOrbit.h"
-#include "ax25.h"
-#include "Payload.h"
-#include "GPIO.h"
 #include "Satellite.h"
 
 #include <queue>
@@ -38,7 +27,7 @@ class Computer {
     ~Computer();
 
    private:
-   
+
     int start();
     int ejection(); 
     int orbitalInsertion();
@@ -54,6 +43,7 @@ class Computer {
     // Create a satellite
     Satellite satellite;   
     uint8_t mode_;
+    bool WOD_state; // set by command
 
 };
 
