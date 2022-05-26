@@ -1,23 +1,27 @@
 #include "Computer.h"
 #include <thread>
+#include <unistd.h>
 
 Computer::Computer()
     : satellite(),
       mode_(START_MODE),
-      WOD_state(true)
+      WOD_transmit(true),
+      stop_transmit(true),
+      collect_data(false) 
       {
       }
 
-Computer::~Computer() {}
+Computer::~Computer() {
+    stop_continuousWOD = true
+}
 
 int Computer::runSatellite(){
-    
-    while(1){
-    // WOD operates independtly of mode unless it has been turned off 
-        if(WOD_state){
+    // Start WOD transmission 
+    thread tWODtransmit(&Computer::continuousWOD, this);
+    stop_continuousWOD = false; // start wod
 
-        }
-        
+    while(1){
+
         switch (mode_)
             {
             case START_MODE:
@@ -53,27 +57,55 @@ int Computer::runSatellite(){
             default:
                 break;
             }
+    }
+    stop_continuousWOD = true; 
+    tWODtransmit.join();  
+
+}
+
+void Computer::start(){
+
+}
+
+void Computer::ejection(){}
+
+void Computer::orbitalInsertion(){}
+
+void Computer::deployment(){}
+
+void Computer::idle(){
+
+    if(satellite.checkOrbit() == 0){        //in a bad orbit 
+        mode_ = STATION_KEEPING_MODE;
+    }
+    else if(collect_data){
+        mode_ = NORMAL_MODE; 
+    }
+    else if(transmit_data){
+        mode_ = TRANSMIT_MODE; 
+    }
+}
+
+void Computer::normal(){}
+
+void Computer::stationKeeping(){}
+
+void Computer::transmit(){}
+
+void Computer::safe(){}
+
+void Computer::endOfLife(){}
+
+int Computer::continuousWOD(){
+    // exits function when stop_transmission 
+    
+    while(!stop_continuousWOD){
+        if(WOD_transmit){
+            satellite.wodTransmission();
         }
+        usleep(30 * 1000000); 
+        // transmit every 30 seconds 
+    }
+
+    return 0; 
 }
-
-int Computer::start(){
-
-}
-
-int Computer::ejection(){}
-
-int Computer::orbitalInsertion(){}
-
-int Computer::deployment(){}
-
-int Computer::idle(){}
-
-int Computer::normal(){}
-
-int Computer::stationKeeping(){}
-
-int Computer::transmit(){}
-
-int Computer::safe(){}
-
-int Computer::endOfLife(){}

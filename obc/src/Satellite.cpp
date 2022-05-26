@@ -36,6 +36,7 @@ Satellite::~Satellite() {}
 
 int Satellite::detumbling() {}
 
+
 int Satellite::payloadDataCollection() {
     payload_data_.push(payload_.getData());
     return 1;
@@ -109,6 +110,7 @@ int Satellite::wodTransmission() {
     } else {
         return 0;
     }
+
 }
 
 int Satellite::deployment() {

@@ -28,23 +28,27 @@ class Computer {
 
    private:
 
-    int start();
-    int ejection(); 
-    int orbitalInsertion();
-    int deployment();
-    int idle();
-    int normal();
-    int stationKeeping();
-    int transmit();
-    int safe();
-    int endOfLife();
+    void start();
+    void ejection(); 
+    void orbitalInsertion();
+    void deployment();
+    void idle();
+    void normal();
+    void stationKeeping();
+    void transmit();
+    void safe();
+    void endOfLife();
 
+    int continuousWOD(); 
 
     // Create a satellite
     Satellite satellite;   
     uint8_t mode_;
-    bool WOD_state; // set by command
-
+    bool stop_continuousWOD; // overall control of the continuousWO
+    
+    bool WOD_transmit; // set by command
+    bool collect_data; 
+    bool transmit_data;     // to ground station
 };
 
 #endif

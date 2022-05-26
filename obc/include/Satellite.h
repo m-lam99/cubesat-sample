@@ -92,7 +92,7 @@ class Satellite {
 
     uint8_t mode_;
 
-    const float BATTERY_THRESHOLD  = 2.7;
+    const float BATsTERY_THRESHOLD  = 2.7;
 
 };
 
