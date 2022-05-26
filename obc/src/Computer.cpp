@@ -9,40 +9,43 @@ Computer::Computer()
 Computer::~Computer() {}
 
 int Computer::runSatellite(){
+    
+    while(1){
     switch (mode_)
-    {
-    case START_MODE:
-        start();
-        break;
-    case ORBIT_INSERTION_MODE:
-        orbitalInsertion();
-        break;
-    case EJECTION_MODE:
-        ejection;
-        break;
-    case DEPLOYMENT_MODE:
-        deployment();
-        break;
-    case IDLE_MODE:
-        idle();
-        break;
-    case NORMAL_MODE:
-        normal();
-        break;
-    case STATION_KEEPING_MODE:
-        stationKeeping();
-        break;
-    case TRANSMIT_MODE:
-        transmit();
-        break;
-    case SAFE_MODE:
-        safe();
-        break;
-    case END_OF_LIFE:
-        endOfLife();
-        break;
-    default:
-        break;
+        {
+        case START_MODE:
+            start();
+            break;
+        case ORBIT_INSERTION_MODE:
+            orbitalInsertion();
+            break;
+        case EJECTION_MODE:
+            ejection;
+            break;
+        case DEPLOYMENT_MODE:
+            deployment();
+            break;
+        case IDLE_MODE:
+            idle();
+            break;
+        case NORMAL_MODE:
+            normal();
+            break;
+        case STATION_KEEPING_MODE:
+            stationKeeping();
+            break;
+        case TRANSMIT_MODE:
+            transmit();
+            break;
+        case SAFE_MODE:
+            safe();
+            break;
+        case END_OF_LIFE:
+            endOfLife();
+            break;
+        default:
+            break;
+        }
     }
 }
 

@@ -38,7 +38,7 @@ class Computer {
     ~Computer();
 
    private:
-
+   
     int start();
     int ejection(); 
     int orbitalInsertion();
