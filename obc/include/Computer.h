@@ -42,12 +42,14 @@ class Computer {
     void endOfLife();
 
     int continuousWOD(); 
+    int payloadTransmit(); 
 
     // Create a satellite
     Satellite satellite;   
     uint8_t mode_;
     bool stop_continuousWOD; // overall control of the continuousWO
-    
+    bool stop_payloadTransmit;
+
     uint32_t start_time; 
     bool orbit_insertion_complete; 
 
@@ -55,6 +57,9 @@ class Computer {
     bool WOD_transmit; // set by command
     bool collect_data; 
     bool transmit_data;     // to ground station
+    
+    bool payload_collection; 
+
 };
 
 #endif

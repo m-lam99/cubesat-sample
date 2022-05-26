@@ -16,7 +16,8 @@ Satellite::Satellite()
       imu_(2, 0x28),
       payload_(&gps_),
       prop_GPIO_(23),
-      burn_GPIO_(59)
+      burn_GPIO_(59),
+      transceiver_()
 {
     if (prop_GPIO_.setDirection(OUTPUT) == -1){
         prop_valid_ = 0;
@@ -61,6 +62,7 @@ int Satellite::payloadDataTransmission() {
     encodedMsg_ = ax25::encode(&message_);
     if (encodedMsg_ != NULL) {
         // int success = sendMessage(encodedMsg);
+
         wod_data_.pop();
         return 1;
     } else {
@@ -112,6 +114,9 @@ int Satellite::wodTransmission() {
 
     std::cout << "WOD transmit" << std::endl; 
     if (encodedMsg_ != NULL) {
+        // Transmit message
+        //transceiver_.TransmitMessage(encodedMsg_); 
+
         // int success = sendMessage(encodedMsg);
         wod_data_.pop();
         return 1;
@@ -156,8 +161,24 @@ int Satellite::checkDayTime(){
 
 }
 
-int Satellite::checkTransceiver() {
+std::vector<uint8_t> Satellite::checkTransceiver() {
     // checks for messages 
+     transceiver_.SendCommand(transceiver_ .CMD_RECEIVE_MODE_CONFIG);
+        std::vector<uint8_t> message = transceiver_.ReceiveData();
+        std::cout << "MESSAGE: "; 
+
+       for (unsigned int i = 0; i < transceiver_.MAX_BYTES_AX25; i++)
+            {
+                if(message[0] == '#' && message[1] == 'R' && i>3 && i<18){
+                    std::cout << message[i]; 
+
+                }
+            }
+        std::cout << std::endl; 
+    
+    // UNPACK message 
+    
+    return message; 
 
 }
 

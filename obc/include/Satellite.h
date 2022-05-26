@@ -14,6 +14,7 @@
 #include "ax25.h"
 #include "Payload.h"
 #include "GPIO.h"
+#include "transceiver.h"
 
 #include <queue>
 #include <vector>
@@ -38,7 +39,7 @@ class Satellite {
     int wodCollection();
     int wodTransmission();
     int deployment();
-    int checkTransceiver();
+    std::vector<uint8_t> checkTransceiver();
     int checkDayTime(); 
     int propulsion(std::vector<int> array);
     uint32_t getTime(); 
@@ -77,6 +78,9 @@ class Satellite {
     // 0 if invalid, 1 if valid
     int prop_valid_;
     int burn_valid_;
+
+    // transciever 
+    Transceiver transceiver_; 
 
     unsigned char srcaddr[6] = {
         'N',

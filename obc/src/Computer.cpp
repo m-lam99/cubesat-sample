@@ -1,13 +1,17 @@
 #include "Computer.h"
 #include <thread>
 #include <unistd.h>
+#include <chrono>
+#include <future>
 
 Computer::Computer()
     : satellite(),
       mode_(START_MODE),
       WOD_transmit(true),
       stop_transmit(true),
+      stop_payloadTransmit(true), 
       collect_data(false), 
+      payload_collection(false)
       orbit_insertion_complete(false) 
       {
           start_time = satellite.getTime(); 
@@ -15,12 +19,28 @@ Computer::Computer()
       }
 
 Computer::~Computer() {
-    stop_continuousWOD = true
+    stop_continuousWOD = true; 
+}
+
+int Computer::payloadTransmit() {
+     // exits function when stop_transmission 
+
+    while(!stop_payloadTransmit){
+        if(payload_collection){
+           stillTransmitting = satellite.payloadDataTransmission();
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        // transmit every seconds 
+    }
+
+    return 0; 
 }
 
 int Computer::runSatellite(){
     // Start WOD transmission 
     thread tWODtransmit(&Computer::continuousWOD, this);
+    thread tPayloadTransmit(&Computer::payloadTransmit, this);
+    stop_payloadTransmit = false; 
     stop_continuousWOD = false; // start wod
 
     while(1){
@@ -67,7 +87,9 @@ int Computer::runSatellite(){
             }
     }
     stop_continuousWOD = true; 
+    stop_payloadTransmit = true;
     tWODtransmit.join();  
+    tPayloadTransmit.join(); 
 
 }
 
@@ -128,7 +150,14 @@ void Computer::normal(){
 void Computer::stationKeeping(){}
 
 void Computer::transmit(){
-    
+    // transmits payload 
+    payload_collection = true; 
+     
+    if(!stillTransmitting){
+        mode_ = IDLE_MODE;
+        payload_collection = false; 
+    }
+
 }
 
 void Computer::safe(){
@@ -156,7 +185,7 @@ int Computer::continuousWOD(){
         if(WOD_transmit){
             satellite.wodTransmission();
         }
-        usleep(30 * 1000000); 
+        std::this_thread::sleep_for(std::chrono::milliseconds(30000));
         // transmit every 30 seconds 
     }
 
