@@ -22,6 +22,7 @@ class Satellite {
    public:
 
     Satellite();
+    int runSatellite();
     int detumbling();
     int payloadDataCollection();
     int payloadDataTransmission();

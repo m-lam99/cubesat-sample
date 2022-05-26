@@ -121,3 +121,4 @@ int Satellite::propulsion(std::vector<int> array) {
     }
     return 1;
 }
+
