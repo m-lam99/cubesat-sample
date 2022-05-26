@@ -4,10 +4,10 @@
 #include <iostream>
 
 
-WholeOrbit::WholeOrbit(GPS* gps, uint8_t mode): 
+WholeOrbit::WholeOrbit(GPS* gps, uint8_t mode, INA219* current_sensor_batt): 
     gps_(gps),
     mode_(mode),
-    current_sensor_batt_(1, INA219_ADDRESS_BATT),
+    current_sensor_batt_(current_sensor_batt),
     current_sensor_3v3_(1, INA219_ADDRESS_3V3),
     current_sensor_5v_(1, INA219_ADDRESS_5V),
     thermistor_comms_(1),
@@ -15,7 +15,7 @@ WholeOrbit::WholeOrbit(GPS* gps, uint8_t mode):
     thermistor_batt_(0) {
         
         
-        if (current_sensor_batt_.open() == 1){
+        if (current_sensor_batt_->open() == 1){
             current_sensor_batt_valid_ = 1;
         }
         
@@ -32,7 +32,7 @@ WholeOrbit::WholeOrbit(GPS* gps, uint8_t mode):
             current_sensor_5v_valid_ = 0;
             
             // Do some config stuff for current sensors
-            current_sensor_batt_valid_ = current_sensor_batt_.writeRegister(INA219::REGISTERS::CALIBRATION, 4096);
+            current_sensor_batt_valid_ = current_sensor_batt_->writeRegister(INA219::REGISTERS::CALIBRATION, 4096);
             current_sensor_3v3_valid_ = current_sensor_3v3_.writeRegister(INA219::REGISTERS::CALIBRATION, 4096);
             current_sensor_5v_valid_ = current_sensor_5v_.writeRegister(INA219::REGISTERS::CALIBRATION, 4096);
 
@@ -58,13 +58,13 @@ WholeOrbit::wod_t WholeOrbit::GetData(){
     std::cout << (int)mode_ << std::endl;
 
     // UUI8 = min(0, max(28-1, floor( (20 * U) - 60) ) ) 
-    float voltage_batt_f = current_sensor_batt_.busVoltage();
+    float voltage_batt_f = current_sensor_batt_->busVoltage();
     wod_.voltage_batt = std::max(0, std::min(1<<8 -1, (int)floor((20*voltage_batt_f) - 60)));
 
     // std::cout << voltage_batt_f << ", ";
 
     // IUI8 = min(0, max(28-1, floor( 127 * I ) + 127) )
-    float current_batt_f = current_sensor_batt_.current();
+    float current_batt_f = current_sensor_batt_->current();
     wod_.current_batt = std::max(0, std::min(1<<8 - 1, (int)floor(127*current_batt_f)+127));
 
     // std::cout << current_batt_f << ", ";

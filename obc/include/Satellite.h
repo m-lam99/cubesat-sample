@@ -44,6 +44,9 @@ class Satellite {
 
     // Payload
     Payload payload_;
+
+    // Current sensor for battery
+    INA219 current_sensor_batt_;
     
     // GPS
     WholeOrbit wod_;
@@ -72,6 +75,8 @@ class Satellite {
     // PWM
 
     uint8_t mode_;
+
+    const float BATTERY_THRESHOLD  = 2.7;
 
 };
 

@@ -1,21 +1,23 @@
 #include "Satellite.h"
+
 #include <unistd.h>
 #include <iostream>
 #include <string>
 
+#include <iostream>
 
 Satellite::Satellite()
-    : mode_(0), 
-    wod_(&gps_, mode_),
+    : current_sensor_batt_(1, INA219_ADDRESS_BATT),
+      gps_(),
+      wod_(&gps_, mode_, &current_sensor_batt_),
       adc1_(2, ADC_ADDRESS1),
       adc2_(2, ADC_ADDRESS2),
       imu_(2, 0x28),
-      gps_(),
       payload_(&gps_),
-      outGPIO(23) //change pin number!!!!!!!! 
-      {
-          outGPIO.setDirection(OUTPUT);
-      }
+      outGPIO(23)
+{
+    outGPIO.setDirection(OUTPUT);
+}
 
 Satellite::~Satellite() {}
 
@@ -52,7 +54,16 @@ int Satellite::payloadDataTransmission() {
     }
 }
 
-int Satellite::checkBattery() {}
+// check logic
+int Satellite::checkBattery() {
+    if (current_sensor_batt_.busVoltage() < BATTERY_THRESHOLD){
+        // GO INTO IDLE MODE
+
+        return 1;
+    }
+
+    return 0;
+}
 
 int Satellite::checkOrbit() {}
 
@@ -95,21 +106,18 @@ int Satellite::deployment() {}
 int Satellite::checkTransceiver() {}
 
 int Satellite::propulsion(std::vector<int> array) {
-    
     int n = array.size();
     for (int i = 0; i < n; ++i) {
-        
-        if (i % 2 == 0) {   
+        if (i % 2 == 0) {
             // Turn on
             outGPIO.setValue(HIGH);
         } else {
             // Turn off
             outGPIO.setValue(LOW);
         }
-        usleep(array[i]*1000000);
+        usleep(array[i] * 1000000);
 
         std::cout << array[i] << std::endl;
-        
     }
     return 1;
 }
