@@ -125,9 +125,9 @@ double GPS::gps_deg_dec(double deg_point)
 uint8_t GPS::get_NMEA_type(const char *message)
 {
     uint8_t checksum = 0;
-    if ((checksum = nmea_valid_checksum(message)) != _EMPTY) {
-        return checksum;
-    }
+    // if ((checksum = nmea_valid_checksum(message)) != _EMPTY) {
+    //     return checksum;
+    // }
 
     if (strstr(message, NMEA_GPGGA_STR) != NULL) {
         return NMEA_GPGGA;
