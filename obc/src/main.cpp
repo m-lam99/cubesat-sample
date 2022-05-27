@@ -10,15 +10,15 @@
 #include <unistd.h> //for usleep
 #include <iomanip>  // for setprecision
 
-#include "ADS1015.h"
-#include "GPIO.h"
-#include "I2C.h"
-#include "INA219.h"
-#include "GPS.h"
-#include "AS7263.h"
-#include "transceiver.h"
-#include "BNO055.h"
-#include "Satellite.h"
+// #include "ADS1015.h"
+// #include "GPIO.h"
+// #include "I2C.h"
+// #include "INA219.h"
+// #include "GPS.h"
+// #include "AS7263.h"
+// #include "transceiver.h"
+// #include "BNO055.h"
+// #include "Satellite.h"
 #include "Computer.h"
 
 // For the PWM
