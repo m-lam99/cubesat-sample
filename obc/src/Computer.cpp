@@ -16,7 +16,7 @@ Computer::Computer()
       payload_collection(false),
       orbit_insertion_complete(false) 
       {
-          start_time = satellite.getTime(); 
+          //start_time = satellite.getTime(); 
           cout << "Computer initialised" << endl;
 
       }
@@ -48,6 +48,7 @@ int Computer::runSatellite(){
     stop_payloadTransmit = false; 
     stop_continuousWOD = false; // start wod
 
+    std::cout << "RUNNIGN STATELLITE" << std:: endl; 
     while(1){
 
         // // Enters safe mode from any 
