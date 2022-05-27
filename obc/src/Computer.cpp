@@ -16,7 +16,7 @@ Computer::Computer()
       payload_collection(false),
       orbit_insertion_complete(false) 
       {
-          //start_time = satellite.getTime(); 
+          start_time = satellite.getTime(); 
           cout << "Computer initialised" << endl;
 
       }
@@ -30,8 +30,8 @@ int Computer::payloadTransmit() {
 
     while(!stop_payloadTransmit){
         if(payload_collection){
-           //still_transmitting = satellite.payloadDataTransmission();
-           still_transmitting = true; 
+           still_transmitting = satellite.payloadDataTransmission();
+           //still_transmitting = true; 
            std::cout << "TRANSMITTING" << std::endl; 
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
@@ -51,12 +51,12 @@ int Computer::runSatellite(){
     std::cout << "RUNNIGN STATELLITE" << std:: endl; 
     while(1){
 
-        // // Enters safe mode from any 
-        // if(!satellite.checkBattery()){
-        //     mode_ = SAFE_MODE; 
-        // }
+        // Enters safe mode from any 
+        if(!satellite.checkBattery()){
+            mode_ = SAFE_MODE; 
+        }
 
-        switch (TRANSMIT_MODE)
+        switch (mode_)
             {
             case START_MODE:
                 start();
@@ -158,7 +158,6 @@ void Computer::stationKeeping(){
 
 void Computer::transmit(){
     // transmits payload 
-    std::cout << "TRANSMISSION" << std::endl;
 
     payload_collection = true; 
     
@@ -194,11 +193,11 @@ int Computer::continuousWOD(){
     
     while(!stop_continuousWOD){
         if(WOD_transmit){
-           // satellite.wodTransmission();
+           satellite.wodTransmission();
            std::cout << "WOD Transmission" << std::endl; 
         }
-        //std::this_thread::sleep_for(std::chrono::milliseconds(30000));
-        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(30000));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
         // transmit every 30 seconds 
     }

@@ -27,9 +27,10 @@ class Computer {
     Computer();
     int runSatellite();
     ~Computer();
-    uint8_t mode_;
 
    private:
+   
+    uint8_t mode_;
 
     void start();
     void ejection(); 
