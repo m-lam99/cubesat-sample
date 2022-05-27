@@ -265,7 +265,8 @@ int main() {
     //wodTest();
    
    GPS gps; 
-    Payload payload(&gps); 
+   AS7263 sensor_(2, AS7263_ADDRESS);
+    //Payload payload(&gps); 
     //Transceiver transceiver_();
     // gps_(gps), sensor_(2, AS7263_ADDRESS)
     // Computer beaglebone; 
