@@ -156,6 +156,8 @@ void Computer::stationKeeping(){
 
 void Computer::transmit(){
     // transmits payload 
+    std::cout << "TRANSMISSION" << std::endl;
+
     payload_collection = true; 
     
     usleep(1500000); // wait for the payload data to be transmitted 
