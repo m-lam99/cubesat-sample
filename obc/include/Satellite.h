@@ -20,7 +20,6 @@
 #include <vector>
 
 #define SUN_SENOR_THRESHOLD 0.5
-
 // Each function in Satellite class either returns a 0 or 1
 // 0: error
 // 1: smooth sailing
@@ -102,7 +101,7 @@ class Satellite {
 
     uint8_t mode_;
 
-    const float BATsTERY_THRESHOLD  = 2.7;
+    const float BATTERY_THRESHOLD  = 2.7;
 
 };
 
