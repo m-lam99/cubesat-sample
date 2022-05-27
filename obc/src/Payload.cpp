@@ -1,4 +1,5 @@
 #include "Payload.h"
+#include <iostream>
 
 Payload::Payload(GPS* gps) : gps_(gps), sensor_(2, AS7263_ADDRESS) {
     // Check if correct device
@@ -7,6 +8,8 @@ Payload::Payload(GPS* gps) : gps_(gps), sensor_(2, AS7263_ADDRESS) {
     } else {
         valid_ = 1;
     }
+
+    std::cout << "PAyload initition" << std::endl; 
 }
 
 Payload::payload_data_t Payload::getData(){
