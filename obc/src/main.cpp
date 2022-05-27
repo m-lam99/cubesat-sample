@@ -265,7 +265,6 @@ int main() {
     //wodTest();
    
    GPS gps; 
-    BNO055 imu_(2, 0x28); 
     Payload payload(&gps); 
     Transceiver transceiver_();
     // gps_(gps), sensor_(2, AS7263_ADDRESS)
