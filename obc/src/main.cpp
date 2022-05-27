@@ -266,7 +266,7 @@ int main() {
    
    GPS gps; 
     Payload payload(&gps); 
-    Transceiver transceiver_();
+    //Transceiver transceiver_();
     // gps_(gps), sensor_(2, AS7263_ADDRESS)
     // Computer beaglebone; 
     // beaglebone.mode_ = TRANSMIT_MODE; 
