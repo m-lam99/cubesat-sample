@@ -265,6 +265,8 @@ int main() {
     // wodTest();
     Computer beaglebone; 
     beaglebone.runSatellite(); 
-
+    beaglebone.mode_ = TRANSMIT_MODE; 
+    usleep(20000000); 
+    beaglebone.mode_=IDLE_MODE; 
     return 0;
 }

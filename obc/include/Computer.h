@@ -27,6 +27,7 @@ class Computer {
     Computer();
     int runSatellite();
     ~Computer();
+    uint8_t mode_;
 
    private:
 
@@ -46,9 +47,9 @@ class Computer {
 
     // Create a satellite
     Satellite satellite;   
-    uint8_t mode_;
     bool stop_continuousWOD; // overall control of the continuousWO
     bool stop_payloadTransmit;
+    bool stop_transmit; 
 
     uint32_t start_time; 
     bool orbit_insertion_complete; 
@@ -59,6 +60,7 @@ class Computer {
     bool transmit_data;     // to ground station
     
     bool payload_collection; 
+    bool still_transmitting; 
 
 };
 
