@@ -16,6 +16,7 @@ ADS1015::ADS1015(unsigned int I2CBus, unsigned int I2CAddress)
     // PGA +-1.024 V
     writeRegister(ADDRESS_POINTER::CONFIG, 0x4683);
     setFSR();
+    std::cout << "ADC INITIALISED" << std::endl; 
 }
 
 int ADS1015::writeRegister(unsigned int registerAddress, uint16_t value)
