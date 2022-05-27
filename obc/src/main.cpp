@@ -262,12 +262,13 @@ void testTransceiver(){
 int main() {
     // testPWM(PWM_0A);
     // testGPIO();
-    // wodTest();
-    Computer beaglebone; 
-    beaglebone.mode_ = TRANSMIT_MODE; 
-    beaglebone.runSatellite(); 
+    //wodTest();
+    WholeOrbit wod_
+    // Computer beaglebone; 
+    // beaglebone.mode_ = TRANSMIT_MODE; 
+    // beaglebone.runSatellite(); 
     
-    usleep(20000000); 
-    beaglebone.mode_=IDLE_MODE; 
+    // usleep(20000000); 
+    // beaglebone.mode_=IDLE_MODE; 
     return 0;
 }
