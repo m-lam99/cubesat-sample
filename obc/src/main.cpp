@@ -263,7 +263,7 @@ int main() {
     // testPWM(PWM_0A);
     // testGPIO();
     //wodTest();
-    WholeOrbit wod_
+    WholeOrbit wod_;
     // Computer beaglebone; 
     // beaglebone.mode_ = TRANSMIT_MODE; 
     // beaglebone.runSatellite(); 
