@@ -264,8 +264,9 @@ int main() {
     // testGPIO();
     // wodTest();
     Computer beaglebone; 
-    beaglebone.runSatellite(); 
     beaglebone.mode_ = TRANSMIT_MODE; 
+    beaglebone.runSatellite(); 
+    
     usleep(20000000); 
     beaglebone.mode_=IDLE_MODE; 
     return 0;
