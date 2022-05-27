@@ -17,6 +17,7 @@ Computer::Computer()
       orbit_insertion_complete(false) 
       {
           start_time = satellite.getTime(); 
+          cout << "Computer initialised" << endl;
 
       }
 
