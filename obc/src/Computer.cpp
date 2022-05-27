@@ -49,12 +49,12 @@ int Computer::runSatellite(){
 
     while(1){
 
-        // Enters safe mode from any 
-        if(!satellite.checkBattery()){
-            mode_ = SAFE_MODE; 
-        }
+        // // Enters safe mode from any 
+        // if(!satellite.checkBattery()){
+        //     mode_ = SAFE_MODE; 
+        // }
 
-        switch (mode_)
+        switch (TRANSMIT_MODE)
             {
             case START_MODE:
                 start();
