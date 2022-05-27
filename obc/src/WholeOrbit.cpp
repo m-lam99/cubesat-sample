@@ -41,7 +41,7 @@ WholeOrbit::WholeOrbit(GPS* gps, uint8_t mode, INA219* current_sensor_batt):
             current_sensor_5v_valid_ = current_sensor_5v_.writeRegister(INA219::REGISTERS::CALIBRATION, 4096);
         }
         
-        // std::cout << current_sensor_3v3_valid_ << current_sensor_batt_valid_ << current_sensor_5v_valid_ << std::endl;
+        std::cout << current_sensor_3v3_valid_ << current_sensor_batt_valid_ << current_sensor_5v_valid_ << std::endl;
 
         
 }
