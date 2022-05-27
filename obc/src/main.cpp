@@ -265,9 +265,9 @@ int main() {
     //wodTest();
    
    GPS gps; 
-    ADS1015 adc1_(2, ADC_ADDRESS1);
-    // Payload payload(&gps, ); 
-
+    BNO055 imu_(2, 0x28); 
+    Payload payload(&gps); 
+    Transceiver transceiver_();
     // gps_(gps), sensor_(2, AS7263_ADDRESS)
     // Computer beaglebone; 
     // beaglebone.mode_ = TRANSMIT_MODE; 
