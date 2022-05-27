@@ -263,10 +263,13 @@ int main() {
     // testPWM(PWM_0A);
     // testGPIO();
     //wodTest();
-    // GPS gps; 
-    // INA219 current(1, INA219_ADDRESS_3V3);
-    // WholeOrbit wod_(&gps, 0, &current);
-    Computer beaglebone; 
+   
+   GPS gps; 
+    ADS1015 adc1_(2, ADC_ADDRESS1);
+    // Payload payload(&gps, ); 
+
+    // gps_(gps), sensor_(2, AS7263_ADDRESS)
+    // Computer beaglebone; 
     // beaglebone.mode_ = TRANSMIT_MODE; 
     // beaglebone.runSatellite(); 
     

@@ -31,6 +31,8 @@ Satellite::Satellite()
         burn_valid_ = 1;
         burn_GPIO_.setValue(LOW);
     }
+
+    std::cout << "SATELLITE initialisied" << std::endl;
 }
 
 Satellite::~Satellite() {}
