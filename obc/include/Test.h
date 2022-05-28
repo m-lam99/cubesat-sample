@@ -11,11 +11,11 @@ class Test{
         void testADS1015();                     // "adc"
         void testAS7263();                      // "pay"
         void testPWM(std::string pwm_channel);  // "pwm"
-        void testBNO055(); 
-        void testGPS();
-        void wodTest();
-        void testPropulsion();
-        void testTransceiver();
+        void testBNO055();                      // "imu"
+        void testGPS();                         // "gps"
+        void wodTest();                         // "wod"
+        void testPropulsion();                  // "prop"
+        void testTransceiver();                 // "ttc"
 
 };
 
