@@ -62,9 +62,14 @@ uint8_t AS7263::readVirtualReg(unsigned int virtual_reg) {
     while (1) {
         // Read slave I2C status to see if the read buffer is ready.
         status = readRegister(REGISTERS::STATUS);
-        if ((status & AS7263_TX_VALID) == 0)
+        if ((status & AS7263_TX_VALID) == 0){
             // No inbound TX pending at slave.  Okay to write now.
             break;
+        }
+        else {
+            return 0;
+            break;
+        }
     }
     // Send the virtual register address (setting bit 7 to indicate a pending
     // write).
@@ -72,9 +77,14 @@ uint8_t AS7263::readVirtualReg(unsigned int virtual_reg) {
     while (1) {
         // Read the slave I²C status to see if our read data is available.
         status = readRegister(REGISTERS::STATUS);
-        if ((status & AS7263_RX_VALID) != 0)
+        if ((status & AS7263_RX_VALID) != 0){
             // Read data is ready.
             break;
+        }
+        else { 
+            return 0;
+            break;
+        }
     }
 
     // Read the data to complete the operation.
