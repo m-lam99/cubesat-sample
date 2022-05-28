@@ -46,12 +46,14 @@ class Computer {
 
     int continuousWOD(); 
     int payloadTransmit(); 
+    void commandReceive(); 
 
     // Create a satellite
     Satellite satellite;   
     bool stop_continuousWOD; // overall control of the continuousWO
     bool stop_payloadTransmit;
     bool stop_transmit; 
+    bool stop_receive; 
 
     uint32_t start_time; 
     bool orbit_insertion_complete; 
@@ -61,8 +63,14 @@ class Computer {
     bool collect_data; 
     bool transmit_data;     // to ground station
     
+    // 
     bool payload_collection; 
     bool still_transmitting; 
+
+    // Receive data 
+    bool can_receive_WOD;
+    bool can_receive_payload;
+    bool new_command; 
 };
 
 #endif

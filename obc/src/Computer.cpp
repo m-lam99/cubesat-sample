@@ -12,12 +12,15 @@ Computer::Computer()
       WOD_transmit(true),
       stop_transmit(true),
       stop_payloadTransmit(true), 
+      stop_receive(true), 
       collect_data(false), 
       payload_collection(false),
-      orbit_insertion_complete(false) 
+      orbit_insertion_complete(false), 
+      can_receive_WOD(true),
+      can_receive_payload(true)
       {
           start_time = satellite.getTime(); 
-
+          new_command = false; 
           cout << "Computer initialised" << endl;
 
       }
@@ -31,7 +34,9 @@ int Computer::payloadTransmit() {
 
     while(!stop_payloadTransmit){
         if(payload_collection){
+            can_receive_payload = false; 
            still_transmitting = satellite.payloadDataTransmission();
+           can_receive_payload = true; 
            //still_transmitting = true; 
            std::cout << "TRANSMITTING" << std::endl; 
         }
@@ -46,8 +51,11 @@ int Computer::runSatellite(){
     // Start WOD transmission 
     thread tWODtransmit(&Computer::continuousWOD, this);
     thread tPayloadTransmit(&Computer::payloadTransmit, this);
+    thread tCommandReceive(&Computer::commandReceive, this);
+
     stop_payloadTransmit = false; 
     stop_continuousWOD = false; // start wod
+    stop_receive = false; 
 
     std::cout << "RUNNIGN STATELLITE" << std:: endl; 
     while(1){
@@ -56,7 +64,11 @@ int Computer::runSatellite(){
         if(!satellite.checkBattery()){
             mode_ = SAFE_MODE; 
         }
+        else if(new_command){
+            // change mode
+            new_command = false; 
 
+        }
 
         switch (mode_)
             {
@@ -96,6 +108,9 @@ int Computer::runSatellite(){
     }
     stop_continuousWOD = true; 
     stop_payloadTransmit = true;
+    stop_receive = true; 
+
+    tCommandReceive.join(); 
     tWODtransmit.join();  
     tPayloadTransmit.join(); 
 
@@ -184,7 +199,8 @@ void Computer::transmit(){
 
 void Computer::safe(){
 
-    // Changes back to idle 
+    // Changes back to idle
+     
     if(satellite.checkBattery()){
         if(!orbit_insertion_complete){
             mode_ = ORBIT_INSERTION_MODE;
@@ -205,7 +221,26 @@ int Computer::continuousWOD(){
     
     while(!stop_continuousWOD){
         if(WOD_transmit){
-           satellite.wodTransmission();
+            can_receive_WOD = false; 
+            satellite.wodTransmission();
+            can_receive_WOD = true; 
+            std::cout << "WOD Transmission" << std::endl; 
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(30000));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+
+        // transmit every 30 seconds 
+    }
+
+    return 0; 
+}
+
+void Computer::commandReceive(){
+
+    while(!stop_receive){
+        if(can_receive_payload && can_receive_WOD){
+           // Receive Data 
+           // Check if theres a new command and update flag 
            std::cout << "WOD Transmission" << std::endl; 
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(30000));
