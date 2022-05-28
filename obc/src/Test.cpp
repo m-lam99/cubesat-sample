@@ -17,7 +17,40 @@ void Test::runTests(){
     
     cout << "Running Testing Mode" << endl;
     while(1){
+        string input; 
+        cout << "Testing mode: "; 
+        cin >> input; 
 
+        if(input == "gpio"){
+            testGPIO();
+        }
+        else if(input == "current"){
+            testINA219(); 
+        }
+        else if(input == "adc"){
+            testADS1015();
+        }
+        else if(input == "pay"){
+            testAS7263(); 
+        }
+        else if(input == "pwm"){
+            testPWM(PWM_1A);
+        }
+        else if(input == "imu"){
+            testBNO055();
+        }
+        else if(input == "gps"){
+            testGPS();
+        }
+        else if(input == "wod"){
+            wodTest();
+        }
+        else if(input == "prop"){
+            testPropulsion();
+        }
+        else if(input == "ttc"){
+            testTransceiver();
+        }
     }
 }
 
