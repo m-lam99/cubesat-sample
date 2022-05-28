@@ -280,14 +280,14 @@ int main() {
     //wodTest();
    
     // GPS gps; 
-    AS7263 sensor_(2, AS7263_ADDRESS);
+    // AS7263 sensor_(2, AS7263_ADDRESS);
     // Payload payload(&gps); 
     //Transceiver transceiver_();
     // gps_(gps), sensor_(2, AS7263_ADDRESS)
     // Computer beaglebone; 
     // beaglebone.mode_ = TRANSMIT_MODE; 
     // beaglebone.runSatellite(); 
-    Satellite satellite();
+    Satellite satellite;
     // usleep(20000000); 
     // beaglebone.mode_=IDLE_MODE; 
     return 0;
