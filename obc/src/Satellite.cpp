@@ -217,6 +217,12 @@ int Satellite::checkDayTime(){
 
 }
 
+void Satellite::transmitMessage(std::vector<uint8_t> message){
+    transceiver_.TransmitMessage(message);
+    usleep(1000000);
+}
+
+
 std::vector<uint8_t> Satellite::checkTransceiver() {
     // checks for messages 
      transceiver_.SendCommand(transceiver_ .CMD_RECEIVE_MODE_CONFIG);
@@ -225,8 +231,9 @@ std::vector<uint8_t> Satellite::checkTransceiver() {
 
        for (unsigned int i = 0; i < transceiver_.MAX_BYTES_AX25; i++)
             {
-                if(message[0] == '#' && message[1] == 'R' && i>3 && i<18){
+                if(message[0] == '#' && message[1] == 'R' && message.size()>=3 && i>3 && i<18){
                     std::cout << message[i]; 
+                    receive = 1;
 
                 }
             }

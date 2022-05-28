@@ -11,16 +11,22 @@
 
 #define MAX_LIFETIME 2630000 // in seconds 
 
-#define START_MODE 0
-#define EJECTION_MODE 1
-#define ORBIT_INSERTION_MODE 2
-#define DEPLOYMENT_MODE 3
-#define IDLE_MODE 4
-#define NORMAL_MODE 5
-#define TRANSMIT_MODE 6
-#define STATION_KEEPING_MODE 7
-#define SAFE_MODE 8
-#define END_OF_LIFE 9 
+#define START_MODE 0x29
+#define EJECTION_MODE 0x36
+#define ORBIT_INSERTION_MODE 0x37
+#define DEPLOYMENT_MODE 0x38
+#define IDLE_MODE 0x31
+#define NORMAL_MODE 0x32
+#define TRANSMIT_MODE 0x34
+#define STATION_KEEPING_MODE 0x33
+#define SAFE_MODE 0x30
+#define END_OF_LIFE 0x35
+
+#define CMD_SEND_WOD 0x40
+#define CMD_WOD_ON 0x41
+#define CMD_WOD_OFF 0x42 
+#define CMD_SEND_MODE 0x43
+#define SOS 0x44 
 
 class Computer {
    public:
@@ -48,6 +54,8 @@ class Computer {
     int continuousWOD(); 
     int payloadTransmit(); 
     void commandReceive(); 
+
+    int command; 
 
     // Create a satellite
     Satellite satellite;   
