@@ -57,6 +57,7 @@ int Computer::runSatellite(){
             mode_ = SAFE_MODE; 
         }
 
+
         switch (mode_)
             {
             case START_MODE:
@@ -104,7 +105,9 @@ void Computer::start(){
 
 }
 
-void Computer::ejection(){}
+void Computer::ejection(){
+
+}
 
 void Computer::orbitalInsertion(){
 
