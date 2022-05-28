@@ -20,17 +20,12 @@
 #ifndef __ADAFRUIT_BNO055_H__
 #define __ADAFRUIT_BNO055_H__
 
-#include "Sensor.h"
-#include "I2C.h"
+#include "RPi_Sensor.h"
 #include "utility/imumaths.h"
-using namespace exploringBB;
 
 #define BNO055_ADDRESS_A (0x28)
 #define BNO055_ADDRESS_B (0x29)
 #define BNO055_ID (0xA0)
-
-#define BNO_CHANNEL 2
-#define BNO055_SAMPLERATE_DELAY_MS (100)
 
 #define NUM_BNO055_OFFSET_REGISTERS (22)
 
@@ -50,7 +45,7 @@ typedef struct
   uint16_t mag_radius;
 } adafruit_bno055_offsets_t;
 
-class BNO055 : public Adafruit_Sensor, public I2CDevice
+class Adafruit_BNO055 : public Adafruit_Sensor
 {
 public:
   typedef enum
@@ -260,6 +255,7 @@ public:
     uint16_t sw_rev;
     uint8_t bl_rev;
   } adafruit_bno055_rev_info_t;
+
   typedef enum
   {
     VECTOR_ACCELEROMETER = BNO055_ACCEL_DATA_X_LSB_ADDR,
@@ -269,22 +265,8 @@ public:
     VECTOR_LINEARACCEL = BNO055_LINEAR_ACCEL_DATA_X_LSB_ADDR,
     VECTOR_GRAVITY = BNO055_GRAVITY_DATA_X_LSB_ADDR
   } adafruit_vector_type_t;
-  
-  union my_smbus_data
-  {
-    uint8_t  byte;
-    uint16_t word;
-    uint8_t  block[32 + 2];
-  };
 
-  struct my_smbus_ioctl_data{
-    uint8_t read_write;
-    uint8_t command;
-    uint32_t size;
-    union BNO055::my_smbus_data *data;
-  };
-
-  BNO055(unsigned int I2CBus = 2, uint8_t address = BNO055_ADDRESS_A);
+  Adafruit_BNO055(int32_t sensorID = -1, uint8_t address = BNO055_ADDRESS_A);
 
   bool begin(adafruit_bno055_opmode_t mode = OPERATION_MODE_NDOF);
   void setMode(adafruit_bno055_opmode_t mode);
@@ -318,8 +300,7 @@ private:
   uint8_t read8(adafruit_bno055_reg_t);
   bool readLen(adafruit_bno055_reg_t, uint8_t *buffer, uint8_t len);
   bool write8(adafruit_bno055_reg_t, uint8_t value);
-  int i2cReadI2CBlockData(unsigned reg, char *buf, unsigned count);
-  int my_smbus_access(int fd, char rw, uint8_t cmd, int size, union BNO055::my_smbus_data *data);
+
   uint8_t _address;
   int32_t _sensorID;
   adafruit_bno055_opmode_t _mode;

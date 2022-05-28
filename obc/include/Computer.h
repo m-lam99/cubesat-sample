@@ -4,6 +4,7 @@
 #define COMPUTER_H
 
 #include "Satellite.h"
+#include "controller.h"
 
 #include <queue>
 #include <vector>
@@ -29,7 +30,7 @@ class Computer {
     ~Computer();
 
    private:
-   
+
     uint8_t mode_;
 
     void start();
@@ -62,7 +63,6 @@ class Computer {
     
     bool payload_collection; 
     bool still_transmitting; 
-
 };
 
 #endif

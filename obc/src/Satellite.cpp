@@ -13,11 +13,12 @@ Satellite::Satellite()
       wod_(&gps_, mode_, &current_sensor_batt_),
       adc1_(2, ADC_ADDRESS1),
       adc2_(2, ADC_ADDRESS2),
-      imu_(2, 0x28),
+      imu_(2, BNO055_ADDRESS_A),
       payload_(&gps_),
       prop_GPIO_(23),
       burn_GPIO_(59),
-      transceiver_()
+      transceiver_(),
+      Controller(0, 1.57, 0)   // initial pointing direction
 {
     if (prop_GPIO_.setDirection(OUTPUT) == -1){
         prop_valid_ = 0;
@@ -32,10 +33,58 @@ Satellite::Satellite()
         burn_GPIO_.setValue(LOW);
     }
 
+    // Wait for imu to initialise 
+    std::cout << "Orientation Sensor Raw Data Test" << std::endl;
+    if (!imu_.begin())
+    {
+        /* There was a problem detecting the BNO055 ... check your connections */
+        std::cout << "Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!" << std::endl;
+        while (1);
+    }
+
+    usleep(1000);
+
+    /* System Status */
+    int8_t status = imu_.getSystemStatus();
+    std::cout << "System status: " << (int)status << std::endl;
+
+    /* Display the current temperature */
+    int8_t temp = imu_.getTemp();
+    std::cout << "Current Temperature: " << (int)temp << " C" << std::endl;
+
+    std::cout << "Calibration status values: 0=uncalibrated, 3=fully calibrated" << std::endl;
+
+    imu_.setExtCrystalUse(true);
+
     std::cout << "SATELLITE initialisied" << std::endl;
 }
 
 Satellite::~Satellite() {}
+
+bool Satellite::pointSatellite(double phi, double theta, double psi){
+    
+    // change pointing direction
+    Controller.changeTarget(phi, theta, psi); 
+
+    imu::Vector<3> signal;
+
+    // Display Quaternions
+    imu::Quaternion quat = imu_.getQuat();
+    std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t\t";
+
+    /* Display Angular Velocities rad/s */
+    imu::Vector<3> rps = imu_.getRPS();
+    std::cout << "X: " << rps.x() <<  " Y: " << rps.y() << " Z: "
+    << rps.z() << "\t\t";
+
+    signal = Controller.runControlAlgorithm(quat, rps);
+
+
+    // ACRTUATE THE SIGNAL?
+    std::cout << "SIGNAL NOT ACTUATED" << std::endl; 
+
+    return Controller.getTolerance(); 
+}
 
 int Satellite::detumbling() {
 

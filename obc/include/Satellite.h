@@ -15,6 +15,7 @@
 #include "Payload.h"
 #include "GPIO.h"
 #include "transceiver.h"
+#include "controller.h"
 
 #include <queue>
 #include <vector>
@@ -42,6 +43,9 @@ class Satellite {
     int checkDayTime(); 
     int propulsion(std::vector<int> array);
     uint32_t getTime(); 
+
+    // bool point satellitle - return true when pointed 
+    bool pointSatellite(double phi, double theta, double psi); 
 
     ~Satellite();
 
@@ -100,6 +104,7 @@ class Satellite {
     // PWM
 
     uint8_t mode_;
+    CControl Controller; 
 
     const float BATTERY_THRESHOLD  = 2.7;
 

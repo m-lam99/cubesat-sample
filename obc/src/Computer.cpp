@@ -17,6 +17,7 @@ Computer::Computer()
       orbit_insertion_complete(false) 
       {
           start_time = satellite.getTime(); 
+
           cout << "Computer initialised" << endl;
 
       }
@@ -154,6 +155,14 @@ void Computer::normal(){
 
 void Computer::stationKeeping(){
     
+    // Direction we wish to point in 
+    double phi = 0.0; 
+    double theta = 1.57;
+    double psi = 0.0; 
+
+    if(satellite.pointSatellite(phi, theta, psi)){ // point satellite otherwise done
+        mode_ = IDLE_MODE; 
+    }
 }
 
 void Computer::transmit(){
