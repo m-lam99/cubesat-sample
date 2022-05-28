@@ -5,7 +5,7 @@
 Payload::Payload(GPS* gps) : gps_(gps), sensor_(2, AS7263_ADDRESS) {
     // Check if correct device
     std::cout << sensor_.readVirtualReg(AS7263::VIRTUAL_REG::HW_VERSION) << std::endl;
-    if (sensor_.readVirtualReg(AS7263::VIRTUAL_REG::HW_VERSION) != 0x20) {
+    if (sensor_.readVirtualReg(AS7263::VIRTUAL_REG::HW_VERSION) != 0x40) {
         valid_ = 0;
     } else {
         valid_ = 1;
