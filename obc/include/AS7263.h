@@ -50,6 +50,8 @@ class AS7263 : protected I2CDevice {
     };
     AS7263(unsigned int I2CBus, unsigned int I2CAddress);
 
+    void initialise();
+
     // Returns the various calibration data
     float getCalibratedR() {
         return (getCalibratedValue(VIRTUAL_REG::R_CAL));

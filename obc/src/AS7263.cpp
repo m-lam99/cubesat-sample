@@ -12,15 +12,20 @@ AS7263::AS7263(unsigned int I2CBus, unsigned int I2CAddress)
     this->I2CAddress = I2CAddress;
     this->I2CBus = I2CBus;
 
-    setBulbCurrent(0b00); //Set to 12.5mA (minimum)
-	disableBulb(); //Turn off to avoid heating the sensor
+    // setBulbCurrent(0b00); //Set to 12.5mA (minimum)
+	// disableBulb(); //Turn off to avoid heating the sensor
 
-	setIntegrationTime(50); //50 * 2.8ms = 140ms. 0 to 255 is valid.
+
+}
+
+void AS7263::initialise(){
+    setIntegrationTime(50); //50 * 2.8ms = 140ms. 0 to 255 is valid.
 							//If you use Mode 2 or 3 (all the colors) then integration time is double. 140*2 = 280ms between readings.
 
 	setGain(3); //Set gain to 64x
 
 	setMeasurementMode(3); //One-shot reading of VBGYOR
+
 }
 
 void AS7263::Test() {
