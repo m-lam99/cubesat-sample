@@ -185,8 +185,7 @@ void Computer::stationKeeping() {
     double theta = 1.57;
     double psi = 0.0;
 
-    if (satellite.pointSatellite(phi, theta,
-                                 psi)) {  // point satellite otherwise done
+    if (satellite.pointSatellite(phi, theta, psi)) {  // point satellite otherwise done
         mode_ = IDLE_MODE;
     }
 }
