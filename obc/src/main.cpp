@@ -262,12 +262,12 @@ void testTransceiver(){
         std::cout << "MESSAGE: "; 
 
        for (unsigned int i = 0; i < comms.MAX_BYTES_AX25; i++)
-            {
+        {
                 if(message[0] == '#' && message[1] == 'R' && i>3 && i<18){
                     std::cout << message[i]; 
 
-                }
             }
+        }
         std::cout << std::endl; 
         usleep(1000000);
     }
@@ -278,16 +278,16 @@ int main() {
     // testPWM(PWM_0A);
     // testGPIO();
     //wodTest();
-   
+//    
     GPS gps; 
     // AS7263 sensor_(2, AS7263_ADDRESS);
-    Payload payload(&gps); 
+    // Payload payload(&gps); 
     //Transceiver transceiver_();
     // gps_(gps), sensor_(2, AS7263_ADDRESS)
     // Computer beaglebone; 
     // beaglebone.mode_ = TRANSMIT_MODE; 
     // beaglebone.runSatellite(); 
-    
+    Satellite satellite;
     // usleep(20000000); 
     // beaglebone.mode_=IDLE_MODE; 
     return 0;
