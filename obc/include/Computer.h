@@ -40,6 +40,7 @@ class Computer {
     void idle();
     void normal();
     void stationKeeping();
+    void receive();
     void transmit();
     void safe();
     void endOfLife();
