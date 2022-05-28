@@ -200,7 +200,7 @@ void Computer::transmit(){
 void Computer::safe(){
 
     // Changes back to idle
-     
+
     if(satellite.checkBattery()){
         if(!orbit_insertion_complete){
             mode_ = ORBIT_INSERTION_MODE;
@@ -239,6 +239,7 @@ void Computer::commandReceive(){
 
     while(!stop_receive){
         if(can_receive_payload && can_receive_WOD){
+    
            // Receive Data 
            // Check if theres a new command and update flag 
            std::cout << "WOD Transmission" << std::endl; 
