@@ -43,11 +43,13 @@ class Satellite {
     int checkDayTime(); 
     int propulsion(std::vector<int> array);
     uint32_t getTime(); 
+    void transmitMessage(std::vector<uint8_t> message);
 
     // bool point satellitle - return true when pointed 
     bool pointSatellite(double phi, double theta, double psi); 
 
     ~Satellite();
+    int receive;
 
    private:
     // ADCS sensors
@@ -107,6 +109,8 @@ class Satellite {
     CControl Controller; 
 
     const float BATTERY_THRESHOLD  = 2.7;
+
+    
 
 };
 
