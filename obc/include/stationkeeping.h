@@ -1,5 +1,5 @@
-#ifndef util_h
-#define util_h
+#ifndef STATION_KEEPING_H
+#define STATION_KEEPING_H
 
 #define PIf 3.14159265358979f
 #define J2000UTC 946684800.0f + 12 * 3600.0f
@@ -16,11 +16,6 @@ struct vec3
 
 typedef struct vec3 Vec3;
 
-Vec3 storeVec;
-GPS::loc_t *llh1;
-GPS::loc_t *llh2;
-Vec3 p2;
-Vec3 p1;
 
 struct mat3
 {

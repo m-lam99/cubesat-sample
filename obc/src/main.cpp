@@ -10,22 +10,19 @@
 #include <unistd.h> //for usleep
 #include <iomanip>  // for setprecision
 
-#include "Computer.h"
-#include "controller.h"
+// #include "Computer.h"
+// #include "controller.h"
 
 #include <vector>
-
-using namespace exploringBB;
-
 
 int main() {
     // testPWM(PWM_0A);
     // testGPIO();
     //wodTest();
 
-    GPS gps; 
+    // GPS gps; 
     // AS7263 sensor_(2, AS7263_ADDRESS);
-    Payload payload(&gps); 
+    // Payload payload(&gps); 
     //Transceiver transceiver_();
     // gps_(gps), sensor_(2, AS7263_ADDRESS)
     // Computer beaglebone; 

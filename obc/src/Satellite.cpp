@@ -1,5 +1,4 @@
 #include "Satellite.h"
-#include "stationkeeping.h"
 
 #include <unistd.h>
 #include <iostream>
@@ -161,13 +160,13 @@ int Satellite::orbitCorrection()
     usleep(1000000);
     gps_.get_location(&llh2);
     // Get prograde vector and point to it
-    getPrograde(pointVec);
-    vec2Euler(pointVec);
+    // getPrograde(&pointVec, &llh1, &llh2);
+    // vec2Euler(&pointVec);
 
     pointSatellite(pointVec.x, pointVec.y, pointVec.z);
 
     // Not sure how to trigger propulsion
-    vector<0> burn;
+    std::vector<int> burn;
     propulsion(burn);
 }
 

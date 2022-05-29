@@ -1,9 +1,15 @@
-#include "Satellite.h"
+#include "BNO055.h"
 #include "GPS.h"
 #include "stationkeeping.h"
 
 #include <unistd.h>
 #include <math.h>
+
+Vec3 storeVec;
+// extern GPS::loc_t *llh1;
+// extern GPS::loc_t *llh2;
+Vec3 p2;
+Vec3 p1;
 
 void ECEFtoECI(Vec3 inVec, Vec3 *outVec, float time)
 {

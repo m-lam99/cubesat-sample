@@ -150,7 +150,7 @@ void Test::testAS7263()
     for (int i = 0; i < 10; i++)
     {
         sensor.takeMeasurements();
-         cout << "calibrated val: " << sensor.getCalibratedR() <<  endl;
+        //  cout << "calibrated val: " << sensor.getCalibratedR() <<  endl;
          cout << "meas val: " << sensor.getR() <<  endl;
         usleep(500000);
     }
@@ -185,10 +185,23 @@ void Test::testGPS()
 }
 
 void Test::wodTest() {
-    Satellite NICE;
-     cout << "test" <<  endl;
-    NICE.wodCollection();
-    // NICE.wodTransmission();
+    GPS gps;
+    INA219 current_sensor(1, INA219_ADDRESS_BATT);
+    WholeOrbit wod(&gps, 0, &current_sensor);
+
+    for (int i = 0; i < 10; ++i){
+        WholeOrbit::wod_t data = wod.GetData();
+        cout << "Time: " << data.time << endl;
+        cout << "Mode: " << data.mode << endl;
+        cout << "Voltage batt: " << data.voltage_batt << endl;
+        cout << "Current batt: " << data.current_batt << endl;
+        cout << "Current 3v3: " << data.current_3v3 << endl;
+        cout << "Current 5v: " << data.current_5v << endl;
+        cout << "Temp comms: " << data.temp_comms << endl;
+        cout << "Temp batt: " << data.temp_batt << endl;
+        cout << "Temp eps: " << data.temp_eps << endl;
+    }
+    
     
 }
 
