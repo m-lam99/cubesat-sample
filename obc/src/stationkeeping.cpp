@@ -47,29 +47,25 @@ void printVec3(Vec3 vec)
     printf("[%f, %f, %f]\n", vec.x, vec.y, vec.z);
 }
 
-void getPrograde(Vec3 *progradeVec)
+void getPrograde(Vec3 progradeVec, GPS::loc_t *llh1, GPS::loc_t *llh2)
 {
-
-    gps_.get_location(llh1);
     // Sleep for 0.1s for next position estimate
-    usleep(1000000);
-    gps_.get_location(llh2);
 
-    p2 = llh2NED(llh2);
-    p1 = llh2NED(llh1);
+    llh2NED(llh2, &p2);
+    llh2NED(llh1, &p1);
 
-    progradeVec[0] = p2.x - p1.x;
-    progradeVec[1] = p2.y - p1.y;
-    progradeVec[2] = p2.z - p1.z;
+    progradeVec.x = p2.x - p1.x;
+    progradeVec.y = p2.y - p1.y;
+    progradeVec.z = p2.z - p1.z;
 
-    progradeVec = normVec3(progradeVec);
+    normVec3(&progradeVec);
 }
 
-void llh2NED(loc_t *llh, Vec3 *outvec)
+void llh2NED(GPS::loc_t *llh, Vec3 *outvec)
 {
-    storeVec[0] = (llh->altitude + EARTH_RADIUS) * cosf(llh->latitude) * cosf(llh->longitude);
-    storeVec[1] = (llh->altitude + EARTH_RADIUS) * cosf(llh->latitude) * sinf(llh->longitude);
-    storeVec[2] = (llh->altitude + EARTH_RADIUS) * sinf(llh->latitude);
+    storeVec.x = (llh->altitude + EARTH_RADIUS) * cosf(llh->latitude) * cosf(llh->longitude);
+    storeVec.y = (llh->altitude + EARTH_RADIUS) * cosf(llh->latitude) * sinf(llh->longitude);
+    storeVec.z = (llh->altitude + EARTH_RADIUS) * sinf(llh->latitude);
 
     NEDtoECEF(storeVec, outvec, llh->latitude, llh->longitude);
 }
@@ -86,7 +82,7 @@ void normVec3(Vec3 *v)
     v->z /= n;
 }
 
-void vec2Euler(Vec3 *vec)
+void vec2Euler(Vec3 vec)
 {
     vec.x = atan2(vec.z, vec.x);
     vec.y = atan2(vec.y, vec.x);

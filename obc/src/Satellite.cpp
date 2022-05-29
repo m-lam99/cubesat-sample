@@ -154,7 +154,12 @@ int Satellite::checkOrbit()
 int Satellite::orbitCorrection()
 {
     Vec3 pointVec;
+    GPS::loc_t llh1;
+    GPS::loc_t llh2;
 
+    gps_.get_location(&llh1);
+    usleep(1000000);
+    gps_.get_location(&llh2);
     // Get prograde vector and point to it
     getPrograde(pointVec);
     vec2Euler(pointVec);
