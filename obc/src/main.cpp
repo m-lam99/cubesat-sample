@@ -10,9 +10,7 @@
 #include <unistd.h> //for usleep
 #include <iomanip>  // for setprecision
 
-// #include "Computer.h"
-// #include "controller.h"
-
+#include "Test.h"
 #include <vector>
 
 int main() {
@@ -31,5 +29,7 @@ int main() {
     // Satellite satellite;
     // usleep(20000000); 
     // beaglebone.mode_=IDLE_MODE; 
+    Test test;
+    test.runTests();
     return 0;
 }

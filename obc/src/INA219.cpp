@@ -150,7 +150,7 @@ float INA219::current(){
    current_lsb_ = 10;
    
    if (valid_){
-      return 0.;
+      return 0.f;
    } else {
          int16_t current = readRegister(REGISTERS::CURRENT);
       // if (current > 32767){

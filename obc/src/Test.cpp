@@ -45,6 +45,9 @@ void Test::runTests(){
         else if(input == "wod"){
             wodTest();
         }
+        else if(input == "wodEn"){
+            wodTestEncoded();
+        }
         else if(input == "prop"){
             testPropulsion();
         }
@@ -190,8 +193,8 @@ void Test::wodTest() {
     WholeOrbit wod(&gps, 0, &current_sensor);
 
     for (int i = 0; i < 10; ++i){
-        WholeOrbit::wod_t data = wod.GetData();
-        cout << "Time: " << data.time << endl;
+        WholeOrbit::wod_float_t data = wod.GetDataFloat();
+        // cout << "Time: " << (int)data.time << endl;
         cout << "Mode: " << data.mode << endl;
         cout << "Voltage batt: " << data.voltage_batt << endl;
         cout << "Current batt: " << data.current_batt << endl;
@@ -200,6 +203,27 @@ void Test::wodTest() {
         cout << "Temp comms: " << data.temp_comms << endl;
         cout << "Temp batt: " << data.temp_batt << endl;
         cout << "Temp eps: " << data.temp_eps << endl;
+    }
+    
+    
+}
+
+void Test::wodTestEncoded() {
+    GPS gps;
+    INA219 current_sensor(1, INA219_ADDRESS_BATT);
+    WholeOrbit wod(&gps, 0, &current_sensor);
+
+    for (int i = 0; i < 10; ++i){
+        WholeOrbit::wod_t data = wod.GetData();
+        // cout << "Time: " << (int)data.time << endl;
+        cout << "Mode: " << (int)data.mode << endl;
+        cout << "Voltage batt: " << (int)data.voltage_batt << endl;
+        cout << "Current batt: " << (int)data.current_batt << endl;
+        cout << "Current 3v3: " << (int)data.current_3v3 << endl;
+        cout << "Current 5v: " << (int)data.current_5v << endl;
+        cout << "Temp comms: " << (int)data.temp_comms << endl;
+        cout << "Temp batt: " << (int)data.temp_batt << endl;
+        cout << "Temp eps: " << (int)data.temp_eps << endl;
     }
     
     

@@ -14,6 +14,7 @@ class Test{
         void testBNO055();                      // "imu"
         void testGPS();                         // "gps"
         void wodTest();                         // "wod"
+        void wodTestEncoded();                  // "wodEn"
         void testPropulsion();                  // "prop"
         void testTransceiver();                 // "ttc"
 
