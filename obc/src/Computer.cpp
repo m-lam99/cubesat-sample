@@ -55,7 +55,7 @@ int Computer::runSatellite() {
     stop_continuousWOD = false;  // start wod
     stop_receive = false;
 
-    std::cout << "RUNNIGN STATELLITE" << std::endl;
+    std::cout << "RUNNING SATELLITE" << std::endl;
     while (1) {
         // Enters safe mode from any
         if (!satellite.checkBattery()) {
@@ -65,6 +65,7 @@ int Computer::runSatellite() {
            cout << "New command received" << endl;
             commandHandling();
             new_command = false;
+            //EOL??
         }
 
         switch (mode_) {
