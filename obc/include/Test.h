@@ -17,6 +17,7 @@ class Test{
         void wodTestEncoded();                  // "wodEn"
         void testPropulsion();                  // "prop"
         void testTransceiver();                 // "ttc"
+        void test24V();
 
 };
 

@@ -54,6 +54,12 @@ void Test::runTests(){
         else if(input == "ttc"){
             testTransceiver();
         }
+        else if(input == "24v"){
+            test24V();
+        }
+        else if (input == "x"){
+            break;
+        }
     }
 }
 
@@ -334,4 +340,14 @@ void Test::testBNO055()
         
         usleep(10000 * BNO055_SAMPLERATE_DELAY_MS);
     }
+}
+
+void Test::test24V(){
+    INA219 sensor1(1, INA219_ADDRESS_24V);
+    sensor1.configure(INA219::VOLTAGE_RANGE::FSR_32,
+                      INA219::PGA_GAIN::GAIN_8_320MV, 1, 3);
+    uint16_t value1 = sensor1.readRegisters(INA219::REGISTERS::CONFIG);
+    sensor1.writeRegister(INA219::REGISTERS::CALIBRATION, 4096);
+     cout << sensor1.current() <<  endl;
+
 }
