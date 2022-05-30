@@ -155,6 +155,10 @@ void Computer::detumbling() {
 
     // put in bdot 
     cout << "PLEASE ADD B DOT" << endl; 
+    
+    //testing will be done by timing how long sat takes to
+    // stop spinning on bearing table w + wo detumbling
+    
     // check if in orbit
     orbit_insertion_complete = true;
 
