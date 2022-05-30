@@ -115,7 +115,6 @@ class Satellite {
 
     const float BATTERY_THRESHOLD  = 2.7;
 
-    
 
 };
 

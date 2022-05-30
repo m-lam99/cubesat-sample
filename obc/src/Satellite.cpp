@@ -88,10 +88,10 @@ bool Satellite::pointSatellite(double phi, double theta, double psi)
 
     signal = Controller.runControlAlgorithm(quat, rps);
 
-    // ACRTUATE THE SIGNAL
-    mag_x.setDutyCycle(50.0f);
-    mag_y.setDutyCycle(50.0f);
-    mag_z.setDutyCycle(50.0f);
+    // ACTUATE THE SIGNAL
+    mag_x.setDutyCycle((float)(signal.x()/1.57)*100);
+    mag_y.setDutyCycle((float)(signal.y()/1.57)*100);
+    mag_z.setDutyCycle((float)(signal.y()/1.57)*100);
     std::cout << "SIGNAL ACTUATED" << std::endl;
 
     return Controller.getTolerance();
@@ -99,8 +99,18 @@ bool Satellite::pointSatellite(double phi, double theta, double psi)
 
 int Satellite::detumbling()
 {
+    imu::Vector<3> mags = imu_.getVector(BNO055::VECTOR_MAGNETOMETER);
+        std::cout << "X: " << mags.x() << " Y: " << mags.y() << " Z: "
+            << mags.z() << "\t\t";
 
+    Controller.detumble(imu_.getRPS(), mags);
     // return true if finished
+    // mag_x.setDutyCycle(50.0f);
+    // mag_y.setDutyCycle(50.0f);
+    mag_z.setDutyCycle(75.0f);
+
+    std::cout << "Mag Duty Cycle: " << mag_z.getDutyCycle() << std::endl;
+
     return true;
 }
 

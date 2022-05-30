@@ -58,11 +58,20 @@ void Test::runTests(){
         else if(input == "burn"){
             testDeployment(); 
         }
+        else if(input == "aocs"){
+            testAOCS();
+        }
         else if(input == "fuckthis"){
             break; 
         }
 
     }
+}
+
+void Test::testAOCS() {
+    Satellite satellite;
+    // CControl Controller(0, 1.57, 0);
+    satellite.detumbling();
 }
 
 void Test::testDeployment(){

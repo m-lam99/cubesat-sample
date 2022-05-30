@@ -18,6 +18,7 @@ class Test{
         void testPropulsion();                  // "prop"
         void testTransceiver();                 // "ttc"
         void testDeployment();                  // "burn"
+        void testAOCS();                        // "aocs"
 };
 
 #endif
