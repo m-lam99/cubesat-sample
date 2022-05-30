@@ -151,6 +151,8 @@ void Computer::start() {}
 void Computer::ejection() {}
 
 void Computer::orbitalInsertion() {
+
+    cout << "Orbit insertion mode" << endl; 
     // check if in orbit
     orbit_insertion_complete = true;
 
@@ -159,13 +161,15 @@ void Computer::orbitalInsertion() {
 }
 
 void Computer::deployment() {
+
+    cout << "Deployment mode" << endl; 
     // deploy things
     satellite.deployment();
 }
 
 void Computer::idle() {
     // do nothing
-
+    cout << "Idle mode" << endl; 
     uint32_t operational_time = satellite.getTime() - start_time;
 
     if (operational_time > MAX_LIFETIME) {
@@ -180,6 +184,8 @@ void Computer::idle() {
 }
 
 void Computer::normal() {
+
+    cout << "Normal Mode" << endl; 
     // collect data
     satellite.payloadDataCollection();
 
