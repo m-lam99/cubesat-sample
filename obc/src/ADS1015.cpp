@@ -61,13 +61,13 @@ float ADS1015::getVoltage(int channel)
     switch (channel)
     {
     case 0:
-        writeRegister(ADDRESS_POINTER::CONFIG, config | (0b100 << 12));
+        writeRegister(ADDRESS_POINTER::CONFIG, 0x4683);
         break;
     case 1:
-        writeRegister(ADDRESS_POINTER::CONFIG, config | (0b101 << 12));
+        writeRegister(ADDRESS_POINTER::CONFIG, 0x5683);
         break;
     case 2:
-        writeRegister(ADDRESS_POINTER::CONFIG, config | (0b110 << 12));
+        writeRegister(ADDRESS_POINTER::CONFIG, 0x6683);
         break;
     default:
         perror("No >:(");
