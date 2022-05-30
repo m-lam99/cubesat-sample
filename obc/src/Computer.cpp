@@ -114,30 +114,35 @@ int Computer::runSatellite() {
 void Computer::commandHandling(){
     if(command <= 0x38 && command >= 0x30){
         mode_ = command; 
-        cout << "Command"
+        cout << "Command " << command << "received" << endl; 
     }
     else if (command == CMD_SEND_WOD){
         can_receive_payload = false; 
         std::vector<uint8_t> message ={WOD_transmit};
         satellite.transmitMessage(message);
         can_receive_payload = true;
+        cout << "Send WOD command received" << endl; 
 
     }
     else if (command == CMD_WOD_OFF){
         WOD_transmit = false;
+        cout << "WOD off command received" << endl; 
     }
     else if (command == CMD_WOD_ON){
         WOD_transmit = true;
+        cout << "WOD on command received" << endl; 
     }
     else if (command == CMD_SEND_MODE){
         can_receive_payload = false; 
         std::vector<uint8_t> message ={mode_};
         satellite.transmitMessage(message);
         can_receive_payload = true;
+        cout << "SEND mode command received" << endl; 
 
     }
     else if (command == SOS){
         mode_ = SAFE_MODE;
+        cout << "SOS received" << endl; ß=
     }
     return; 
 }

@@ -227,7 +227,7 @@ int Satellite::deployment()
     }
     else
     {
-        usleep(1000000);
+        usleep(2000000);
         burn_GPIO_.setValue(LOW);
         return 1;
     }
