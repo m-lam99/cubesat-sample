@@ -10,7 +10,7 @@ using namespace std;
 
 Computer::Computer()
     : satellite(),
-      mode_(IDLE_MODE),
+      mode_(START_MODE),
       WOD_transmit(true),
       stop_transmit(true),
       stop_payloadTransmit(true),

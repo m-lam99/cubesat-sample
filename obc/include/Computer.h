@@ -9,8 +9,8 @@
 #include <queue>
 #include <vector>
 
-//#define MAX_LIFETIME 2630000 // in seconds 
-#define MAX_LIFETIME 30 // in seconds 
+#define MAX_LIFETIME 2630000 // in seconds 
+//#define MAX_LIFETIME 30 // in seconds 
 
 #define START_MODE 0x36
 #define DETUMBLING_MODE 0x37
