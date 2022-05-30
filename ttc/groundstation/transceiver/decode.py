@@ -57,14 +57,10 @@ def decode_science(msg):
     t = int.from_bytes(data[:4], byteorder='big', signed=True)
     assert t > 0
 
-    reading = float(frombuffer(bytes(data[4:6]), dtype=float16))
-    lat = float(frombuffer(bytes(data[6:8]), dtype=float16))
-    lon = float(frombuffer(bytes(data[8:10]), dtype=float16))
-    alt = float(frombuffer(bytes(data[10:12]), dtype=float16))
-
-    assert reading >= -1 and reading <= 1
-    assert lat >= -90 and lat <= 90
-    assert lon >= -180 and lon <= 180
+    reading = int.from_bytes(data[:2], byteorder='big', signed=False)
+    lat = parse_int(int.from_bytes(data[2:4], byteorder='big', signed=True),32767/90,0)
+    lon = parse_int(int.from_bytes(data[4:6], byteorder='big', signed=True),32767/180,0)
+    alt = parse_int(int.from_bytes(data[6:8], byteorder='big', signed=True),32767/50000,-250000*32767/50000)
 
     return [
         t,
