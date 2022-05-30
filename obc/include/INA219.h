@@ -108,7 +108,7 @@ class INA219:public I2CDevice{
         float max_expected_amps_;
         int voltage_range_;
         int gain_;
-        float current_lsb_;
+        float current_lsb_ = 10.f;
         float power_lsb_;
         int valid_;
 };

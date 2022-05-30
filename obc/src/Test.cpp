@@ -8,6 +8,7 @@
 #include "Computer.h"
 #include "controller.h"
 #include "GPIO.h"
+#include "INA219.h"
 #include <vector>
 
 using namespace exploringBB;
@@ -74,7 +75,7 @@ void Test::testDeployment(){
     }
     else
     {
-        usleep(2000000);
+        usleep(6900000);
         burn_GPIO_.setValue(LOW);
         cout << "Finished Burning" << endl; 
     }
@@ -111,11 +112,11 @@ void Test::testGPIO(){
 
 void Test::testINA219()
 {
-    INA219 sensor1(1, 0x45);
-    // INA219 sensor2(1, INA219_ADDRESS2);
-    // INA219 sensor3(1, INA219_ADDRESS3);
+    // INA219 sensor1(1, INA219_ADDRESS_BATT);
+    INA219 sensor2(1, INA219_ADDRESS_3V3);
+    INA219 sensor3(1, INA219_ADDRESS_5V);
     // INA219 sensor4(1, INA219_ADDRESS4);
-    sensor1.configure(INA219::VOLTAGE_RANGE::FSR_32,
+    sensor2.configure(INA219::VOLTAGE_RANGE::FSR_32,
                       INA219::PGA_GAIN::GAIN_8_320MV, 1, 3);
     // sensor2.configure(INA219::VOLTAGE_RANGE::FSR_32,
     // INA219::PGA_GAIN::GAIN_8_320MV, 1, 3);
@@ -123,18 +124,24 @@ void Test::testINA219()
     // INA219::PGA_GAIN::GAIN_8_320MV, 1, 3);
     // sensor4.configure(INA219::VOLTAGE_RANGE::FSR_32,
     // INA219::PGA_GAIN::GAIN_8_320MV, 1, 3);
-    uint16_t value1 = sensor1.readRegisters(INA219::REGISTERS::CONFIG);
+    // uint16_t value1 = sensor1.readRegisters(INA219::REGISTERS::CONFIG);
     // uint16_t value2 = sensor2.readRegister(INA219::REGISTERS::CONFIG);
     // uint16_t value3 = sensor3.readRegister(INA219::REGISTERS::CONFIG);
     // uint16_t value4 = sensor4.readRegister(INA219::REGISTERS::CONFIG);
     // sensor1.calibrate(26, 0.5, 3.2);
-    sensor1.writeRegister(INA219::REGISTERS::CALIBRATION, 4096);
+    sensor2.writeRegister(INA219::REGISTERS::CALIBRATION, 4096);
     //  cout << value1 <<  endl;
     //  cout << value2 <<  endl;
     //  cout << value3 <<  endl;
     //  cout << value4 <<  endl;
-     cout << sensor1.busVoltage() <<  endl;
-     cout << sensor1.current() <<  endl;
+    //  cout << sensor1.busVoltage() <<  endl;
+    //  cout << sensor1.current() <<  endl;
+     
+     cout << sensor2.busVoltage() <<  endl;
+     cout << sensor2.current() <<  endl;
+     
+    //  cout << sensor3.busVoltage() <<  endl;
+    //  cout << sensor3.current() <<  endl;
 }
 
 void Test::testADS1015(){
@@ -219,8 +226,8 @@ void Test::wodTest() {
 
     for (int i = 0; i < 10; ++i){
         WholeOrbit::wod_float_t data = wod.GetDataFloat();
-        // cout << "Time: " << (int)data.time << endl;
-        cout << "Mode: " << data.mode << endl;
+        cout << "Time: " << (int)data.time << endl;
+        cout << "Mode: " << (int)data.mode << endl;
         cout << "Voltage batt: " << data.voltage_batt << endl;
         cout << "Current batt: " << data.current_batt << endl;
         cout << "Current 3v3: " << data.current_3v3 << endl;
