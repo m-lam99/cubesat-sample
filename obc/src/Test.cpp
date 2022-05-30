@@ -154,8 +154,8 @@ void Test::testINA219()
 }
 
 void Test::testADS1015(){
-    ADS1015 adc1(1, ADC_ADDRESS1);
-    ADS1015 adc2(2, ADC_ADDRESS1);
+    ADS1015 adc1(2, ADC_ADDRESS1);
+    ADS1015 adc2(2, ADC_ADDRESS2);
 
     // for (int i = 0; i < 10; i++)
     // {
@@ -183,7 +183,7 @@ void Test::testADS1015(){
 
     for (int i = 0; i < 6; i++)
     {
-         cout << voltages[i] <<  endl;
+         cout << "Photodiode " << i << " - " << voltages[i] <<  endl;
     }
 }
 
