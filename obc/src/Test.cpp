@@ -58,6 +58,9 @@ void Test::runTests(){
         else if(input == "burn"){
             testDeployment(); 
         }
+        else if(input == "fuckthis"){
+            break; 
+        }
 
     }
 }

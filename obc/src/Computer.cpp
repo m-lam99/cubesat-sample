@@ -19,7 +19,9 @@ Computer::Computer()
       payload_collection(false),
       orbit_insertion_complete(false),
       can_receive_WOD(true),
+      is_deployed(false), 
       can_receive_payload(true) {
+    cout << "constructing" << endl;
     start_time = satellite.getTime();
     new_command = false;
     cout << "Computer initialised" << endl;
@@ -55,7 +57,7 @@ int Computer::runSatellite() {
     stop_continuousWOD = false;  // start wod
     stop_receive = false;
 
-    std::cout << "RUNNIGN STATELLITE" << std::endl;
+    std::cout << "RUNNING SATELLITE" << std::endl;
     while (1) {
         // Enters safe mode from any
         if (!satellite.checkBattery()) {
@@ -71,11 +73,8 @@ int Computer::runSatellite() {
             case START_MODE:
                 start();
                 break;
-            case ORBIT_INSERTION_MODE:
-                orbitalInsertion();
-                break;
-            case EJECTION_MODE:
-                ejection();
+            case DETUMBLING_MODE:
+                detumbling();
                 break;
             case DEPLOYMENT_MODE:
                 deployment();
@@ -146,26 +145,44 @@ void Computer::commandHandling(){
     }
     return; 
 }
-void Computer::start() {}
+void Computer::start() {
+    cout << "START mode" << endl; 
+    mode_ = DETUMBLING_MODE;
+}
 
-void Computer::ejection() {}
+void Computer::detumbling() {
 
-void Computer::orbitalInsertion() {
+    cout << "Detumbling mode" << endl; 
+
+    // put in bdot 
+    cout << "PLEASE ADD B DOT" << endl; 
+    
+    //testing will be done by timing how long sat takes to
+    // stop spinning on bearing table w + wo detumbling
+
     // check if in orbit
     orbit_insertion_complete = true;
 
     // then we deploy
-    mode_ = DEPLOYMENT_MODE;
+    if(!is_deployed){
+        mode_ = DEPLOYMENT_MODE;
+    }
+    else{
+        mode_ = IDLE_MODE; 
+    }
 }
 
 void Computer::deployment() {
+
+    cout << "Deployment mode" << endl; 
+    is_deployed = true; 
     // deploy things
     satellite.deployment();
 }
 
 void Computer::idle() {
     // do nothing
-
+    cout << "Idle mode" << endl; 
     uint32_t operational_time = satellite.getTime() - start_time;
 
     if (operational_time > MAX_LIFETIME) {
@@ -174,12 +191,12 @@ void Computer::idle() {
         mode_ = STATION_KEEPING_MODE;
     } else if (collect_data && satellite.checkDayTime()) {
         mode_ = NORMAL_MODE;
-    } else if (transmit_data) {
-        mode_ = TRANSMIT_MODE;
     }
 }
 
 void Computer::normal() {
+
+    cout << "Normal Mode" << endl; 
     // collect data
     satellite.payloadDataCollection();
 
@@ -218,8 +235,12 @@ void Computer::safe() {
 
     if (satellite.checkBattery()) {
         if (!orbit_insertion_complete) {
-            mode_ = ORBIT_INSERTION_MODE;
-        } else {
+            mode_ = DETUMBLING_MODE;
+        }
+        else if (satellite.getTime() - start_time > MAX_LIFETIME) {
+        mode_ = END_OF_LIFE;
+        } 
+        else {
             mode_ = IDLE_MODE;
         }
     }
