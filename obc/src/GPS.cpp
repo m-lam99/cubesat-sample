@@ -44,11 +44,9 @@ void GPS::get_location(loc_t *coord){
     uint8_t status = _EMPTY;
 
     while(status != _COMPLETED) {
-        std::cout << "get location loop" << std::endl;
         gpgga_t gpgga;
         gprmc_t gprmc;
 
-        std::cout << "before buffer" << std::endl;
 
         char buffer[256];
 
