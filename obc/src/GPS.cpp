@@ -30,12 +30,12 @@ void GPS::gps_on( ){
 void GPS::print_GPS(){
     loc_t data;
     std::cout << "print gps" << std::endl;
-    while (1) {
+    
         get_location(&data);
         printf("%lf %lf %lf\n", data.latitude, data.longitude, data.altitude);
         std::cout << "seconds since 1/1/2000: " << data.epoch << std::endl; 
 
-    }
+    
 
 }
 
