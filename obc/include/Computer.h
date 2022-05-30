@@ -10,7 +10,11 @@
 #include <vector>
 
 //#define MAX_LIFETIME 2630000 // in seconds 
+<<<<<<< HEAD
 #define MAX_LIFETIME 30 // in second
+=======
+#define MAX_LIFETIME 30 // in seconds 
+>>>>>>> eaa96852dc99a30b53b85e421f0b5dca4c305c14
 
 #define START_MODE 0x36
 #define DETUMBLING_MODE 0x37

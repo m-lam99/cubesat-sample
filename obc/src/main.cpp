@@ -11,6 +11,7 @@
 #include <iomanip>  // for setprecision
 
 #include "Test.h"
+#include "Computer.h"
 #include <vector>
 
 int main() {
@@ -31,5 +32,7 @@ int main() {
     // beaglebone.mode_=IDLE_MODE; 
     Test test;
     test.runTests();
+    Computer beagle;
+
     return 0;
 }
