@@ -92,8 +92,6 @@ imu::Vector<3> CControl::runControlAlgorithm(imu::Quaternion measurements, imu::
         // }
     }
 
-
-
     // obtain the control signal and send to system
     getControlSignal();
     for (int i = 0; i < 3; i++)
