@@ -7,7 +7,7 @@
 #include "Test.h"
 #include "Computer.h"
 #include "controller.h"
-
+#include "GPIO.h"
 #include <vector>
 
 using namespace exploringBB;
@@ -54,7 +54,29 @@ void Test::runTests(){
         else if(input == "ttc"){
             testTransceiver();
         }
+        else if(input == "burn"){
+            testDeployment(); 
+        }
+
     }
+}
+
+void Test::testDeployment(){
+    GPIO burn_GPIO_(59); 
+
+    burn_GPIO_.setDirection(OUTPUT); 
+    if (burn_GPIO_.setValue(HIGH) == -1)
+    {
+        cout << "deployment failed" << endl; 
+    }
+    else
+    {
+        usleep(2000000);
+        burn_GPIO_.setValue(LOW);
+        cout << "Finished Burning" << endl; 
+    }
+
+    return; 
 }
 
 void Test::testGPIO(){

@@ -142,7 +142,7 @@ void Computer::commandHandling(){
     }
     else if (command == SOS){
         mode_ = SAFE_MODE;
-        cout << "SOS received" << endl; ß=
+        cout << "SOS received" << endl;
     }
     return; 
 }
