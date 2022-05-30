@@ -183,7 +183,7 @@ void Test::testADS1015(){
 
     for (int i = 0; i < 6; i++)
     {
-         cout << voltages[i] <<  endl;
+         cout << "Photodiode " << i << " - " << voltages[i] <<  endl;
     }
 }
 
