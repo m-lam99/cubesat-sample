@@ -17,7 +17,10 @@ Satellite::Satellite()
       prop_GPIO_(23),
       burn_GPIO_(59),
       transceiver_(),
-      Controller(0, 1.57, 0) // initial pointing direction
+      Controller(0, 1.57, 0),
+      mag_x(PWM_0A),
+      mag_y(PWM_1A),
+      mag_z(PWM_0B) // initial pointing direction
 {
     if (prop_GPIO_.setDirection(OUTPUT) == -1)
     {
@@ -85,16 +88,29 @@ bool Satellite::pointSatellite(double phi, double theta, double psi)
 
     signal = Controller.runControlAlgorithm(quat, rps);
 
-    // ACRTUATE THE SIGNAL?
-    std::cout << "SIGNAL NOT ACTUATED" << std::endl;
+    // ACTUATE THE SIGNAL
+    mag_x.setDutyCycle((float)(signal.x()/1.57)*100);
+    mag_y.setDutyCycle((float)(signal.y()/1.57)*100);
+    mag_z.setDutyCycle((float)(signal.y()/1.57)*100);
+    std::cout << "SIGNAL ACTUATED" << std::endl;
 
     return Controller.getTolerance();
 }
 
 int Satellite::detumbling()
 {
+    imu::Vector<3> mags = imu_.getVector(BNO055::VECTOR_MAGNETOMETER);
+        std::cout << "X: " << mags.x() << " Y: " << mags.y() << " Z: "
+            << mags.z() << "\t\t";
 
+    Controller.detumble(imu_.getRPS(), mags);
     // return true if finished
+    // mag_x.setDutyCycle(50.0f);
+    // mag_y.setDutyCycle(50.0f);
+    mag_z.setDutyCycle(75.0f);
+
+    std::cout << "Mag Duty Cycle: " << mag_z.getDutyCycle() << std::endl;
+
     return true;
 }
 

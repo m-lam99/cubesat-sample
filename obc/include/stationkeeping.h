@@ -48,7 +48,7 @@ struct jacobian
 
 void printVec3(Vec3 vec);
 void getPrograde(Vec3 *progradeVec, GPS::loc_t *llh1, GPS::loc_t *llh2);
-void llh2NED(GPS::loc_t *llh, Vec3 *outvec);
+void llh2ENU(GPS::loc_t *llh, Vec3 *outvec);
 void vec2Euler(Vec3 *vec);
 
 static inline float UTCtoJD2000(float time)

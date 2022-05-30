@@ -96,13 +96,13 @@ float INA219::shuntVoltage(){
 }
 
 float INA219::busVoltage(){
-   uint16_t bus_voltage_bits = readRegister(REGISTERS::BUSVOLTAGE);
-   if (bus_voltage_bits & 0b1){
+   uint16_t value = readRegisters(REGISTERS::BUSVOLTAGE);
+   if (value & 0b1){
       std::cout << "Error: Power or Current out of range" << std::endl;
       return 0.;
    }
    else {
-      return (float)(bus_voltage_bits >> 3);
+      return (int16_t)((value >> 3) * 4) * 0.001;
    }
 }
 
@@ -147,18 +147,17 @@ float INA219::current(){
    valid_ = writeRegister(REGISTERS::CALIBRATION, 4096);
    // calibrate(26, 0.5, 3.2);
    // uint32_t ina219_currentDivider_mA = 10;
-   current_lsb_ = 10;
+   // current_lsb_ = 10.0;
    
    if (valid_){
       return 0.f;
    } else {
-         int16_t current = readRegister(REGISTERS::CURRENT);
+         uint16_t current = readRegisters(REGISTERS::CURRENT);
       // if (current > 32767){
       //    current -= 65536;
       // }
-      
-      // std::cout << current << std::endl;
-      return (float)(current)/current_lsb_;
+
+      return (float)((float)readRegisters(REGISTERS::CURRENT)/(current_lsb_));
       
    }
    

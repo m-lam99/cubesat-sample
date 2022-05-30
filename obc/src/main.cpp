@@ -32,7 +32,7 @@ int main() {
     // beaglebone.mode_=IDLE_MODE; 
     Test test;
     test.runTests();
-    Computer beagle;
-    beagle.runSatellite();
+    // Computer beagle;
+    // beagle.runSatellite();
     return 0;
 }

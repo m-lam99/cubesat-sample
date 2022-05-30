@@ -106,13 +106,15 @@ class Satellite {
         'S'
     };
     // PWM
+    PWM mag_x;
+    PWM mag_y;
+    PWM mag_z;
 
     uint8_t mode_;
     CControl Controller; 
 
     const float BATTERY_THRESHOLD  = 2.7;
 
-    
 
 };
 
