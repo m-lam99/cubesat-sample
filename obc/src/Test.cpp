@@ -157,11 +157,11 @@ void Test::testADS1015(){
     ADS1015 adc1(2, ADC_ADDRESS1);
     ADS1015 adc2(2, ADC_ADDRESS2);
 
-    for (int i = 0; i < 10; i++)
-    {
-         cout << (int)adc1.getVoltage(0) << ", " << (int)adc1.getVoltage(1) <<  endl;
-        usleep(500000);
-    }
+    // for (int i = 0; i < 10; i++)
+    // {
+    //      cout << (int)adc1.getVoltage(0) << ", " << (int)adc1.getVoltage(1) <<  endl;
+    //     usleep(500000);
+    // }
 
     /*
     adc1:
