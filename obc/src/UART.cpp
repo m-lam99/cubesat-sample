@@ -135,7 +135,9 @@ void UARTDevice::readln(char* buffer){
     int rx_length = -1;
     
     while(1) {
+        std::cout << "trying to read" << std::endl; 
         rx_length = read(serial_port, (void*)(&c), 1);
+        std::cout << "finished reading" << std::endl; 
 
         if (rx_length <= 0) {
             //wait for messages
