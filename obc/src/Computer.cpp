@@ -226,7 +226,11 @@ void Computer::safe() {
     if (satellite.checkBattery()) {
         if (!orbit_insertion_complete) {
             mode_ = ORBIT_INSERTION_MODE;
-        } else {
+        }
+        else if (satellite.getTime() - start_time > MAX_LIFETIME) {
+        mode_ = END_OF_LIFE;
+        } 
+        else {
             mode_ = IDLE_MODE;
         }
     }
