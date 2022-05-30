@@ -55,7 +55,7 @@ int Computer::runSatellite() {
     stop_continuousWOD = false;  // start wod
     stop_receive = false;
 
-    std::cout << "RUNNIGN STATELLITE" << std::endl;
+    std::cout << "RUNNING SATELLITE" << std::endl;
     while (1) {
         // Enters safe mode from any
         if (!satellite.checkBattery()) {
@@ -142,7 +142,7 @@ void Computer::commandHandling(){
     }
     else if (command == SOS){
         mode_ = SAFE_MODE;
-        cout << "SOS received" << endl; ß=
+        cout << "SOS received" << endl;
     }
     return; 
 }
@@ -151,6 +151,8 @@ void Computer::start() {}
 void Computer::ejection() {}
 
 void Computer::orbitalInsertion() {
+
+    cout << "Orbit insertion mode" << endl; 
     // check if in orbit
     orbit_insertion_complete = true;
 
@@ -159,13 +161,15 @@ void Computer::orbitalInsertion() {
 }
 
 void Computer::deployment() {
+
+    cout << "Deployment mode" << endl; 
     // deploy things
     satellite.deployment();
 }
 
 void Computer::idle() {
     // do nothing
-
+    cout << "Idle mode" << endl; 
     uint32_t operational_time = satellite.getTime() - start_time;
 
     if (operational_time > MAX_LIFETIME) {
@@ -180,6 +184,8 @@ void Computer::idle() {
 }
 
 void Computer::normal() {
+
+    cout << "Normal Mode" << endl; 
     // collect data
     satellite.payloadDataCollection();
 
@@ -219,7 +225,11 @@ void Computer::safe() {
     if (satellite.checkBattery()) {
         if (!orbit_insertion_complete) {
             mode_ = ORBIT_INSERTION_MODE;
-        } else {
+        }
+        else if (satellite.getTime() - start_time > MAX_LIFETIME) {
+        mode_ = END_OF_LIFE;
+        } 
+        else {
             mode_ = IDLE_MODE;
         }
     }

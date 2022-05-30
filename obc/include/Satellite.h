@@ -21,6 +21,7 @@
 #include <queue>
 #include <vector>
 
+
 #define SUN_SENOR_THRESHOLD 0.1
 // Each function in Satellite class either returns a 0 or 1
 // 0: error
