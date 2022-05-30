@@ -47,8 +47,7 @@ Satellite::Satellite()
     {
         /* There was a problem detecting the BNO055 ... check your connections */
         std::cout << "Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!" << std::endl;
-        while (1)
-            ;
+
     }
 
     usleep(1000);
