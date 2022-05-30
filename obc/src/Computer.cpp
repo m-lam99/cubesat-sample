@@ -65,7 +65,6 @@ int Computer::runSatellite() {
            cout << "New command received" << endl;
             commandHandling();
             new_command = false;
-            //EOL??
         }
 
         switch (mode_) {
