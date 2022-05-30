@@ -9,12 +9,17 @@
 #include <queue>
 #include <vector>
 
+<<<<<<< HEAD
 //#define MAX_LIFETIME 2630000 // in seconds 
 <<<<<<< HEAD
 #define MAX_LIFETIME 30 // in second
 =======
 #define MAX_LIFETIME 30 // in seconds 
 >>>>>>> eaa96852dc99a30b53b85e421f0b5dca4c305c14
+=======
+#define MAX_LIFETIME 2630000 // in seconds 
+//#define MAX_LIFETIME 30 // in seconds 
+>>>>>>> 01f56d4c099649a8a6a1baedbc8383114f2a592c
 
 #define START_MODE 0x36
 #define DETUMBLING_MODE 0x37
