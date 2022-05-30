@@ -48,6 +48,8 @@ void GPS::get_location(loc_t *coord){
         gpgga_t gpgga;
         gprmc_t gprmc;
 
+        std::cout << "before buffer" << std::endl;
+
         char buffer[256];
 
         readln(buffer);
