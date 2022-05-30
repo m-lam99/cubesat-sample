@@ -141,6 +141,7 @@ void UARTDevice::readln(char* buffer){
 
         if (rx_length <= 0) {
             //wait for messages
+            std::cout << "waiting to receive" << std::endl; 
             sleep(1);
         } else {
             if (c == '\n') {
@@ -148,6 +149,7 @@ void UARTDevice::readln(char* buffer){
                 break;
             }
             *b++ = c;
+            std::cout << c << std::endl; 
         }
     }
     std::cout << buffer << std::endl; 
