@@ -62,33 +62,8 @@ int Computer::runSatellite() {
             mode_ = SAFE_MODE;
         } else if (new_command) {
             // change mode
-            if(command <= 0x38 && command >= 0x30){
-                mode_ = command; 
-            }
-            else if (command == CMD_SEND_WOD){
-                can_receive_payload = false; 
-                std::vector<uint8_t> message ={WOD_transmit};
-                satellite.transmitMessage(message);
-                can_receive_payload = true;
-
-            }
-            else if (command == CMD_WOD_OFF){
-                WOD_transmit = false;
-            }
-            else if (command == CMD_WOD_ON){
-                WOD_transmit = true;
-            }
-            else if (command == CMD_SEND_MODE){
-                can_receive_payload = false; 
-                std::vector<uint8_t> message ={mode_};
-                satellite.transmitMessage(message);
-                can_receive_payload = true;
-
-            }
-            else if (command == SOS){
-                mode_ = SAFE_MODE;
-            }
-
+           cout << "New command received" << endl;
+            commandHandling();
             new_command = false;
         }
 
@@ -136,6 +111,36 @@ int Computer::runSatellite() {
     tPayloadTransmit.join();
 }
 
+void Computer::commandHandling(){
+    if(command <= 0x38 && command >= 0x30){
+        mode_ = command; 
+        cout << "Command"
+    }
+    else if (command == CMD_SEND_WOD){
+        can_receive_payload = false; 
+        std::vector<uint8_t> message ={WOD_transmit};
+        satellite.transmitMessage(message);
+        can_receive_payload = true;
+
+    }
+    else if (command == CMD_WOD_OFF){
+        WOD_transmit = false;
+    }
+    else if (command == CMD_WOD_ON){
+        WOD_transmit = true;
+    }
+    else if (command == CMD_SEND_MODE){
+        can_receive_payload = false; 
+        std::vector<uint8_t> message ={mode_};
+        satellite.transmitMessage(message);
+        can_receive_payload = true;
+
+    }
+    else if (command == SOS){
+        mode_ = SAFE_MODE;
+    }
+    return; 
+}
 void Computer::start() {}
 
 void Computer::ejection() {}

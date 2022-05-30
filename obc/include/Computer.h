@@ -39,6 +39,8 @@ class Computer {
 
     uint8_t mode_;
 
+    void commandHandling();
+
     void start();
     void ejection(); 
     void orbitalInsertion();
