@@ -10,7 +10,7 @@ using namespace std;
 
 Computer::Computer()
     : satellite(),
-      mode_(IDLE_MODE),
+      mode_(START_MODE),
       WOD_transmit(true),
       stop_transmit(true),
       stop_payloadTransmit(true),
@@ -21,6 +21,7 @@ Computer::Computer()
       can_receive_WOD(true),
       is_deployed(false), 
       can_receive_payload(true) {
+    cout << "constructing" << endl;
     start_time = satellite.getTime();
     new_command = false;
     cout << "Computer initialised" << endl;

@@ -33,6 +33,6 @@ int main() {
     Test test;
     test.runTests();
     Computer beagle;
-
+    beagle.runSatellite();
     return 0;
 }
