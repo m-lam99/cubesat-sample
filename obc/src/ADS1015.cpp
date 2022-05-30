@@ -74,6 +74,7 @@ float ADS1015::getVoltage(int channel)
         break;
     }
     int test = config | (0b100 << 12);
+    cout << readRegisters(ADDRESS_POINTER::CONFIG) << std::endl;
     // std::bitset<16> x(test);
     // std::cout << "config " << x << std::endl;
     uint16_t bit_val = readRegisters(ADDRESS_POINTER::CONVERSION);
