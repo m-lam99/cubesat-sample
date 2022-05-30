@@ -10,7 +10,7 @@ using namespace std;
 
 Computer::Computer()
     : satellite(),
-      mode_(START_MODE),
+      mode_(IDLE_MODE),
       WOD_transmit(true),
       stop_transmit(true),
       stop_payloadTransmit(true),
@@ -158,7 +158,7 @@ void Computer::detumbling() {
     
     //testing will be done by timing how long sat takes to
     // stop spinning on bearing table w + wo detumbling
-    
+
     // check if in orbit
     orbit_insertion_complete = true;
 
