@@ -190,8 +190,6 @@ void Computer::idle() {
         mode_ = STATION_KEEPING_MODE;
     } else if (collect_data && satellite.checkDayTime()) {
         mode_ = NORMAL_MODE;
-    } else if (transmit_data) {
-        mode_ = TRANSMIT_MODE;
     }
 }
 
