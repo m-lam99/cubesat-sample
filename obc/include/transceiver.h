@@ -16,7 +16,7 @@ class Transceiver: public UARTDevice
 {
 
 public:
-    static const int MAX_BYTES_AX25 = 42;
+    static const int MAX_BYTES_AX25 = 64;
     static const int CMD_MAX_LENGTH = 47;
 
     Transceiver();
