@@ -331,7 +331,7 @@ int Computer::continuousWOD() {
             std::cout << "WOD Transmission" << std::endl;
         }
         //std::this_thread::sleep_for(std::chrono::milliseconds(30000));
-        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(30000));
 
         // transmit every 30 seconds
     }
@@ -373,7 +373,7 @@ void Computer::commandReceive() {
             }
             
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
         // std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
         // transmit every 30 seconds
