@@ -53,6 +53,12 @@ def send_command(data: list):
     except RuntimeError:
         print(f"Data ({data}) did not send")
 
+def find_start_token_index(msg):
+    token = ["#","R"]
+    for ind in (i for i,e in enumerate(msg) if e==token[0]):
+        if msg[ind:ind+2]==token:
+            return ind
+    return -1
 
 def receive_data(packet_size: int, channel: int = 0) -> list:
     """Receive data from the transceiver
@@ -72,7 +78,13 @@ def receive_data(packet_size: int, channel: int = 0) -> list:
 
     data_left = _ser.inWaiting()
     received_data += _ser.read(data_left)
-    return received_data
+    
+    ix = find_start_token_index(received_data)
+    if ix == -1 :
+        print("No start token found")
+        return []
+    
+    return received_data[ix+2:]
 
 
 def setup_transceiver(error_checking: bool = False):
