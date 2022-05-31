@@ -237,7 +237,7 @@ int Satellite::wodTransmission()
             //std::cout << send_vector.back() << std::endl;
         }
         transceiver_.TransmitMessage(test);
-        std::cout << test << std::endl;
+        std::cout << test.data() << std::endl;
         //transceiver_.TransmitMessage(send_vector);
         
         wod_data_.pop();
