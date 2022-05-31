@@ -57,16 +57,16 @@ void Test::runTests(){
         else if(input == "24v"){
             test24V();
         }
-        else if (input == "x"){
-            break;
-        }
+        // else if (input == "x"){
+        //     break;
+        // }
                 else if(input == "24v"){
             test24V();
         }
         else if (input == "x"){
             break;
         }
-                else if(input == "burn"){
+        else if(input == "burn"){
             testDeployment(); 
         }
         else if(input == "aocs"){
@@ -74,6 +74,9 @@ void Test::runTests(){
         }
         else if(input == "fuckthis"){
             break; 
+        }
+        else if(input == "wodtransmit"){
+            transmitWOD();
         }
     }
 }
@@ -271,6 +274,13 @@ void Test::wodTestEncoded() {
     }
     
     
+}
+
+void Test::transmitWOD() {
+    Satellite nice;
+    nice.wodCollection();
+    nice.wodTransmission();
+
 }
 
 void Test::testPropulsion(){

@@ -21,6 +21,7 @@ class Test{
 
         void testDeployment();                  // "burn"
         void testAOCS();                        // "aocs"
+        void transmitWOD();
 };
 
 #endif

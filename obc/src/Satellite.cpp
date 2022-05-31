@@ -196,7 +196,7 @@ int Satellite::orbitCorrection()
 int Satellite::wodCollection()
 {
     wod_data_.push(wod_.GetData());
-    std::cout << (int)wod_data_.back().current_3v3 << std::endl;
+    std::cout << (int)wod_data_.back().current_batt << std::endl;
     return 1;
 }
 
@@ -229,10 +229,14 @@ int Satellite::wodTransmission()
     std::cout << "WOD transmit" << std::endl;
     if (encodedMsg_ != NULL)
     {
+        std::vector<uint8_t> send_vector;
         // Transmit message
-        // transceiver_.TransmitMessage(encodedMsg_);
-
-        // int success = sendMessage(encodedMsg);
+        for(int i = 0; i < encodedMsg_->nbytes; ++i){
+            send_vector.push_back(encodedMsg_->bytes[i]);
+            std::cout << send_vector.back() << std::endl;
+        }
+        transceiver_.TransmitMessage(send_vector);
+        
         wod_data_.pop();
         return 1;
     }
