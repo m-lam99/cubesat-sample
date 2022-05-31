@@ -291,6 +291,7 @@ std::vector<uint8_t> Satellite::checkTransceiver()
 
     for (unsigned int i = 0; i < transceiver_.MAX_BYTES_AX25; i++)
     {
+        std::cout << message[i];
         if (message[0] == '#' && message[1] == 'R' && message.size() >= 3 && i > 3 && i < 18)
         {
             std::cout << message[i];
