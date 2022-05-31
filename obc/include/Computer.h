@@ -19,7 +19,7 @@
 #define NORMAL_MODE 0x32
 #define TRANSMIT_MODE 0x34
 #define STATION_KEEPING_MODE 0x33
-#define SAFE_MODE 0x30
+#define SAFE_MODE 0x39
 #define END_OF_LIFE 0x35
 
 #define CMD_SEND_WOD 0x40

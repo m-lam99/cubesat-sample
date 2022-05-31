@@ -181,7 +181,7 @@ void Computer::littleRun(){
 }
 
 void Computer::commandHandling(){
-    if(command <= 0x38 && command >= 0x30){
+    if(command <= 0x39 && command >= 0x31){
         mode_ = command; 
         cout << "Command " << command << "received" << endl; 
     }
