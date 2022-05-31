@@ -225,7 +225,7 @@ int Satellite::wodTransmission()
     message_.receiveSequence = 0;
 
     encodedMsg_ = ax25::encode(&message_);
-    std::vector<uint8_t> test = {69, 42};
+    std::vector<uint8_t> test = {0x7e, 0x39, 0x49, 0x61, 0x51, 0x2, 0x2, 0x3e, 0xaa, 0xb2, 0xa6, 0x88, 0xb8, 0xb2, 0xc3, 0x60, 0x0, 0x15, 0xb, 0x53, 0x27, 0x53, 0x72, 0x67, 0x2, 0x43, 0x2, 0xb, 0x7b, 0x1b, 0x53, 0x2, 0x4b, 0x3b, 0x2, 0x4f, 0x7b, 0x57, 0x27, 0x2, 0x23, 0x57, 0x63, 0x6b, 0x53, 0x17, 0x79, 0x22, 0x80, 0x7e};
 
     // encodedMsg_ = ax25::encode(&test);
 
@@ -235,12 +235,12 @@ int Satellite::wodTransmission()
         std::vector<uint8_t> send_vector;
         // Transmit message
         for(int i = 0; i < encodedMsg_->nbytes; ++i){
-            send_vector.push_back(encodedMsg_->bytes[i]);
-            std::cout << (int)send_vector.back() << std::endl;
+           send_vector.push_back(encodedMsg_->bytes[i]);
+           // std::cout << (int)send_vector.back() << std::endl;
         }
         transceiver_.TransmitMessage(test);
         std::cout << test.data() << std::endl;
-        transceiver_.TransmitMessage(send_vector);
+        //transceiver_.TransmitMessage(send_vector);
         
         wod_data_.pop();
         return 1;
