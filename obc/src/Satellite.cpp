@@ -302,6 +302,7 @@ std::vector<uint8_t> Satellite::checkTransceiver()
         std::cout << message[i];
         if (message[0] == '#' && message[1] == 'R' && message.size() >= 3 && i > 3 && i < 18)
         {
+            std::cout << "PRINTED! " << std::endl;
             std::cout << message[i];
             receive = 1;
         }

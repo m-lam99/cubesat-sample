@@ -91,7 +91,6 @@ bool Transceiver::TestTransceiver(void)
     std::vector<uint8_t> version = ReceiveData();
     for (unsigned int i = 0; i < version.size(); i++)
     {
-        std::cout << "help? " << std::endl;
         std::cout << version[i];
     }
     std::cout << std::endl;
