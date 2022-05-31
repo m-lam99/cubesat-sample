@@ -1,6 +1,7 @@
 import serial
 from time import sleep
 
+from db.db import DB
 from ax25 import bindings
 from decode import decode_science, decode_wod
 
@@ -78,13 +79,8 @@ def receive_data(packet_size: int, channel: int = 0) -> list:
 
     data_left = _ser.inWaiting()
     received_data += _ser.read(data_left)
-    
-    ix = find_start_token_index(received_data)
-    if ix == -1 :
-        print("No start token found")
-        return []
-    
-    return received_data[ix+2:]
+
+    return received_data
 
 
 def setup_transceiver(error_checking: bool = False):
@@ -152,12 +148,19 @@ def send_mode_command(mode: int):
 
 
 def run_receive_loop():
-    db = db.DB()
+    db = DB()
+    
     while True:
         # sleep for a few seconds then try get 100 bytes
         sleep(LOOP_TIME)
         data = receive_data(100)
-        try:
+        try:        
+            ix = find_start_token_index(data)
+            if ix == -1 :
+                print("No start token found")
+                continue
+            data = data[ix+2:]
+            
             b = bindings.ByteArray([int(d) for d in data])
             nbytes = bindings.ax25.ByteArray_getnbytes(b)
             _bytes = bindings.ax25.ByteArray_getbytes(b)

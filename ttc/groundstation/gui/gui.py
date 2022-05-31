@@ -1,4 +1,4 @@
-from db.db import DB
+from transceiver.db.db import DB
 # TODO: uncomment once implemented
 # from transceiver.transceiver import send_mode_command
 from dash import Dash, html, dcc
