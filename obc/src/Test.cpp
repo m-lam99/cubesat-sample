@@ -299,6 +299,7 @@ void Test::testTransceiver(){
             //          cout << message[i]; 
 
             // }
+            cout << "HELP!: "; 
             cout << message[i];
         }
          cout <<  endl; 
