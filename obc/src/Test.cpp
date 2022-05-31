@@ -277,9 +277,13 @@ void Test::wodTestEncoded() {
 }
 
 void Test::transmitWOD() {
+
     Satellite nice;
-    nice.wodCollection();
-    nice.wodTransmission();
+    while(1){
+        nice.wodCollection();
+        nice.wodTransmission();
+    }
+    
 
 }
 
