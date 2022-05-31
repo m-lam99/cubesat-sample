@@ -297,14 +297,15 @@ void Test::testTransceiver(){
     Transceiver comms;
 
     comms.TestTransceiver();
-    // while(1){
-    //      vector<uint8_t> message = {'T', 'e', 's', 't'};
-    //     comms.TransmitMessage(message);
-    //     usleep(1000000);
-    // }
-    //  vector<uint8_t> message = {'T', 'e', 's', 't'};
-    // comms.TransmitMessage(message);
-    // usleep(1000000);
+    while(1){
+         vector<uint8_t> message = {'T', 'e', 's', 't'};
+        comms.TransmitMessage(message);
+        usleep(1000000);
+    }
+     vector<uint8_t> message = {'T', 'e', 's', 't'};
+    comms.TransmitMessage(message);
+    usleep(1000000);
+    
     while(1){
         comms.SendCommand(comms.CMD_RECEIVE_MODE_CONFIG);
          vector<uint8_t> message = comms.ReceiveData();

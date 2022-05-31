@@ -315,7 +315,7 @@ std::vector<uint8_t> Satellite::checkTransceiver()
     }
     std::cout << std::endl;
 
-    // UNPACK message
+    // UNPACK message RICKYS HAX
     for (unsigned int i = 0; i < message.size();i++)
     {
         if (message[i] == 'M'){
