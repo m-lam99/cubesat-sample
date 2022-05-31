@@ -56,7 +56,7 @@ uint16_t ADS1015::readRegisters(unsigned int registerAddress)
 float ADS1015::getVoltage(int channel)
 {
     // writeRegister(ADDRESS_POINTER::CONFIG, 0b0100010010000011);
-    uint16_t config = readRegisters(ADDRESS_POINTER::CONFIG);
+    // uint16_t config = readRegisters(ADDRESS_POINTER::CONFIG);
 
     switch (channel)
     {
@@ -73,7 +73,7 @@ float ADS1015::getVoltage(int channel)
         perror("No >:(");
         break;
     }
-    int test = config | (0b100 << 12);
+    // int test = config | (0b100 << 12);
     std::cout << readRegisters(ADDRESS_POINTER::CONFIG) << std::endl;
     // std::bitset<16> x(test);
     // std::cout << "config " << x << std::endl;

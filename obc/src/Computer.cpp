@@ -110,6 +110,71 @@ int Computer::runSatellite() {
     tPayloadTransmit.join();
 }
 
+void Computer::littleRun(){
+     // Start WOD transmission
+    thread tWODtransmit(&Computer::continuousWOD, this);
+    thread tPayloadTransmit(&Computer::payloadTransmit, this);
+    thread tCommandReceive(&Computer::commandReceive, this);
+
+    stop_payloadTransmit = false;
+    stop_continuousWOD = false;  // start wod
+    stop_receive = false;
+
+    std::cout << "RUNNING SATELLITE" << std::endl;
+    while (1) {
+
+        if (new_command) {
+            // change mode
+           cout << "New command received" << endl;
+            commandHandling();
+            new_command = false;
+        }
+        
+        switch (mode_) {
+            case START_MODE:
+                //
+                cout << "Entering start" << endl; 
+                break;
+            case DETUMBLING_MODE:
+                cout << "Entering Detumbling" << endl; 
+                break;
+            case DEPLOYMENT_MODE:
+                cout << "Entering Deployment" << endl; 
+                break;
+            case IDLE_MODE:
+                cout << "Entering Idle" << endl; 
+                break;
+            case NORMAL_MODE:
+                cout << "Entering Normal" << endl; 
+                break;
+            case STATION_KEEPING_MODE:
+                cout << "Entering Station Keeping" << endl; 
+                break;
+            case TRANSMIT_MODE:
+                transmit();
+                break;
+            case SAFE_MODE:
+                cout << "Entering Safe Mode" << endl; 
+                break;
+            case END_OF_LIFE:
+                cout << "Entering end of life" << endl; 
+                break;
+            default:
+                break;
+        }
+        usleep(500000);
+
+    }
+    stop_continuousWOD = true;
+    stop_payloadTransmit = true;
+    stop_receive = true;
+
+    tCommandReceive.join();
+    tWODtransmit.join();
+    tPayloadTransmit.join();
+
+}
+
 void Computer::commandHandling(){
     if(command <= 0x38 && command >= 0x30){
         mode_ = command; 
