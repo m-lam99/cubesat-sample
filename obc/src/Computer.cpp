@@ -135,6 +135,7 @@ void Computer::littleRun(){
             new_command = false;
         }
 
+        mode_ = satellite.getMode();
         switch (mode_) {
             case START_MODE:
                 //

@@ -50,6 +50,9 @@ class Satellite {
     // bool point satellitle - return true when pointed 
     bool pointSatellite(double phi, double theta, double psi); 
 
+    int getMode(){
+        return mode_;
+    }
     ~Satellite();
     int receive;
 
