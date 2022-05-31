@@ -214,9 +214,6 @@ void Test::testPWM(string pwm_channel){
 }
 
 
-
-
-
 void Test::testGPS()
 {
 
@@ -298,10 +295,11 @@ void Test::testTransceiver(){
 
        for (unsigned int i = 0; i < comms.MAX_BYTES_AX25; i++)
         {
-                if(message[0] == '#' && message[1] == 'R' && i>3 && i<18){
-                     cout << message[i]; 
+            //     if(message[0] == '#' && message[1] == 'R' && i>3 && i<18){
+            //          cout << message[i]; 
 
-            }
+            // }
+            cout << message[i];
         }
          cout <<  endl; 
         usleep(1000000);
