@@ -302,7 +302,6 @@ std::vector<uint8_t> Satellite::checkTransceiver()
         std::cout << message[i];
         if (message[0] == '#' && message[1] == 'R' && message.size() >= 3 && i > 3 && i < 18)
         {
-            std::cout << "PRINTED! " << std::endl;
             std::cout << message[i];
             receive = 1;
         }
@@ -310,6 +309,13 @@ std::vector<uint8_t> Satellite::checkTransceiver()
     std::cout << std::endl;
 
     // UNPACK message
+    for (unsigned int i = 0; i < message.size();i++)
+    {
+        if (message[i] == 'M'){
+            mode_ = message[i+1];
+            std::cout << "mode is" << mode_ << std::endl;
+        }
+    }
 
     return message;
 }
