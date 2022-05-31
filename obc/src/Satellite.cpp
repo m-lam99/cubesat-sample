@@ -225,7 +225,7 @@ int Satellite::wodTransmission()
     message_.receiveSequence = 0;
 
     encodedMsg_ = ax25::encode(&message_);
-    std::vector<uint8_t> test{69};
+    std::vector<uint8_t> test = {69, 420};
 
     std::cout << "WOD transmit" << std::endl;
     if (encodedMsg_ != NULL)
