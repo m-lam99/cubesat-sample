@@ -345,8 +345,12 @@ void Computer::commandReceive() {
             // Receive Data
             std::vector<uint8_t> msg = satellite.checkTransceiver();
             if (!satellite.receive) {
+                // Check if theres a new command and update flag
+                std::cout << "No Command received" << std::endl;
             } else {
                 new_command = true;
+                // Check if theres a new command and update flag
+                std::cout << "Command: " << command << std::endl;
                 if (msg[2] == 0x4D) {
                     if (msg[3] <= 0x38 && msg[3] >= 0x30) {
                         command = msg[3];
@@ -367,8 +371,7 @@ void Computer::commandReceive() {
                     new_command = false; 
                 }
             }
-            // Check if theres a new command and update flag
-            std::cout << "Command: " << command << std::endl;
+            
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
         // std::this_thread::sleep_for(std::chrono::milliseconds(5000));
