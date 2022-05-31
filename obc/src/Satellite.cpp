@@ -216,8 +216,24 @@ int Satellite::wodTransmission()
 
     message_.payload = data_transmit; // double check
     message_.npayload = 12;
-    message_.source = srcaddr;
-    message_.destination = destaddr;
+    // message_.source = srcaddr;
+    // message_.destination = destaddr;
+    message_.source = {
+        'N',
+        'I',
+        'C',
+        'E',
+        ' ',
+        ' '
+    }; 
+    message_.destination =  {
+        'U',
+        'S',
+        'Y',
+        'D',
+        'G',
+        'S'
+    };
     message_.dataType = 0;
     message_.commandResponse = 0;
     message_.controlType = 0;
