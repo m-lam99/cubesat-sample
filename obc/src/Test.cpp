@@ -282,6 +282,7 @@ void Test::transmitWOD() {
     while(1){
         nice.wodCollection();
         nice.wodTransmission();
+        usleep(50000000);
     }
     
 
@@ -305,7 +306,7 @@ void Test::testTransceiver(){
      vector<uint8_t> message = {'T', 'e', 's', 't'};
     comms.TransmitMessage(message);
     usleep(1000000);
-    
+
     while(1){
         comms.SendCommand(comms.CMD_RECEIVE_MODE_CONFIG);
          vector<uint8_t> message = comms.ReceiveData();
