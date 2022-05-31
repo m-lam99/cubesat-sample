@@ -234,11 +234,11 @@ int Satellite::wodTransmission()
         // Transmit message
         for(int i = 0; i < encodedMsg_->nbytes; ++i){
             send_vector.push_back(encodedMsg_->bytes[i]);
-            //std::cout << send_vector.back() << std::endl;
+            std::cout << send_vector.back() << std::endl;
         }
         transceiver_.TransmitMessage(test);
         std::cout << test.data() << std::endl;
-        //transceiver_.TransmitMessage(send_vector);
+        transceiver_.TransmitMessage(send_vector);
         
         wod_data_.pop();
         return 1;
