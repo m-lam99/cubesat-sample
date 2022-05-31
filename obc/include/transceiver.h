@@ -9,7 +9,7 @@
 #include <stdint.h>
 #include "UART.h"
 
-#define TTC_CHANNEL 2
+#define TTC_CHANNEL 4
 #define TTC_BAUD 19200
 
 class Transceiver: public UARTDevice
