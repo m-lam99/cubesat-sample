@@ -32,8 +32,8 @@ int main() {
     // beaglebone.mode_=IDLE_MODE; 
     Test test;
     test.runTests();
-    // Computer beagle;
-    // beagle.littleRun();
+    Computer beagle;
+    beagle.littleRun();
 
     return 0;
 }
