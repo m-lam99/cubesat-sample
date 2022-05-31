@@ -22,7 +22,8 @@ Computer::Computer()
       is_deployed(false), 
       can_receive_payload(true) {
     cout << "constructing" << endl;
-    start_time = satellite.getTime();
+    // Dummy time
+    start_time = 0;
     new_command = false;
     cout << "Computer initialised" << endl;
 }
@@ -48,6 +49,10 @@ int Computer::payloadTransmit() {
 }
 
 int Computer::runSatellite() {
+
+    // Set Start
+    start_time = satellite.getTime(); 
+
     // Start WOD transmission
     thread tWODtransmit(&Computer::continuousWOD, this);
     thread tPayloadTransmit(&Computer::payloadTransmit, this);
@@ -129,7 +134,7 @@ void Computer::littleRun(){
             commandHandling();
             new_command = false;
         }
-        
+
         switch (mode_) {
             case START_MODE:
                 //
