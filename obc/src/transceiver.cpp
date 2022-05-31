@@ -84,13 +84,14 @@ std::vector<uint8_t> Transceiver::ReceiveData(void)
 
 bool Transceiver::TestTransceiver(void)
 {
-    std::cout << "help? " << std::endl;
+    
     SendCommand(CMD_FIRMWARE_VERSION);
     std::vector<uint8_t> buff;
 
     std::vector<uint8_t> version = ReceiveData();
     for (unsigned int i = 0; i < version.size(); i++)
     {
+        std::cout << "help? " << std::endl;
         std::cout << version[i];
     }
     std::cout << std::endl;
