@@ -282,7 +282,7 @@ void Test::transmitWOD() {
     while(1){
         nice.wodCollection();
         nice.wodTransmission();
-        usleep(50000000);
+        usleep(5000000);
     }
     
 
