@@ -159,9 +159,9 @@ void CControl::getControlSignal(void)
     double a[3], b[3];
 
     // obtain first term in algorithm
-    a[0] = qErr.x() * gainQ;
-    a[1] = qErr.y() * gainQ;
-    a[2] = qErr.z() * gainQ;
+    a[1] = qErr.x() * gainQ;
+    a[2] = qErr.y() * gainQ;
+    a[3] = qErr.z() * gainQ;
 
     // for (int i = 0; i < 3; i++)
     // {
@@ -203,13 +203,28 @@ bool CControl::getTolerance(void)
     }
 }
 
-void CControl::detumble(imu::Vector<3> rps, imu::Vector<3> mags) {
-    // %%%Bfield is in teslas - 40000 nT = 4e4e-9 = 4e-5 ~= 1e-5
-    // %%%pqr is in rad/s --    0.1 rad/s  = 1e-1
+imu::Vector<3> CControl::detumble(imu::Vector<3> rps, imu::Vector<3> mags) {
+    // %%% Bfield is in teslas - 40000 nT = 4e4e-9 = 4e-5 ~= 1e-5
+    // %%% pqr is in rad/s --    0.1 rad/s  = 1e-1
     // %%% pqr*Bfield = 1e-1*1e-5 = 1e-6
     // %%% pqr*Bfield / (n*A) = 6e=7
     // %%% muB = n*i*A
     // n = number of turns
     // A = surfaced enclosed by turn of coil
     // current = k*cross(pqr, magfieldxyz)/(n*A);
+
+    imu::Vector<3> out(0,0,0);
+
+    // If less than 0.5 deg/s, good enuf
+    if (rps.x() > 0.00873) {
+        out[0] = 1;
+    }
+
+    if (rps.y() > 0.00873) {
+        out[1] = 1;
+    }
+
+    if (rps.z() > 0.00873) {
+        out[1] = 1;
+    }
 }

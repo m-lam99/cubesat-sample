@@ -6,6 +6,7 @@
 
 #include <iostream>
 
+
 Satellite::Satellite()
     : current_sensor_batt_(1, INA219_ADDRESS_BATT),
       gps_(),
@@ -105,21 +106,43 @@ int Satellite::detumbling()
 {
     imu::Vector<3> mags = imu_.getVector(BNO055::VECTOR_MAGNETOMETER);
     
-    std::cout << "X: " << mags.x() << " Y: " << mags.y() << " Z: "
-        << mags.z() << "\t\t";
+    // std::cout << "X: " << mags.x() << " Y: " << mags.y() << " Z: "
+    //     << mags.z() << "\t\t";
+    imu::Vector<3> rps = imu_.getRPS();
+    std::cout << "Rad x: " << rps.x() << " Rad y: " << rps.y() << " Rad z: "
+        << rps.z() << "\t\t";
 
-    Controller.detumble(imu_.getRPS(), mags);
-    // return true if finished
-    // mag_x.setDutyCycle(50.0f);
-    // mag_y.setDutyCycle(50.0f);
-    mag_z.setFrequency(250);
-    mag_z.setDutyCycle(75.0f);
-    mag_z.setPolarity(PWM::ACTIVE_LOW);
-    mag_z.run();
+    // Detumble controller
+    imu::Vector<3> directions = Controller.detumble(rps, mags);
+
+    if (directions[0] == 0 & directions[1] == 0 & directions[2] == 0) {
+        mag_x.stop();
+        mag_y.stop();
+        mag_z.stop();
+        return 0;
+    }
+    
+    if (directions[0] == 1) {
+        runmagtorquer(mag_x);
+    }
+    if (directions[1] == 1) {
+        runmagtorquer(mag_y);
+    }
+    if (directions[2] == 1) {
+        runmagtorquer(mag_z);
+    }
 
     std::cout << "Mag Duty Cycle: " << mag_z.getDutyCycle() << std::endl;
 
-    return true;
+    return 1;
+}
+
+int runmagtorquer(PWM mag) {
+    mag.setDutyCycle(75.0f);
+    mag.setPolarity(PWM::ACTIVE_HIGH);
+    mag.run();
+
+    return 1;
 }
 
 int Satellite::payloadDataCollection()
@@ -171,6 +194,10 @@ int Satellite::checkBattery()
 
 int Satellite::checkOrbit()
 {
+    gps_.get_location(&sat_pos);
+    if (sat_pos.altitude < 230000) {
+        orbitCorrection();
+    }
 }
 
 int Satellite::orbitCorrection()
@@ -183,14 +210,15 @@ int Satellite::orbitCorrection()
     usleep(1000000);
     gps_.get_location(&llh2);
     // Get prograde vector and point to it
-    // getPrograde(&pointVec, &llh1, &llh2);
-    // vec2Euler(&pointVec);
+    getPrograde(&pointVec, &llh1, &llh2);
+    vec2Euler(&pointVec);
 
     pointSatellite(pointVec.x, pointVec.y, pointVec.z);
 
     // Not sure how to trigger propulsion
-    std::vector<int> burn;
-    propulsion(burn);
+    std::vector<int> prop_vals;
+    prop_vals.push_back(10);
+    propulsion(prop_vals);
 }
 
 int Satellite::wodCollection()

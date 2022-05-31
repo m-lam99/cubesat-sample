@@ -225,10 +225,12 @@ void Computer::detumbling() {
 
     cout << "Detumbling mode" << endl; 
 
-    // put in bdot 
-    cout << "PLEASE ADD B DOT" << endl; 
+    // POLL DETUMBLING ALGO UNTIL AT REST
+    while (satellite.detumbling() == 1) {
+        continue;
+    }
     
-    //testing will be done by timing how long sat takes to
+    // testing will be done by timing how long sat takes to
     // stop spinning on bearing table w + wo detumbling
 
     // check if in orbit

@@ -33,6 +33,7 @@ class Satellite {
     Satellite();
     int runSatellite();
     int detumbling();
+    int runmagtorquer(PWM mag);
     int payloadDataCollection();
     int payloadDataTransmission();
     int checkBattery();
@@ -63,6 +64,7 @@ class Satellite {
 
     BNO055 imu_;
     GPS gps_;
+    GPS::loc_t sat_pos;
 
     // Payload
     Payload payload_;
