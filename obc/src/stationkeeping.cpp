@@ -57,8 +57,8 @@ void getPrograde(Vec3 progradeVec, GPS::loc_t *llh1, GPS::loc_t *llh2)
 {
     // Sleep for 0.1s for next position estimate
 
-    llh2NED(llh2, &p2);
-    llh2NED(llh1, &p1);
+    llh2ENU(llh2, &p2);
+    llh2ENU(llh1, &p1);
 
     progradeVec.x = p2.x - p1.x;
     progradeVec.y = p2.y - p1.y;
@@ -67,13 +67,20 @@ void getPrograde(Vec3 progradeVec, GPS::loc_t *llh1, GPS::loc_t *llh2)
     normVec3(&progradeVec);
 }
 
-void llh2NED(GPS::loc_t *llh, Vec3 *outvec)
+void llh2ENU(GPS::loc_t *llh, Vec3 *outvec)
 {
     storeVec.x = (llh->altitude + EARTH_RADIUS) * cosf(llh->latitude) * cosf(llh->longitude);
     storeVec.y = (llh->altitude + EARTH_RADIUS) * cosf(llh->latitude) * sinf(llh->longitude);
     storeVec.z = (llh->altitude + EARTH_RADIUS) * sinf(llh->latitude);
 
     NEDtoECEF(storeVec, outvec, llh->latitude, llh->longitude);
+
+    // Converto ENU
+    float tmp = outvec->x;
+    outvec->x = outvec->y;
+    outvec->y = tmp;
+    outvec->z = -outvec->z;
+
 }
 
 void normVec3(Vec3 *v)

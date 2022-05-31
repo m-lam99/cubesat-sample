@@ -60,9 +60,47 @@ void Test::runTests(){
         else if (input == "x"){
             break;
         }
+                else if(input == "24v"){
+            test24V();
+        }
+        else if (input == "x"){
+            break;
+        }
+                else if(input == "burn"){
+            testDeployment(); 
+        }
+        else if(input == "aocs"){
+            testAOCS();
+        }
+        else if(input == "fuckthis"){
+            break; 
+        }
     }
 }
 
+void Test::testAOCS() {
+    Satellite satellite;
+    // CControl Controller(0, 1.57, 0);
+    satellite.detumbling();
+}
+
+void Test::testDeployment(){
+    GPIO burn_GPIO_(59); 
+
+    burn_GPIO_.setDirection(OUTPUT); 
+    if (burn_GPIO_.setValue(HIGH) == -1)
+    {
+        cout << "deployment failed" << endl; 
+    }
+    else
+    {
+        usleep(6900000);
+        burn_GPIO_.setValue(LOW);
+        cout << "Finished Burning" << endl; 
+    }
+
+    return; 
+}
 void Test::testGPIO(){
     GPIO outGPIO(23), inGPIO(46);
 
@@ -119,14 +157,14 @@ void Test::testINA219()
 }
 
 void Test::testADS1015(){
-    ADS1015 adc1(1, ADC_ADDRESS1);
-    ADS1015 adc2(2, ADC_ADDRESS1);
+    ADS1015 adc1(2, ADC_ADDRESS1);
+    ADS1015 adc2(2, ADC_ADDRESS2);
 
-    for (int i = 0; i < 10; i++)
-    {
-         cout << (int)adc1.getVoltage(0) << ", " << (int)adc1.getVoltage(1) <<  endl;
-        usleep(500000);
-    }
+    // for (int i = 0; i < 10; i++)
+    // {
+    //      cout << (int)adc1.getVoltage(0) << ", " << (int)adc1.getVoltage(1) <<  endl;
+    //     usleep(500000);
+    // }
 
     /*
     adc1:
@@ -148,7 +186,7 @@ void Test::testADS1015(){
 
     for (int i = 0; i < 6; i++)
     {
-         cout << voltages[i] <<  endl;
+         cout << "Photodiode " << i << " - " << voltages[i] <<  endl;
     }
 }
 

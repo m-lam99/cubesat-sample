@@ -21,6 +21,7 @@
 #include <queue>
 #include <vector>
 
+
 #define SUN_SENOR_THRESHOLD 0.1
 // Each function in Satellite class either returns a 0 or 1
 // 0: error
@@ -49,6 +50,9 @@ class Satellite {
     // bool point satellitle - return true when pointed 
     bool pointSatellite(double phi, double theta, double psi); 
 
+    int getMode(){
+        return mode_;
+    }
     ~Satellite();
     int receive;
 
@@ -105,13 +109,15 @@ class Satellite {
         'S'
     };
     // PWM
+    PWM mag_x;
+    PWM mag_y;
+    PWM mag_z;
 
     uint8_t mode_;
     CControl Controller; 
 
     const float BATTERY_THRESHOLD  = 2.7;
 
-    
 
 };
 

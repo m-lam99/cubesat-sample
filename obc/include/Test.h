@@ -19,6 +19,8 @@ class Test{
         void testTransceiver();                 // "ttc"
         void test24V();
 
+        void testDeployment();                  // "burn"
+        void testAOCS();                        // "aocs"
 };
 
 #endif

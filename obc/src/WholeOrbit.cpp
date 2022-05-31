@@ -18,24 +18,24 @@ WholeOrbit::WholeOrbit(GPS* gps, uint8_t mode, INA219* current_sensor_batt)
     } else {
         current_sensor_batt_valid_ = 1;
         // Do some config stuff for current sensors
-        current_sensor_batt_valid_ = current_sensor_batt_->writeRegister(
-            INA219::REGISTERS::CALIBRATION, 4096);
+    //     current_sensor_batt_->writeRegister(
+    //         INA219::REGISTERS::CALIBRATION, 4096);
     }
 
     if (current_sensor_3v3_.open() == 1) {
         current_sensor_3v3_valid_ = 0;
     } else {
         current_sensor_3v3_valid_ = 1;
-        current_sensor_3v3_valid_ = current_sensor_3v3_.writeRegister(
-            INA219::REGISTERS::CALIBRATION, 4096);
+        // current_sensor_3v3_.writeRegister(
+        //     INA219::REGISTERS::CALIBRATION, 4096);
     }
 
     if (current_sensor_5v_.open() == 1) {
         current_sensor_5v_valid_ = 0;
     } else {
         current_sensor_5v_valid_ = 1;
-        current_sensor_5v_valid_ = current_sensor_5v_.writeRegister(
-            INA219::REGISTERS::CALIBRATION, 4096);
+    //     current_sensor_5v_.writeRegister(
+    //         INA219::REGISTERS::CALIBRATION, 4096);
     }
 
     std::cout << "WHOLE ORBIT INITIALISED: " << current_sensor_3v3_valid_

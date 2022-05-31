@@ -24,6 +24,8 @@
         
         bool getTolerance(void);
 
+        void detumble(imu::Vector<3> rps, imu::Vector<3> mags);
+
         private:
 
         // controller gains

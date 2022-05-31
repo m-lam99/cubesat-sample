@@ -19,8 +19,11 @@ Computer::Computer()
       payload_collection(false),
       orbit_insertion_complete(false),
       can_receive_WOD(true),
+      is_deployed(false), 
       can_receive_payload(true) {
-    start_time = satellite.getTime();
+    cout << "constructing" << endl;
+    // Dummy time
+    start_time = 0;
     new_command = false;
     cout << "Computer initialised" << endl;
 }
@@ -46,6 +49,10 @@ int Computer::payloadTransmit() {
 }
 
 int Computer::runSatellite() {
+
+    // Set Start
+    start_time = satellite.getTime(); 
+
     // Start WOD transmission
     thread tWODtransmit(&Computer::continuousWOD, this);
     thread tPayloadTransmit(&Computer::payloadTransmit, this);
@@ -55,40 +62,15 @@ int Computer::runSatellite() {
     stop_continuousWOD = false;  // start wod
     stop_receive = false;
 
-    std::cout << "RUNNIGN STATELLITE" << std::endl;
+    std::cout << "RUNNING SATELLITE" << std::endl;
     while (1) {
         // Enters safe mode from any
         if (!satellite.checkBattery()) {
             mode_ = SAFE_MODE;
         } else if (new_command) {
             // change mode
-            if(command <= 0x38 && command >= 0x30){
-                mode_ = command; 
-            }
-            else if (command == CMD_SEND_WOD){
-                can_receive_payload = false; 
-                std::vector<uint8_t> message ={WOD_transmit};
-                satellite.transmitMessage(message);
-                can_receive_payload = true;
-
-            }
-            else if (command == CMD_WOD_OFF){
-                WOD_transmit = false;
-            }
-            else if (command == CMD_WOD_ON){
-                WOD_transmit = true;
-            }
-            else if (command == CMD_SEND_MODE){
-                can_receive_payload = false; 
-                std::vector<uint8_t> message ={mode_};
-                satellite.transmitMessage(message);
-                can_receive_payload = true;
-
-            }
-            else if (command == SOS){
-                mode_ = SAFE_MODE;
-            }
-
+           cout << "New command received" << endl;
+            commandHandling();
             new_command = false;
         }
 
@@ -96,11 +78,8 @@ int Computer::runSatellite() {
             case START_MODE:
                 start();
                 break;
-            case ORBIT_INSERTION_MODE:
-                orbitalInsertion();
-                break;
-            case EJECTION_MODE:
-                ejection();
+            case DETUMBLING_MODE:
+                detumbling();
                 break;
             case DEPLOYMENT_MODE:
                 deployment();
@@ -136,26 +115,145 @@ int Computer::runSatellite() {
     tPayloadTransmit.join();
 }
 
-void Computer::start() {}
+void Computer::littleRun(){
+     // Start WOD transmission
+    thread tWODtransmit(&Computer::continuousWOD, this);
+    thread tPayloadTransmit(&Computer::payloadTransmit, this);
+    thread tCommandReceive(&Computer::commandReceive, this);
 
-void Computer::ejection() {}
+    stop_payloadTransmit = false;
+    stop_continuousWOD = false;  // start wod
+    stop_receive = false;
 
-void Computer::orbitalInsertion() {
+    std::cout << "RUNNING SATELLITE" << std::endl;
+    while (1) {
+
+        if (new_command) {
+            // change mode
+           cout << "New command received" << endl;
+            commandHandling();
+            new_command = false;
+        }
+
+        mode_ = satellite.getMode();
+        switch (mode_) {
+            case START_MODE:
+                //
+                cout << "Entering start" << endl; 
+                break;
+            case DETUMBLING_MODE:
+                cout << "Entering Detumbling" << endl; 
+                break;
+            case DEPLOYMENT_MODE:
+                cout << "Entering Deployment" << endl; 
+                break;
+            case IDLE_MODE:
+                cout << "Entering Idle" << endl; 
+                break;
+            case NORMAL_MODE:
+                cout << "Entering Normal" << endl; 
+                break;
+            case STATION_KEEPING_MODE:
+                cout << "Entering Station Keeping" << endl; 
+                break;
+            case TRANSMIT_MODE:
+                transmit();
+                break;
+            case SAFE_MODE:
+                cout << "Entering Safe Mode" << endl; 
+                break;
+            case END_OF_LIFE:
+                cout << "Entering end of life" << endl; 
+                break;
+            default:
+                break;
+        }
+        usleep(500000);
+
+    }
+    stop_continuousWOD = true;
+    stop_payloadTransmit = true;
+    stop_receive = true;
+
+    tCommandReceive.join();
+    tWODtransmit.join();
+    tPayloadTransmit.join();
+
+}
+
+void Computer::commandHandling(){
+    if(command <= 0x39 && command >= 0x31){
+        mode_ = command; 
+        cout << "Command " << command << "received" << endl; 
+    }
+    else if (command == CMD_SEND_WOD){
+        can_receive_payload = false; 
+        std::vector<uint8_t> message ={WOD_transmit};
+        satellite.transmitMessage(message);
+        can_receive_payload = true;
+        cout << "Send WOD command received" << endl; 
+
+    }
+    else if (command == CMD_WOD_OFF){
+        WOD_transmit = false;
+        cout << "WOD off command received" << endl; 
+    }
+    else if (command == CMD_WOD_ON){
+        WOD_transmit = true;
+        cout << "WOD on command received" << endl; 
+    }
+    else if (command == CMD_SEND_MODE){
+        can_receive_payload = false; 
+        std::vector<uint8_t> message ={mode_};
+        satellite.transmitMessage(message);
+        can_receive_payload = true;
+        cout << "SEND mode command received" << endl; 
+
+    }
+    else if (command == SOS){
+        mode_ = SAFE_MODE;
+        cout << "SOS received" << endl;
+    }
+    return; 
+}
+void Computer::start() {
+    cout << "START mode" << endl; 
+    mode_ = DETUMBLING_MODE;
+}
+
+void Computer::detumbling() {
+
+    cout << "Detumbling mode" << endl; 
+
+    // put in bdot 
+    cout << "PLEASE ADD B DOT" << endl; 
+    
+    //testing will be done by timing how long sat takes to
+    // stop spinning on bearing table w + wo detumbling
+
     // check if in orbit
     orbit_insertion_complete = true;
 
     // then we deploy
-    mode_ = DEPLOYMENT_MODE;
+    if(!is_deployed){
+        mode_ = DEPLOYMENT_MODE;
+    }
+    else{
+        mode_ = IDLE_MODE; 
+    }
 }
 
 void Computer::deployment() {
+
+    cout << "Deployment mode" << endl; 
+    is_deployed = true; 
     // deploy things
     satellite.deployment();
 }
 
 void Computer::idle() {
     // do nothing
-
+    cout << "Idle mode" << endl; 
     uint32_t operational_time = satellite.getTime() - start_time;
 
     if (operational_time > MAX_LIFETIME) {
@@ -164,12 +262,12 @@ void Computer::idle() {
         mode_ = STATION_KEEPING_MODE;
     } else if (collect_data && satellite.checkDayTime()) {
         mode_ = NORMAL_MODE;
-    } else if (transmit_data) {
-        mode_ = TRANSMIT_MODE;
     }
 }
 
 void Computer::normal() {
+
+    cout << "Normal Mode" << endl; 
     // collect data
     satellite.payloadDataCollection();
 
@@ -208,8 +306,12 @@ void Computer::safe() {
 
     if (satellite.checkBattery()) {
         if (!orbit_insertion_complete) {
-            mode_ = ORBIT_INSERTION_MODE;
-        } else {
+            mode_ = DETUMBLING_MODE;
+        }
+        else if (satellite.getTime() - start_time > MAX_LIFETIME) {
+        mode_ = END_OF_LIFE;
+        } 
+        else {
             mode_ = IDLE_MODE;
         }
     }
@@ -229,8 +331,8 @@ int Computer::continuousWOD() {
             can_receive_WOD = true;
             std::cout << "WOD Transmission" << std::endl;
         }
+        //std::this_thread::sleep_for(std::chrono::milliseconds(30000));
         std::this_thread::sleep_for(std::chrono::milliseconds(30000));
-        // std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
         // transmit every 30 seconds
     }
@@ -244,8 +346,12 @@ void Computer::commandReceive() {
             // Receive Data
             std::vector<uint8_t> msg = satellite.checkTransceiver();
             if (!satellite.receive) {
+                // Check if theres a new command and update flag
+                std::cout << "No Command received" << std::endl;
             } else {
                 new_command = true;
+                // Check if theres a new command and update flag
+                std::cout << "Command: " << command << std::endl;
                 if (msg[2] == 0x4D) {
                     if (msg[3] <= 0x38 && msg[3] >= 0x30) {
                         command = msg[3];
@@ -266,10 +372,9 @@ void Computer::commandReceive() {
                     new_command = false; 
                 }
             }
-            // Check if theres a new command and update flag
-            std::cout << "Command: " << command << std::endl;
+            
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(30000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
         // std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
         // transmit every 30 seconds

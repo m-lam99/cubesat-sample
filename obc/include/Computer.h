@@ -10,16 +10,16 @@
 #include <vector>
 
 #define MAX_LIFETIME 2630000 // in seconds 
+//#define MAX_LIFETIME 30 // in seconds 
 
-#define START_MODE 0x29
-#define EJECTION_MODE 0x36
-#define ORBIT_INSERTION_MODE 0x37
+#define START_MODE 0x36
+#define DETUMBLING_MODE 0x37
 #define DEPLOYMENT_MODE 0x38
 #define IDLE_MODE 0x31
 #define NORMAL_MODE 0x32
 #define TRANSMIT_MODE 0x34
 #define STATION_KEEPING_MODE 0x33
-#define SAFE_MODE 0x30
+#define SAFE_MODE 0x39
 #define END_OF_LIFE 0x35
 
 #define CMD_SEND_WOD 0x40
@@ -34,14 +34,16 @@ class Computer {
     Computer();
     int runSatellite();
     ~Computer();
+    void littleRun(); 
 
    private:
 
     uint8_t mode_;
 
+    void commandHandling();
+
     void start();
-    void ejection(); 
-    void orbitalInsertion();
+    void detumbling();
     void deployment();
     void idle();
     void normal();
@@ -55,6 +57,7 @@ class Computer {
     int payloadTransmit(); 
     void commandReceive(); 
 
+    
     int command; 
 
     // Create a satellite
@@ -63,6 +66,8 @@ class Computer {
     bool stop_payloadTransmit;
     bool stop_transmit; 
     bool stop_receive; 
+
+    bool is_deployed; 
 
     uint32_t start_time; 
     bool orbit_insertion_complete; 
