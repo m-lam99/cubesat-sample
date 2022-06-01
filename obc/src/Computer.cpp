@@ -63,7 +63,9 @@ int Computer::runSatellite() {
     stop_receive = false;
 
     std::cout << "RUNNING SATELLITE" << std::endl;
+
     while (1) {
+
         // Enters safe mode from any
         if (!satellite.checkBattery()) {
             mode_ = SAFE_MODE;
@@ -182,9 +184,18 @@ void Computer::littleRun(){
 }
 
 void Computer::commandHandling(){
+
+    
+
     if(command <= 0x39 && command >= 0x31){
+        if(mode_ == TRANSMIT_MODE && command !=TRANSMIT_MODE){
+            payload_collection = false;
+            can_receive_payload = true;
+        }
+
         mode_ = command; 
         cout << "Command " << command << "received" << endl; 
+
     }
     else if (command == CMD_SEND_WOD){
         can_receive_payload = false; 
@@ -195,8 +206,9 @@ void Computer::commandHandling(){
 
     }
     else if (command == CMD_WOD_OFF){
-        WOD_transmit = false;
         cout << "WOD off command received" << endl; 
+        WOD_transmit = false;
+        can_receive_WOD = true;
     }
     else if (command == CMD_WOD_ON){
         WOD_transmit = true;
