@@ -9,7 +9,6 @@
 //  current position in quaternions and current angular velocity
 // - code also includes several 'print to terminal' checks that can be removed
 
-#include "quaternion.h"
 #include"controller.h"
 #include <iostream>
 
