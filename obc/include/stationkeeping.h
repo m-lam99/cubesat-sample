@@ -7,6 +7,7 @@
 // #define deltaT (1 / SAMPLING_FREQ) // 100Hz sampling frequency
 #include <stdio.h>
 
+namespace stationkeeping{
 struct vec3
 {
     float x;
@@ -47,9 +48,9 @@ struct jacobian
 };
 
 void printVec3(Vec3 vec);
-void getPrograde(Vec3 *progradeVec, GPS::loc_t *llh1, GPS::loc_t *llh2);
+extern void getPrograde(Vec3 *progradeVec, GPS::loc_t *llh1, GPS::loc_t *llh2);
 void llh2ENU(GPS::loc_t *llh, Vec3 *outvec);
-void vec2Euler(Vec3 *vec);
+extern void vec2Euler(Vec3 *vec);
 
 static inline float UTCtoJD2000(float time)
 {
@@ -176,5 +177,6 @@ static inline void jacobianMult(Vec3 f, struct jacobian J, Quaternion *q_est_dot
 }
 
 void normVec3(Vec3 *v);
+}
 
 #endif

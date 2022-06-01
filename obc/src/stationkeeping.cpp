@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <math.h>
 
+namespace stationkeeping {
+
 Vec3 storeVec;
 // extern GPS::loc_t *llh1;
 // extern GPS::loc_t *llh2;
@@ -102,6 +104,7 @@ void vec2Euler(Vec3 vec)
     vec.z = atan2(vec.z, vec.y);
 }
 
+}
 // function llh2lgcv(LLH)
 // % Latitude, Longitude and Range
 // lambda = LLH(1);

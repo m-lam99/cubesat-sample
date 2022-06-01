@@ -16,7 +16,7 @@
 #include "GPIO.h"
 #include "transceiver.h"
 #include "controller.h"
-#include "stationkeeping.h"
+
 
 #include <queue>
 #include <vector>

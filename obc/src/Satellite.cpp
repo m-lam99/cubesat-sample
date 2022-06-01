@@ -1,11 +1,12 @@
 #include "Satellite.h"
+#include "stationkeeping.h"
 
 #include <unistd.h>
 #include <iostream>
 #include <string>
 
 #include <iostream>
-
+using namespace stationkeeping;
 
 Satellite::Satellite()
     : current_sensor_batt_(1, INA219_ADDRESS_BATT),
@@ -137,7 +138,7 @@ int Satellite::detumbling()
     return 1;
 }
 
-int runmagtorquer(PWM mag) {
+int Satellite::runmagtorquer(PWM mag) {
     mag.setDutyCycle(75.0f);
     mag.setPolarity(PWM::ACTIVE_HIGH);
     mag.run();
@@ -210,8 +211,8 @@ int Satellite::orbitCorrection()
     usleep(1000000);
     gps_.get_location(&llh2);
     // Get prograde vector and point to it
-    getPrograde(&pointVec, &llh1, &llh2);
-    vec2Euler(&pointVec);
+    // getPrograde(&pointVec, &llh1, &llh2);
+    // vec2Euler(&pointVec);
 
     pointSatellite(pointVec.x, pointVec.y, pointVec.z);
 
