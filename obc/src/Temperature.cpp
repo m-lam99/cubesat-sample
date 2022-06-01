@@ -7,7 +7,7 @@ Temperature::Temperature(int pin){
 float Temperature::GetTemp() {
     int raw_value = ReadAnalog();
     // Voltage value between 0-1.8V
-    float voltage = (float)raw_value/4095;
+    float voltage = (float)raw_value/4095 * 1.8;
     float T = log(voltage/0.91934)/log(0.96307);
     return T;
 }

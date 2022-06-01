@@ -51,7 +51,7 @@ void GPS::get_location(loc_t *coord){
         char buffer[256];
 
         readln(buffer);
-        cout << buffer << endl; 
+        // cout << buffer << endl; 
         switch (get_NMEA_type(buffer)) {
             case NMEA_GPGGA:
                 nmea_parse_gpgga(buffer, &gpgga);

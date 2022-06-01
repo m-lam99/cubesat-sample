@@ -7,6 +7,7 @@
 #include "Test.h"
 #include "Computer.h"
 #include "controller.h"
+#include "Payload.h"
 
 #include <vector>
 
@@ -30,8 +31,11 @@ void Test::runTests(){
         else if(input == "adc"){
             testADS1015();
         }
+        else if(input == "payload"){
+            testPayload(); 
+        }
         else if(input == "pay"){
-            testAS7263(); 
+            testAS7263();
         }
         else if(input == "pwm"){
             testPWM(PWM_1A);
@@ -200,7 +204,7 @@ void Test::testAS7263()
     for (int i = 0; i < 10; i++)
     {
         sensor.takeMeasurements();
-        //  cout << "calibrated val: " << sensor.getCalibratedR() <<  endl;
+         cout << "calibrated val: " << sensor.getCalibratedR() <<  endl;
          cout << "meas val: " << sensor.getR() <<  endl;
         usleep(500000);
     }
@@ -217,6 +221,25 @@ void Test::testPWM(string pwm_channel){
      cout << "PWM active" <<  endl; 
     //pwm.stop();  // to discontinue the pwm signal 
     return; 
+}
+
+void Test::testPayload(){
+    GPS gps;
+    // AS7263 sensor(2, AS7263_ADDRESS);
+    Payload payload(&gps);
+    while (1){
+        Payload::payload_data_t data = payload.getData();
+        cout << "R: " << data.R << endl;
+        cout << "S: " << data.S << endl;
+        cout << "T: " << data.T << endl;
+        cout << "U: " << data.U << endl;
+        cout << "V: " << data.V << endl;
+        cout << "W: " << data.W << endl;
+        cout << "lat: " << data.lat << endl;
+        cout << "long: " << data.lon << endl;
+        cout << "alt: " << data.alt << endl;
+    }
+    
 }
 
 
@@ -239,9 +262,9 @@ void Test::wodTest() {
     INA219 current_sensor(1, INA219_ADDRESS_BATT);
     WholeOrbit wod(&gps, 0, &current_sensor);
 
-    for (int i = 0; i < 10; ++i){
+    while(1){
         WholeOrbit::wod_float_t data = wod.GetDataFloat();
-        // cout << "Time: " << (int)data.time << endl;
+        cout << "Time: " << (int)data.time << endl;
         cout << "Mode: " << data.mode << endl;
         cout << "Voltage batt: " << data.voltage_batt << endl;
         cout << "Current batt: " << data.current_batt << endl;

@@ -4,9 +4,9 @@
 #include <cmath>
 #include <iostream>
 
-WholeOrbit::WholeOrbit(GPS* gps, uint8_t mode, INA219* current_sensor_batt)
+WholeOrbit::WholeOrbit(GPS* gps, int mode, INA219* current_sensor_batt)
     : gps_(gps),
-      mode_(mode),
+    //   mode_(mode),
       current_sensor_batt_(current_sensor_batt),
       current_sensor_3v3_(1, INA219_ADDRESS_3V3),
       current_sensor_5v_(1, INA219_ADDRESS_5V),
@@ -46,13 +46,13 @@ WholeOrbit::WholeOrbit(GPS* gps, uint8_t mode, INA219* current_sensor_batt)
 WholeOrbit::wod_t WholeOrbit::GetData() {
     // Time
     // std::cout << "test0" << std::endl;
-    // GPS::loc_t* location_data;
+    GPS::loc_t* location_data;
     // std::cout << "test1" << std::endl;
-    // gps_->get_location(location_data);
+    gps_->get_location(location_data);
     // std::cout << "test2" << std::endl;
-    // uint32_t time = location_data->epoch;
+    uint32_t time = location_data->epoch;
     // std::cout << "test3" << std::endl;
-    // wod_.time = time;
+    wod_.time = time;
     // std::cout << "Test4" << std::endl;
 
     // Mode
@@ -109,14 +109,14 @@ WholeOrbit::wod_t WholeOrbit::GetData() {
 }
 
 WholeOrbit::wod_float_t WholeOrbit::GetDataFloat() {
-    // // Time
-    // GPS::loc_t* location_data;
-    // gps_->get_location(location_data);
-    // uint32_t time = location_data->epoch;
-    // wod_float_.time = (int)time;
+    // Time
+    GPS::loc_t location_data;
+    gps_->get_location(&location_data);
+    uint32_t time = location_data.epoch;
+    wod_float_.time = (int)time;
 
     // Mode
-    wod_.mode = mode_;
+    wod_float_.mode = mode_;
 
     if (current_sensor_batt_valid_) {
         wod_float_.voltage_batt = current_sensor_batt_->busVoltage();

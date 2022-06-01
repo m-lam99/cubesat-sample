@@ -1,6 +1,6 @@
 // Satellite class to handle different modes of operation
 
-#ifndef SATELLITE_h
+#ifndef SATELLITE_H
 #define SATELLITE_H
 
 #include "ADS1015.h"
@@ -16,7 +16,7 @@
 #include "GPIO.h"
 #include "transceiver.h"
 #include "controller.h"
-
+#include "stationkeeping.h"
 
 #include <queue>
 #include <vector>

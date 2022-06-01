@@ -37,7 +37,7 @@ class WholeOrbit {
 
     typedef struct wod wod_t;
     typedef struct wod_float wod_float_t;
-    WholeOrbit(GPS* gps, uint8_t mode, INA219* current_sensor_batt);
+    WholeOrbit(GPS* gps, int mode, INA219* current_sensor_batt);
     wod_t GetData();
     wod_float_t GetDataFloat();
     void ChangeMode(int mode);
@@ -46,7 +46,7 @@ class WholeOrbit {
    private:
     GPS* gps_;
 
-    uint8_t mode_;
+    int mode_ = 0;
 
     wod_t wod_;
     wod_float_t wod_float_;
