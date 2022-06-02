@@ -136,13 +136,14 @@ int Satellite::detumbling()
 
     std::cout << "Mag Duty Cycle: " << mag_z.getDutyCycle() << std::endl;
 
-    usleep(10000);
+    usleep(100000);
 
     return 1;
 }
 
 int Satellite::runmagtorquer(PWM mag) {
-    mag.setDutyCycle(50.0f);
+    unsigned int dc = 50;
+    mag.setDutyCycle(dc);
     mag.setPolarity(PWM::ACTIVE_HIGH);
     mag.run();
 
