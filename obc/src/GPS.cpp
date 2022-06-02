@@ -95,6 +95,10 @@ long int GPS::convertToEpoch(std::string date, std::string time){
     unix_seconds = (int)timegm(&tmTime);
     epoch_sec = unix_seconds - offset; 
 
+    if(epoch_sec < 0){
+        epoch_sec = 0; 
+        cout << "Time not found" << endl;
+    }
 
     return epoch_sec;
 }
