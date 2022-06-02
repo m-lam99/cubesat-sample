@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <string>
+#include <math.h>
 
 #include <iostream>
 
@@ -89,10 +90,14 @@ bool Satellite::pointSatellite(double phi, double theta, double psi)
 
     std::cout << "SIGNALS: " << signal[0] << " " << signal[1] << " " << signal[2] << std::endl;
 
+    for (int i; i < 3; i++) {
+        signal[i] = 100*abs(signal[i])/3.1415;
+    }
+
     // ACTUATE THE SIGNAL
-    mag_x.setDutyCycle((unsigned int)(signal.x()/1.57)*100);
-    mag_y.setDutyCycle((unsigned int)(signal.y()/1.57)*100);
-    mag_z.setDutyCycle((unsigned int)(signal.y()/1.57)*100);
+    mag_x.setDutyCycle((unsigned int)(signal.x()));
+    mag_y.setDutyCycle((unsigned int)(signal.y()));
+    mag_z.setDutyCycle((unsigned int)(signal.z()));
 
     mag_x.run();
     mag_y.run();
@@ -150,9 +155,9 @@ int Satellite::detumbling()
 }
 
 int Satellite::runmagtorquer(PWM mag) {
-    unsigned int dc = 50;
+    unsigned int dc = 100;
     mag.setDutyCycle(dc);
-    mag.setPolarity(PWM::ACTIVE_LOW);
+    mag.setPolarity(PWM::ACTIVE_HIGH);
     mag.run();
 
     return 1;
