@@ -88,7 +88,10 @@ void Test::runTests(){
 void Test::testAOCS() {
     Satellite satellite;
     // CControl Controller(0, 1.57, 0);
-    satellite.detumbling();
+    while (satellite.detumbling() == 1) {
+        continue;
+    }
+
 }
 
 void Test::testDeployment(){
@@ -406,14 +409,14 @@ void Test::testBNO055()
          cout << "CALIBRATION: Sys=" << (int)system << " Gyro=" << (int)gyro
                   << " Accel=" << (int)accel << " Mag=" << (int)mag <<  endl;
 
-        signal = Controller.runControlAlgorithm(quat, rps);
-        if (Controller.getTolerance()) {
-            break;
-        }
+        // signal = Controller.runControlAlgorithm(quat, rps);
+        // if (Controller.getTolerance()) {
+        //     break;
+        // }
         // double out[3] = convertToCurrent(signal)
-        testPWM(PWM_0A);
-        testPWM(PWM_1A);
-        testPWM(PWM_2B);
+        // testPWM(PWM_0A);
+        // testPWM(PWM_1A);
+        // testPWM(PWM_2B);
         
         usleep(10000 * BNO055_SAMPLERATE_DELAY_MS);
     }

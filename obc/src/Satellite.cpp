@@ -137,8 +137,8 @@ int Satellite::detumbling()
     return 1;
 }
 
-int Satellite::runmagtorquer(PWM mag) {
-    mag.setDutyCycle(75.0f);
+int runmagtorquer(PWM mag) {
+    mag.setDutyCycle(50.0f);
     mag.setPolarity(PWM::ACTIVE_HIGH);
     mag.run();
 
