@@ -225,6 +225,7 @@ imu::Vector<3> CControl::detumble(imu::Vector<3> rps, imu::Vector<3> mags) {
     }
 
     if (abs(rps.z()) > 0) {
-        out[1] = 1;
+        out[2] = 1;
     }
+
 }
