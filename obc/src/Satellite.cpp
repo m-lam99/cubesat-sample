@@ -61,8 +61,6 @@ Satellite::Satellite()
     int8_t temp = imu_.getTemp();
     std::cout << "Current Temperature: " << (int)temp << " C" << std::endl;
 
-    std::cout << "Calibration status values: 0=uncalibrated, 3=fully calibrated" << std::endl;
-
     imu_.setExtCrystalUse(true);
 
     std::cout << "SATELLITE initialisied" << std::endl;

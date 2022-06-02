@@ -91,8 +91,8 @@ void Test::runTests(){
 void Test::testDetumble() {
     Satellite satellite;
     // CControl Controller(0, 1.57, 0);
-    while (satellite.detumbling() == 1) {
-        continue;
+    while (1) {
+        satellite.pointSatellite(0.0, 1.57, 0.0);
     }
 
 }
