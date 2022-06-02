@@ -136,7 +136,7 @@ int Satellite::detumbling()
 
     std::cout << "Mag Duty Cycle: " << mag_z.getDutyCycle() << std::endl;
 
-    usleep(1000);
+    usleep(10000);
 
     return 1;
 }

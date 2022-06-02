@@ -216,15 +216,15 @@ imu::Vector<3> CControl::detumble(imu::Vector<3> rps, imu::Vector<3> mags) {
     imu::Vector<3> out(0,0,0);
 
     // If less than 0.5 deg/s, good enuf
-    if (rps.x() > 0.00873) {
+    if (abs(rps.x()) > 0) {
         out[0] = 1;
     }
 
-    if (rps.y() > 0.00873) {
+    if (abs(rps.y()) > 0) {
         out[1] = 1;
     }
 
-    if (rps.z() > 0.00873) {
+    if (abs(rps.z()) > 0) {
         out[1] = 1;
     }
 }
