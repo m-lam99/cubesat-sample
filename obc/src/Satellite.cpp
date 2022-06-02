@@ -115,7 +115,7 @@ int Satellite::detumbling()
     // Detumble controller
     imu::Vector<3> directions = Controller.detumble(rps, mags);
 
-    if (directions[0] == 0 & directions[1] == 0 & directions[2] == 0) {
+    if (directions[0] == 0 && directions[1] == 0 && directions[2] == 0) {
         mag_x.stop();
         mag_y.stop();
         mag_z.stop();
@@ -198,6 +198,8 @@ int Satellite::checkOrbit()
     if (sat_pos.altitude < 230000) {
         orbitCorrection();
     }
+
+    return 1;
 }
 
 int Satellite::orbitCorrection()
@@ -219,6 +221,8 @@ int Satellite::orbitCorrection()
     std::vector<int> prop_vals;
     prop_vals.push_back(10);
     propulsion(prop_vals);
+
+    return 1;
 }
 
 int Satellite::wodCollection()
