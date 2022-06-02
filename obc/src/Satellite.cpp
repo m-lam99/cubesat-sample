@@ -135,6 +135,10 @@ int Satellite::detumbling()
     }
 
     std::cout << "Mag Duty Cycle: " << mag_z.getDutyCycle() << std::endl;
+    /* Display Magnetometer Reading uT */
+    imu::Vector<3> magfield = imu_.getVector(BNO055::VECTOR_MAGNETOMETER);
+    std::cout << "Xmag: " << magfield.x() <<  " Ymag: " << magfield.y() << " Zmag: "
+        << magfield.z() << "\t\t";
 
     usleep(100000);
 
