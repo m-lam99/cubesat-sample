@@ -82,21 +82,28 @@ bool Satellite::pointSatellite(double phi, double theta, double psi)
     imu::Quaternion quat = imu_.getQuat();
     std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t\t";
 
-    /* Display Angular Velocities rad/s */
+    // /* Display Angular Velocities rad/s */
     imu::Vector<3> rps = imu_.getRPS();
-    std::cout << "X: " << rps.x() << " Y: " << rps.y() << " Z: "
-              << rps.z() << "\t\t";
+    // std::cout << "X: " << rps.x() << " Y: " << rps.y() << " Z: "
+    //           << rps.z() << "\t\t";
 
     signal = Controller.runControlAlgorithm(quat, rps);
 
+    std::cout << "SIGNALS: " << signal[0] << " " << signal[1] << " " << signal[2] << std::endl;
+
     // ACTUATE THE SIGNAL
-    mag_x.setDutyCycle((float)(signal.x()/1.57)*100);
-    mag_y.setDutyCycle((float)(signal.y()/1.57)*100);
-    mag_z.setDutyCycle((float)(signal.y()/1.57)*100);
+    mag_x.setDutyCycle((unsigned int)(signal.x()/1.57)*100);
+    mag_y.setDutyCycle((unsigned int)(signal.y()/1.57)*100);
+    mag_z.setDutyCycle((unsigned int)(signal.y()/1.57)*100);
 
     mag_x.run();
     mag_y.run();
     mag_z.run();
+
+    imu::Vector<3> mags = imu_.getVector(BNO055::VECTOR_MAGNETOMETER);
+    std::cout << "Xmag: " << (int)mags.x() <<  " Ymag: " << (int)mags.y() << " Zmag: "
+        << (int)mags.z() << "\t\t";
+
     std::cout << "SIGNAL ACTUATED" << std::endl;
 
     return Controller.getTolerance();
@@ -136,9 +143,8 @@ int Satellite::detumbling()
 
     std::cout << "Mag Duty Cycle: " << mag_z.getDutyCycle() << std::endl;
     /* Display Magnetometer Reading uT */
-    imu::Vector<3> magfield = imu_.getVector(BNO055::VECTOR_MAGNETOMETER);
-    std::cout << "Xmag: " << magfield.x() <<  " Ymag: " << magfield.y() << " Zmag: "
-        << magfield.z() << "\t\t";
+    std::cout << "Xmag: " << (int)mags.x() <<  " Ymag: " << (int)mags.y() << " Zmag: "
+        << (int)mags.z() << "\t\t";
 
     usleep(100000);
 
@@ -148,7 +154,7 @@ int Satellite::detumbling()
 int Satellite::runmagtorquer(PWM mag) {
     unsigned int dc = 50;
     mag.setDutyCycle(dc);
-    mag.setPolarity(PWM::ACTIVE_HIGH);
+    mag.setPolarity(PWM::ACTIVE_LOW);
     mag.run();
 
     return 1;

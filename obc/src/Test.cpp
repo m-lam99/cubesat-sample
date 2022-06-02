@@ -73,8 +73,11 @@ void Test::runTests(){
         else if(input == "burn"){
             testDeployment(); 
         }
-        else if(input == "aocs"){
-            testAOCS();
+        else if(input == "detum"){
+            testDetumble();
+        }
+        else if(input == "point"){
+            testPoint();
         }
         else if(input == "fuckthis"){
             break; 
@@ -85,13 +88,20 @@ void Test::runTests(){
     }
 }
 
-void Test::testAOCS() {
+void Test::testDetumble() {
     Satellite satellite;
     // CControl Controller(0, 1.57, 0);
     while (satellite.detumbling() == 1) {
         continue;
     }
 
+}
+
+void Test::testPoint() {
+    Satellite satellite;
+    while(!satellite.pointSatellite(0.0, 1.57, 0.0)) {
+        continue;
+    }
 }
 
 void Test::testDeployment(){

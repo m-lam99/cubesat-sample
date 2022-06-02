@@ -20,7 +20,8 @@ class Test{
         void test24V();
 
         void testDeployment();                  // "burn"
-        void testAOCS();                        // "aocs"
+        void testDetumble();                        // "aocs"
+        void testPoint();
         void transmitWOD();
         void testPayload();
 };
