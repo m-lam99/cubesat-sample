@@ -115,6 +115,8 @@ int Satellite::detumbling()
     // Detumble controller
     imu::Vector<3> directions = Controller.detumble(rps, mags);
 
+    std::cout << "directions: " << directions[2] << std::endl;
+
     if (directions[0] == 0 && directions[1] == 0 && directions[2] == 0) {
         mag_x.stop();
         mag_y.stop();
@@ -133,6 +135,8 @@ int Satellite::detumbling()
     }
 
     std::cout << "Mag Duty Cycle: " << mag_z.getDutyCycle() << std::endl;
+
+    usleep(1000);
 
     return 1;
 }
