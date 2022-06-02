@@ -235,9 +235,9 @@ void Test::testPayload(){
         cout << "U: " << data.U << endl;
         cout << "V: " << data.V << endl;
         cout << "W: " << data.W << endl;
-        cout << "lat: " << data.lat << endl;
-        cout << "long: " << data.lon << endl;
-        cout << "alt: " << data.alt << endl;
+        // cout << "lat: " << data.lat << endl;
+        // cout << "long: " << data.lon << endl;
+        // cout << "alt: " << data.alt << endl;
     }
     
 }
