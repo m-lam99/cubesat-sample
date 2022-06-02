@@ -88,11 +88,11 @@ bool Satellite::pointSatellite(double phi, double theta, double psi)
 
     signal = Controller.runControlAlgorithm(quat, rps);
 
-    std::cout << "SIGNALS: " << signal[0] << " " << signal[1] << " " << signal[2] << std::endl;
-
     for (int i; i < 3; i++) {
         signal[i] = 100*abs(signal[i])/3.1415;
     }
+
+    std::cout << "SIGNALS: " << signal[0] << " " << signal[1] << " " << signal[2] << std::endl;
 
     // ACTUATE THE SIGNAL
     mag_x.setDutyCycle((unsigned int)(signal.x()));
