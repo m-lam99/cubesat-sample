@@ -94,11 +94,10 @@ imu::Vector<3> CControl::runControlAlgorithm(imu::Quaternion measurements, imu::
 
     // obtain the control signal and send to system
     getControlSignal();
-    for (int i = 0; i < 3; i++)
-    {
-        std::cout << output[i] << std::endl;
-    }
-    std::cout << "---" << std::endl;
+    // for (int i = 0; i < 3; i++)
+    // {
+    //     std::cout << output[i] << std::endl;
+    // }
 
     // NOT PART OF ALGORITHM
     // get new measurement
@@ -221,7 +220,7 @@ imu::Vector<3> CControl::detumble(imu::Vector<3> rps, imu::Vector<3> mags) {
     out[0] = 1;
     out[1] = 1;
     out[2] = 1;
-    
+
     if (abs(rps.x()) > 0.000) {
         out[0] = 1;
     }

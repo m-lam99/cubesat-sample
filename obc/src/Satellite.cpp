@@ -100,7 +100,7 @@ bool Satellite::pointSatellite(double phi, double theta, double psi)
 
     imu::Vector<3> mags = imu_.getVector(BNO055::VECTOR_MAGNETOMETER);
     std::cout << "Xmag: " << (int)mags.x() <<  " Ymag: " << (int)mags.y() << " Zmag: "
-        << (int)mags.z() << "\t\t";
+        << (int)mags.z() << "\t\t" << std::endl;
 
     std::cout << "SIGNAL ACTUATED" << std::endl;
 
