@@ -92,15 +92,15 @@ void Test::testDetumble() {
     Satellite satellite;
     // CControl Controller(0, 1.57, 0);
     while (1) {
-        satellite.pointSatellite(0.0, 1.57, 0.0);
+        satellite.detumbling();
     }
 
 }
 
 void Test::testPoint() {
     Satellite satellite;
-    while(!satellite.pointSatellite(0.0, 1.57, 0.0)) {
-        continue;
+    while(1) {
+        satellite.pointSatellite(0.0, 1.57, 0.0);
     }
 }
 
