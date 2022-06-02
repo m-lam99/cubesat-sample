@@ -185,12 +185,11 @@ void Computer::littleRun(){
 
 void Computer::commandHandling(){
 
-    
-
     if(command <= 0x39 && command >= 0x31){
         if(mode_ == TRANSMIT_MODE && command !=TRANSMIT_MODE){
             payload_collection = false;
             can_receive_payload = true;
+            // change of mode
         }
 
         mode_ = command; 
