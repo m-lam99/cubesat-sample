@@ -293,12 +293,15 @@ void Computer::normal() {
 void Computer::stationKeeping() {
     // Direction we wish to point in
     double phi = 0.0;
-    double theta = 1.57;
-    double psi = 0.0;
+    double theta = 0.0;
+    double psi = -1.57;
 
-    if (satellite.pointSatellite(phi, theta, psi)) {  // point satellite otherwise done
-        mode_ = IDLE_MODE;
+    while (!satellite.pointSatellite(phi, theta, psi)) {
+        continue;
     }
+    
+    mode_ = IDLE_MODE;
+
 }
 
 void Computer::transmit() {

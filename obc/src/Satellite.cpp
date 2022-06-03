@@ -116,10 +116,9 @@ bool Satellite::pointSatellite(double phi, double theta, double psi)
 int Satellite::detumbling()
 {
     imu::Vector<3> mags = imu_.getVector(BNO055::VECTOR_MAGNETOMETER);
-    
-    // std::cout << "X: " << mags.x() << " Y: " << mags.y() << " Z: "
-    //     << mags.z() << "\t\t";
     imu::Vector<3> rps = imu_.getRPS();
+
+    
     std::cout << "Rad x: " << rps.x() << " Rad y: " << rps.y() << " Rad z: "
         << rps.z() << "\t";
 
