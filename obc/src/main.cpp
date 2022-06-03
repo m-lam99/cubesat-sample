@@ -33,7 +33,8 @@ int main() {
     Test test;
     test.runTests();
     Computer beagle;
-    beagle.littleRun();
+    // beagle.littleRun();
+    beagle.runSatellite();
 
     return 0;
 }
