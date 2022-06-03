@@ -34,6 +34,7 @@ PWM::PWM(string pinName) {
 	this->analogFrequency = 100000;
 	this->analogMax = 3.3;
 	this->setFrequency(250); 
+	this->stop();
 }
 
 int PWM::setPeriod(unsigned int period_ns){
