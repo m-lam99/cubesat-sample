@@ -390,7 +390,7 @@ void Test::testBNO055()
 
     // SETUP: Initiate the Controller Object, and hardcode desired atittude
     imu::Vector<3> signal;
-    CControl Controller(0, 1.57, 0);
+    CControl Controller(0, 0, 0);
 
     while(1)
     {

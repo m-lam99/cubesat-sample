@@ -72,6 +72,12 @@ Satellite::~Satellite() {}
 bool Satellite::pointSatellite(double phi, double theta, double psi)
 {
 
+    /* Display calibration status for each sensor. */
+    uint8_t system, gyro, accel, mag = 0;
+    imu_.getCalibration(&system, &gyro, &accel, &mag);
+    std::cout << "CALIBRATION: Sys=" << (int)system << " Gyro=" << (int)gyro
+            << " Accel=" << (int)accel << " Mag=" << (int)mag << std::endl;
+
     // change pointing direction
     Controller.changeTarget(phi, theta, psi);
 
@@ -115,10 +121,16 @@ bool Satellite::pointSatellite(double phi, double theta, double psi)
 
 int Satellite::detumbling()
 {
+    /* Display calibration status for each sensor. */
+    uint8_t system, gyro, accel, mag = 0;
+    imu_.getCalibration(&system, &gyro, &accel, &mag);
+    std::cout << "CALIBRATION: Sys=" << (int)system << " Gyro=" << (int)gyro
+            << " Accel=" << (int)accel << " Mag=" << (int)mag << std::endl;
+
     imu::Vector<3> mags = imu_.getVector(BNO055::VECTOR_MAGNETOMETER);
     imu::Vector<3> rps = imu_.getRPS();
 
-    
+
     std::cout << "Rad x: " << rps.x() << " Rad y: " << rps.y() << " Rad z: "
         << rps.z() << "\t";
 
