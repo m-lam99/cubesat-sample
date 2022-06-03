@@ -13,11 +13,11 @@ CControl::CControl(double phi, double theta, double psi)
     eulerToQuat(phi, theta, psi);
 
     // set controller gains
-    gainQ = 20;
-    gainW = 4;
+    gainQ = 0.2;
+    gainW = 0.04;
 
     // set tolerance value
-    tolerance = 0.2;
+    tolerance = 0.1;
 }
 
 void CControl::changeTarget(double phi, double theta, double psi){
@@ -40,10 +40,7 @@ void CControl::eulerToQuat(double phi, double theta, double psi)
 
     // store values in reference variable
     qRef = imu::Quaternion(a,b,c,d);
-    // qRef[0] = a;
-    // qRef[1] = b;
-    // qRef[2] = c;
-    // qRef[3] = d;
+
 }
 
 // P2 control algorithm
@@ -214,24 +211,21 @@ imu::Vector<3> CControl::detumble(imu::Vector<3> rps, imu::Vector<3> mags) {
 
     imu::Vector<3> out(0,0,0);
 
-    // If less than 0.5 deg/s, good enuf
-
-
     out[0] = 1;
     out[1] = 1;
     out[2] = 1;
 
-    if (abs(rps.x()) > 0.000) {
-        out[0] = 1;
-    }
+    // if (abs(rps.x()) > 0.000) {
+    //     out[0] = 1;
+    // }
 
-    if (abs(rps.y()) > 0.000) {
-        out[1] = 1;
-    }
+    // if (abs(rps.y()) > 0.000) {
+    //     out[1] = 1;
+    // }
 
-    if (abs(rps.z()) > 0.000) {
-        out[2] = 1;
-    }
+    // if (abs(rps.z()) > 0.000) {
+    //     out[2] = 1;
+    // }
 
 
     return out;

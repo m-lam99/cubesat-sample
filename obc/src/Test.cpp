@@ -397,22 +397,22 @@ void Test::testBNO055()
 
         // Display Quaternions
         imu::Quaternion quat = bno.getQuat();
-         cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t\t";
+         cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t";
 
 	    /* Display Euler Angles deg */
         imu::Vector<3> euler = bno.getVector(BNO055::VECTOR_EULER);
-	     cout << "X: " << euler.x() <<  " Y: " << euler.y() << " Z: "
-	  	<< euler.z() << "\t\t";
+	     cout << "eX: " << euler.x() <<  " eY: " << euler.y() << " eZ: "
+	  	<< euler.z() << "\t";
 
         /* Display Angular Velocities rad/s */
         imu::Vector<3> rps = bno.getRPS();
-         cout << "X: " << rps.x() <<  " Y: " << rps.y() << " Z: "
-	  	<< rps.z() << "\t\t";
+         cout << "rX: " << rps.x() <<  " rY: " << rps.y() << " rZ: "
+	  	<< rps.z() << "\t";
 
         /* Display Magnetometer Reading uT */
         imu::Vector<3> magfield = bno.getVector(BNO055::VECTOR_MAGNETOMETER);
-         cout << "X: " << magfield.x() <<  " Y: " << magfield.y() << " Z: "
-	  	<< magfield.z() << "\t\t";
+         cout << "mX: " << magfield.x() <<  " mY: " << magfield.y() << " mZ: "
+	  	<< magfield.z() << "\t";
  
         /* Display calibration status for each sensor. */
         uint8_t system, gyro, accel, mag = 0;
