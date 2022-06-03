@@ -128,7 +128,7 @@ void CControl::calcKronecker(imu::Quaternion p, imu::Quaternion q)
     c = p.w()*q.y() - p.x()*q.z() + p.y()*q.w() + p.z()*q.x();
 
     // fourth term
-    d = p.w()*q.z() + p.x()*q.y() - p.y()*q.x() - p.z()*q.w();
+    d = p.w()*q.z() + p.x()*q.y() - p.y()*q.x() + p.z()*q.w();
 
     // store Kronecker product quaternion as error value
     qErr = imu::Quaternion(a,b,c,d);
@@ -188,9 +188,9 @@ void CControl::getControlSignal(void)
 // convert control signal from quaternion form to Euler angles
 void CControl::quatToEuler(double q[4])
 {
-    output[0] = atan2(2*(q[0]*q[1] + q[2]*q[3]), pow(q[0],2.0) - pow(q[1],2.0) - pow(q[2],2.0) - pow(q[3],2.0));
+    output[0] = atan2(2*(q[0]*q[1] + q[2]*q[3]), pow(q[0],2.0) - pow(q[1],2.0) - pow(q[2],2.0) + pow(q[3],2.0));
     output[1] = asin(2*(q[0]*q[2] - q[3]*q[1]));
-    output[2] = atan2(2*(q[0]*q[3] + q[1]*q[2]), pow(q[0],2) + pow(q[1],2) + pow(q[2],2) + pow(q[3],2));
+    output[2] = atan2(2*(q[0]*q[3] + q[1]*q[2]), pow(q[0],2) + pow(q[1],2) - pow(q[2],2) - pow(q[3],2));
 }
 
 bool CControl::getTolerance(void) 
