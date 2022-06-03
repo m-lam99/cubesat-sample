@@ -5,22 +5,29 @@
 #include <chrono>
 #include <future>
 #include <thread>
+#include <atomic>
 
 using namespace std;
+atomic<bool> stop_payloadTransmit{true};
+atomic<bool> WOD_transmit{true};
+atomic<bool> stop_transmit{true};
+atomic<bool> stop_receive{true};
+atomic<bool> can_receive{true};
+
+atomic<bool> still_transmitting{true};
+
+atomic<bool> collect_data{false};
+atomic<bool> payload_collection{false};
+atomic<bool> stop_continuousWOD{true};
+atomic<bool> collect_data{false};
+
 
 Computer::Computer()
     : satellite(),
       mode_(START_MODE),
-      WOD_transmit(true),
-      stop_transmit(true),
-      stop_payloadTransmit(true),
-      stop_receive(true),
-      collect_data(false),
-      payload_collection(false),
       orbit_insertion_complete(false),
-      can_receive_WOD(true),
-      is_deployed(false), 
-      can_receive_payload(true) {
+      is_deployed(false)
+    {
     cout << "constructing" << endl;
     // Dummy time
     start_time = 0;
@@ -35,9 +42,9 @@ int Computer::payloadTransmit() {
 
     while (!stop_payloadTransmit) {
         if (payload_collection) {
-            can_receive_payload = false;
+            can_receive = false;
             still_transmitting = satellite.payloadDataTransmission();
-            can_receive_payload = true;
+            can_receive= true;
             // still_transmitting = true;
             std::cout << "TRANSMITTING" << std::endl;
         }
@@ -188,7 +195,7 @@ void Computer::commandHandling(){
     if(command <= 0x39 && command >= 0x31){
         if(mode_ == TRANSMIT_MODE && command !=TRANSMIT_MODE){
             payload_collection = false;
-            can_receive_payload = true;
+            can_receive = true;
             // change of mode
         }
 
@@ -197,27 +204,27 @@ void Computer::commandHandling(){
 
     }
     else if (command == CMD_SEND_WOD){
-        can_receive_payload = false; 
-        std::vector<uint8_t> message ={WOD_transmit};
+        can_receive= false; 
+        std::vector<uint8_t> message ={(int)WOD_transmit};
         satellite.transmitMessage(message);
-        can_receive_payload = true;
+        can_receive= true;
         cout << "Send WOD command received" << endl; 
 
     }
     else if (command == CMD_WOD_OFF){
         cout << "WOD off command received" << endl; 
         WOD_transmit = false;
-        can_receive_WOD = true;
+        can_receive = true;
     }
     else if (command == CMD_WOD_ON){
         WOD_transmit = true;
         cout << "WOD on command received" << endl; 
     }
     else if (command == CMD_SEND_MODE){
-        can_receive_payload = false; 
-        std::vector<uint8_t> message ={mode_};
+        can_receive = false; 
+        std::vector<uint8_t> message ={(int)mode_};
         satellite.transmitMessage(message);
-        can_receive_payload = true;
+        can_receive  = true;
         cout << "SEND mode command received" << endl; 
 
     }
@@ -342,9 +349,9 @@ int Computer::continuousWOD() {
 
     while (!stop_continuousWOD) {
         if (WOD_transmit) {
-            can_receive_WOD = false;
+            can_receive = false;
             satellite.wodTransmission();
-            can_receive_WOD = true;
+            can_receive = true;
             std::cout << "WOD Transmission" << std::endl;
         }
         //std::this_thread::sleep_for(std::chrono::milliseconds(30000));
@@ -357,8 +364,9 @@ int Computer::continuousWOD() {
 }
 
 void Computer::commandReceive() {
+
     while (!stop_receive) {
-        if (can_receive_payload && can_receive_WOD) {
+        if (can_receive) {
             // Receive Data
             std::vector<uint8_t> msg = satellite.checkTransceiver();
             if (!satellite.receive) {
@@ -368,21 +376,21 @@ void Computer::commandReceive() {
                 new_command = true;
                 // Check if theres a new command and update flag
                 std::cout << "Command: " << command << std::endl;
-                if (msg[2] == 0x4D) {
-                    if (msg[3] <= 0x38 && msg[3] >= 0x30) {
-                        command = msg[3];
+                if (msg[0] == 0x4D) {
+                    if (msg[1] <= 0x38 && msg[1] >= 0x30) {
+                        command = msg[1];
                     } else {
                         command = CMD_SEND_MODE;
                     }
-                } else if (msg[2] == 0x54 && msg[3] == 0x58) {
-                    if (msg[4] == 1) {
+                } else if (msg[0] == 0x54 && msg[1] == 0x58) {
+                    if (msg[2] == 1) {
                         command = CMD_WOD_ON;
-                    } else if (msg[4] == 0) {
+                    } else if (msg[2] == 0) {
                         command = CMD_WOD_OFF;
                     } else {
                         command = CMD_SEND_WOD;
                     }
-                } else if (msg[2] == 0x53 && msg[3] == 0x4F && msg[4] == 0x53) {
+                } else if (msg[0] == 0x53 && msg[1] == 0x4F && msg[2] == 0x53) {
                     command = SOS;
                 } else{
                     new_command = false; 

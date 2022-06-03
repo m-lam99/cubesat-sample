@@ -63,9 +63,6 @@ class Computer {
     // Create a satellite
     Satellite satellite;   
     bool stop_continuousWOD; // overall control of the continuousWO
-    bool stop_payloadTransmit;
-    bool stop_transmit; 
-    bool stop_receive; 
 
     bool is_deployed; 
 
@@ -73,17 +70,10 @@ class Computer {
     bool orbit_insertion_complete; 
 
     // command mode 
-    bool WOD_transmit; // set by command
-    bool collect_data; 
     bool transmit_data;     // to ground station
     
-    // 
-    bool payload_collection; 
-    bool still_transmitting; 
 
     // Receive data 
-    bool can_receive_WOD;
-    bool can_receive_payload;
     bool new_command; 
 };
 

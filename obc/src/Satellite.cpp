@@ -372,14 +372,23 @@ std::vector<uint8_t> Satellite::checkTransceiver()
     transceiver_.SendCommand(transceiver_.CMD_RECEIVE_MODE_CONFIG);
     std::vector<uint8_t> message = transceiver_.ReceiveData();
     std::cout << "MESSAGE: ";
+    bool start_flag = false; 
+    std::vector<uint8_t> filtered{}; 
+    // Assume nothing received 
+    receive = 0; 
 
     for (unsigned int i = 0; i < transceiver_.MAX_BYTES_AX25; i++)
     {
         std::cout << message[i];
-        if (message[0] == '#' && message[1] == 'R' && message.size() >= 3 && i > 3 && i < 18)
+        if (message[i] == '#')
         {
-            std::cout << message[i];
+            start_flag = true;
+        }
+        else if (message[i] == 'R' && start_flag){
             receive = 1;
+        }
+        else{
+            start_flag = false; 
         }
     }
     std::cout << std::endl;
@@ -388,12 +397,33 @@ std::vector<uint8_t> Satellite::checkTransceiver()
     for (unsigned int i = 0; i < message.size();i++)
     {
         if (message[i] == 'M'){
+            filtered.push_back(message[i]);
+            filtered.push_back(message[i+1]);
             mode_ = message[i+1];
             std::cout << "mode is" << mode_ << std::endl;
+
+            break;
+        }
+        else if(message[i] == 0x54 && i+2 < message.size()){
+            if(message[i+1] == 0x58){
+                filtered.push_back(message[i]);
+                filtered.push_back(message[i+1]);
+                filtered.push_back(message[i+2]);
+
+                break; 
+            }
+        }
+        else if(i+2 < message.size() ){
+            if(message[i] == 0x53 && message[i+1] == 0x4F && message[i+2] == 0x53){
+                filtered.push_back(message[i]);
+                filtered.push_back(message[i+1]);
+                filtered.push_back(message[i+2]);
+            }
+            
         }
     }
 
-    return message;
+    return filtered;
 }
 
 int Satellite::propulsion(std::vector<int> array)
