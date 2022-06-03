@@ -126,7 +126,7 @@ uint8_t I2CDevice::readRegister(unsigned int registerAddress){
    unsigned char buffer[1];
    if(::read(this->file, buffer, 1)!=1){
       perror("I2C: Failed to read in the value.\n");
-      return 1;
+      return 0;
    }
    return buffer[0];
 }

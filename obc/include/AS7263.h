@@ -50,6 +50,8 @@ class AS7263 : protected I2CDevice {
     };
     AS7263(unsigned int I2CBus, unsigned int I2CAddress);
 
+    void initialise();
+
     // Returns the various calibration data
     float getCalibratedR() {
         return (getCalibratedValue(VIRTUAL_REG::R_CAL));
@@ -78,8 +80,8 @@ class AS7263 : protected I2CDevice {
     int getV() { return(getChannel(VIRTUAL_REG::V_HIGH)); }
     int getW() { return(getChannel(VIRTUAL_REG::W_HIGH)); }
     void Test();
-    void writeVirtualReg(unsigned int registerAddress, uint8_t data);
-    uint8_t readVirtualReg(unsigned int registerAddress);
+    void writeVirtualReg(uint8_t registerAddress, uint8_t data);
+    uint8_t readVirtualReg(uint8_t registerAddress);
     void enableBulb();
     void disableBulb();
     void setBulbCurrent(uint8_t current);

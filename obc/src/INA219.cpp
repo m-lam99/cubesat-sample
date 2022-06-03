@@ -5,6 +5,15 @@
 
 using namespace exploringBB;
 
+INA219::INA219(unsigned int I2CBus, unsigned int I2CAddress):
+    I2CDevice(I2CBus, I2CAddress){
+    this->I2CAddress = I2CAddress;
+    this->I2CBus = I2CBus;
+    std::cout << "INA219 Current sensor initialisied" << std::endl;
+    // Set to default configs - perhaps change later
+    // this->writeRegister(0x399F, REGISTERS::CONFIG);
+}
+
 int INA219::writeRegister(unsigned int registerAddress, uint16_t value){
    unsigned char buffer[3];
    buffer[0] = registerAddress;
@@ -24,23 +33,14 @@ uint16_t INA219::readRegisters(unsigned int registerAddress){
    unsigned char buffer[2];
    if(::read(this->file, buffer, 1)!=1){
       perror("I2C: Failed to set register.\n");
-      return 1;
+      return 0;
    }
    
    if(::read(this->file, buffer, 2)!=2){
        perror("I2C: Failed to read register value.\n");
-       return 1;
+       return 0;
    }
    return (buffer[0] << 8) | buffer[1];
-}
-
-
-INA219::INA219(unsigned int I2CBus, unsigned int I2CAddress):
-    I2CDevice(I2CBus, I2CAddress){
-    this->I2CAddress = I2CAddress;
-    this->I2CBus = I2CBus;
-    // Set to default configs - perhaps change later
-    // this->writeRegister(0x399F, REGISTERS::CONFIG);
 }
 
 
@@ -96,12 +96,13 @@ float INA219::shuntVoltage(){
 }
 
 float INA219::busVoltage(){
-   uint16_t bus_voltage_bits = readRegister(REGISTERS::BUSVOLTAGE);
-   if (bus_voltage_bits & 0b1){
+   uint16_t value = readRegisters(REGISTERS::BUSVOLTAGE);
+   if (value & 0b1){
       std::cout << "Error: Power or Current out of range" << std::endl;
+      return 0.;
    }
    else {
-      return (float)(bus_voltage_bits >> 3);
+      return (int16_t)((value >> 3) * 4) * 0.001;
    }
 }
 
@@ -143,16 +144,24 @@ float INA219::determineCurrentLSB(float max_expected_amps, float max_possible_am
 
 float INA219::current(){
    reset();
-   writeRegister(REGISTERS::CALIBRATION, 4096);
+   valid_ = writeRegister(REGISTERS::CALIBRATION, 4096);
    // calibrate(26, 0.5, 3.2);
    // uint32_t ina219_currentDivider_mA = 10;
-   current_lsb_ = 10;
-   int16_t current = readRegister(REGISTERS::CURRENT);
-   // if (current > 32767){
-   //    current -= 65536;
-   // }
-   std::cout << current << std::endl;
-   return (float)(current)/current_lsb_;
+   // current_lsb_ = 10.0;
+   
+   if (valid_){
+      return 0.f;
+   } else {
+         uint16_t current = readRegisters(REGISTERS::CURRENT);
+      // if (current > 32767){
+      //    current -= 65536;
+      // }
+
+      return (float)((float)readRegisters(REGISTERS::CURRENT)/(current_lsb_));
+      
+   }
+   
+
 }
 
 float INA219::power(){

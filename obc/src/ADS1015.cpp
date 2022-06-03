@@ -13,9 +13,10 @@ ADS1015::ADS1015(unsigned int I2CBus, unsigned int I2CAddress)
     this->I2CAddress = I2CAddress;
     this->I2CBus = I2CBus;
 
-    // PGA +-1.024 V
+    // PGA +-4.096 V
     writeRegister(ADDRESS_POINTER::CONFIG, 0x4683);
     setFSR();
+    std::cout << "ADC INITIALISED" << std::endl; 
 }
 
 int ADS1015::writeRegister(unsigned int registerAddress, uint16_t value)
@@ -55,24 +56,25 @@ uint16_t ADS1015::readRegisters(unsigned int registerAddress)
 float ADS1015::getVoltage(int channel)
 {
     // writeRegister(ADDRESS_POINTER::CONFIG, 0b0100010010000011);
-    uint16_t config = readRegisters(ADDRESS_POINTER::CONFIG);
+    // uint16_t config = readRegisters(ADDRESS_POINTER::CONFIG);
 
     switch (channel)
     {
     case 0:
-        writeRegister(ADDRESS_POINTER::CONFIG, config | (0b100 << 12));
+        writeRegister(ADDRESS_POINTER::CONFIG, 0x4683);
         break;
     case 1:
-        writeRegister(ADDRESS_POINTER::CONFIG, config | (0b101 << 12));
+        writeRegister(ADDRESS_POINTER::CONFIG, 0x5683);
         break;
     case 2:
-        writeRegister(ADDRESS_POINTER::CONFIG, config | (0b110 << 12));
+        writeRegister(ADDRESS_POINTER::CONFIG, 0x6683);
         break;
     default:
         perror("No >:(");
         break;
     }
-    int test = config | (0b100 << 12);
+    // int test = config | (0b100 << 12);
+    std::cout << readRegisters(ADDRESS_POINTER::CONFIG) << std::endl;
     // std::bitset<16> x(test);
     // std::cout << "config " << x << std::endl;
     uint16_t bit_val = readRegisters(ADDRESS_POINTER::CONVERSION);

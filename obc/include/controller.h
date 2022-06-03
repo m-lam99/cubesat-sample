@@ -14,17 +14,23 @@
         public:
 
         // initiate the controller object using new target orientation
-        CControl(double target[3]);
+        CControl(double phi, double theta, double psi);
 
         // run controller
         imu::Vector<3> runControlAlgorithm(imu::Quaternion measurements, imu::Vector<3> velocities);
 
+        // Change pointing direction 
+        void changeTarget(double phi, double theta, double psi); 
+        
         bool getTolerance(void);
+
+        imu::Vector<3> detumble(imu::Vector<3> rps, imu::Vector<3> mags);
 
         private:
 
         // controller gains
         double gainQ, gainW;
+
 
         // target orientation quaternion
         //double qRef[4];
@@ -51,7 +57,7 @@
         double tolerance;
 
         // convert Euler angles to quaternions
-        void eulerToQuat(double angles[3]);
+        void eulerToQuat(double phi, double theta, double psi);
 
         // calculate error using Kronecker product
         void calcKronecker(imu::Quaternion p, imu::Quaternion q);

@@ -43,6 +43,8 @@ BNO055::BNO055(unsigned int I2CBus,uint8_t address)
   _sensorID = 0;
   _address = address;
   _i2cChannel = I2CBus;
+  std::cout << "IMU initialisied" << std::endl;
+
 }
 
 /***************************************************************************

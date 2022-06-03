@@ -20,7 +20,7 @@
 
 using namespace exploringBB;
 
-class INA219:protected I2CDevice{
+class INA219:public I2CDevice{
     
     public:
         // Register addresses for the INA219
@@ -97,6 +97,9 @@ class INA219:protected I2CDevice{
         float determineCurrentLSB(float max_expected_amps, float max_possible_amps);
         float current();
         float power();
+        int ifValid(){
+            return valid_;
+        }
         void reset();
     private:
         unsigned int I2CBus, I2CAddress;
@@ -105,8 +108,9 @@ class INA219:protected I2CDevice{
         float max_expected_amps_;
         int voltage_range_;
         int gain_;
-        float current_lsb_;
+        float current_lsb_ = 10.f;
         float power_lsb_;
+        int valid_;
 };
 
 

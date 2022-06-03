@@ -4,27 +4,32 @@
 #include <vector>
 
 #include "controller.h"
+#include "PWM.h"
+#include "BNO055.h"
 
-CControl::CControl(double references[3])
+CControl::CControl(double phi, double theta, double psi)
 {
     // convert to quaternion and store
-    eulerToQuat(references);
+    eulerToQuat(phi, theta, psi);
 
     // set controller gains
-    gainQ = 20;
-    gainW = 4;
+    gainQ = 0.2;
+    gainW = 0.04;
 
     // set tolerance value
-    tolerance = 0.2;
+    tolerance = 0.1;
 }
 
+void CControl::changeTarget(double phi, double theta, double psi){
+    eulerToQuat(phi, theta, psi); 
+}
 // Convert Eluer angles to quaternions
-void CControl::eulerToQuat(double angles[3])
+void CControl::eulerToQuat(double phi, double theta, double psi)
 {
     // extract angle values
-    double phi = angles[0];
-    double theta = angles[1];
-    double psi = angles[2];
+    // double phi = angles[0];
+    // double theta = angles[1];
+    // double psi = angles[2];
     
     // calculate terms
     double a, b, c, d;
@@ -35,10 +40,7 @@ void CControl::eulerToQuat(double angles[3])
 
     // store values in reference variable
     qRef = imu::Quaternion(a,b,c,d);
-    // qRef[0] = a;
-    // qRef[1] = b;
-    // qRef[2] = c;
-    // qRef[3] = d;
+
 }
 
 // P2 control algorithm
@@ -87,15 +89,12 @@ imu::Vector<3> CControl::runControlAlgorithm(imu::Quaternion measurements, imu::
         // }
     }
 
-
-
     // obtain the control signal and send to system
     getControlSignal();
-    for (int i = 0; i < 3; i++)
-    {
-        std::cout << output[i] << std::endl;
-    }
-    std::cout << "---" << std::endl;
+    // for (int i = 0; i < 3; i++)
+    // {
+    //     std::cout << output[i] << std::endl;
+    // }
 
     // NOT PART OF ALGORITHM
     // get new measurement
@@ -126,7 +125,7 @@ void CControl::calcKronecker(imu::Quaternion p, imu::Quaternion q)
     c = p.w()*q.y() - p.x()*q.z() + p.y()*q.w() + p.z()*q.x();
 
     // fourth term
-    d = p.w()*q.z() + p.x()*q.y() - p.y()*q.x() - p.z()*q.w();
+    d = p.w()*q.z() + p.x()*q.y() - p.y()*q.x() + p.z()*q.w();
 
     // store Kronecker product quaternion as error value
     qErr = imu::Quaternion(a,b,c,d);
@@ -156,9 +155,9 @@ void CControl::getControlSignal(void)
     double a[3], b[3];
 
     // obtain first term in algorithm
-    a[0] = qErr.x() * gainQ;
-    a[1] = qErr.y() * gainQ;
-    a[2] = qErr.z() * gainQ;
+    a[1] = qErr.x() * gainQ;
+    a[2] = qErr.y() * gainQ;
+    a[3] = qErr.z() * gainQ;
 
     // for (int i = 0; i < 3; i++)
     // {
@@ -186,9 +185,9 @@ void CControl::getControlSignal(void)
 // convert control signal from quaternion form to Euler angles
 void CControl::quatToEuler(double q[4])
 {
-    output[0] = atan2(2*(q[0]*q[1] + q[2]*q[3]), pow(q[0],2.0) - pow(q[1],2.0) - pow(q[2],2.0) - pow(q[3],2.0));
+    output[0] = atan2(2*(q[0]*q[1] + q[2]*q[3]), pow(q[0],2.0) - pow(q[1],2.0) - pow(q[2],2.0) + pow(q[3],2.0));
     output[1] = asin(2*(q[0]*q[2] - q[3]*q[1]));
-    output[2] = atan2(2*(q[0]*q[3] + q[1]*q[2]), pow(q[0],2) + pow(q[1],2) + pow(q[2],2) + pow(q[3],2));
+    output[2] = atan2(2*(q[0]*q[3] + q[1]*q[2]), pow(q[0],2) + pow(q[1],2) - pow(q[2],2) - pow(q[3],2));
 }
 
 bool CControl::getTolerance(void) 
@@ -198,4 +197,37 @@ bool CControl::getTolerance(void)
     } else {
         return false;
     }
+}
+
+imu::Vector<3> CControl::detumble(imu::Vector<3> rps, imu::Vector<3> mags) {
+    // %%% Bfield is in teslas - 40000 nT = 4e4e-9 = 4e-5 ~= 1e-5
+    // %%% pqr is in rad/s --    0.1 rad/s  = 1e-1
+    // %%% pqr*Bfield = 1e-1*1e-5 = 1e-6
+    // %%% pqr*Bfield / (n*A) = 6e=7
+    // %%% muB = n*i*A
+    // n = number of turns
+    // A = surfaced enclosed by turn of coil
+    // current = k*cross(pqr, magfieldxyz)/(n*A);
+
+    imu::Vector<3> out(0,0,0);
+
+    out[0] = 1;
+    out[1] = 1;
+    out[2] = 1;
+
+    // if (abs(rps.x()) > 0.000) {
+    //     out[0] = 1;
+    // }
+
+    // if (abs(rps.y()) > 0.000) {
+    //     out[1] = 1;
+    // }
+
+    // if (abs(rps.z()) > 0.000) {
+    //     out[2] = 1;
+    // }
+
+
+    return out;
+
 }

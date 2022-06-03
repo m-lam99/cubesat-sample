@@ -9,15 +9,15 @@
 #include <stdint.h>
 #include "UART.h"
 
-#define TTC_CHANNEL 4
+#define TTC_CHANNEL 2
 #define TTC_BAUD 19200
 
 class Transceiver: public UARTDevice
 {
 
 public:
-    static const int MAX_BYTES_AX25 = 42;
-    static const int CMD_MAX_LENGTH = 47;
+    static const int MAX_BYTES_AX25 = 64;
+    static const int CMD_MAX_LENGTH = 64;
 
     Transceiver();
     ~Transceiver();

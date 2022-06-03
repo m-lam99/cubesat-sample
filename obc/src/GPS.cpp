@@ -13,7 +13,12 @@ using namespace std;
 // DEFAULT is Channel 4, baud 9600
 GPS::GPS( ):
     UARTDevice(GPS_CHANNEL, GPS_BAUD){
-   
+   gps_on(); 
+}
+
+GPS::~GPS( )
+{
+   gps_off(); 
 }
 
 void GPS::gps_on( ){
@@ -24,13 +29,13 @@ void GPS::gps_on( ){
 
 void GPS::print_GPS(){
     loc_t data;
+    std::cout << "print gps" << std::endl;
+    
+    get_location(&data);
+    printf("%lf %lf %lf\n", data.latitude, data.longitude, data.altitude);
+    std::cout << "seconds since 1/1/2000: " << data.epoch << std::endl; 
 
-    while (1) {
-        get_location(&data);
-        printf("%lf %lf %lf\n", data.latitude, data.longitude, data.altitude);
-        std::cout << "seconds since 1/1/2000: " << data.epoch << std::endl; 
-
-    }
+    
 
 }
 
@@ -42,10 +47,11 @@ void GPS::get_location(loc_t *coord){
         gpgga_t gpgga;
         gprmc_t gprmc;
 
+
         char buffer[256];
 
         readln(buffer);
-        cout << buffer << endl; 
+        //cout << buffer << endl; 
         switch (get_NMEA_type(buffer)) {
             case NMEA_GPGGA:
                 nmea_parse_gpgga(buffer, &gpgga);
@@ -89,6 +95,10 @@ long int GPS::convertToEpoch(std::string date, std::string time){
     unix_seconds = (int)timegm(&tmTime);
     epoch_sec = unix_seconds - offset; 
 
+    if(epoch_sec < 0){
+        epoch_sec = 0; 
+        cout << "Time not found" << endl;
+    }
 
     return epoch_sec;
 }
@@ -120,9 +130,9 @@ double GPS::gps_deg_dec(double deg_point)
 uint8_t GPS::get_NMEA_type(const char *message)
 {
     uint8_t checksum = 0;
-    if ((checksum = nmea_valid_checksum(message)) != _EMPTY) {
-        return checksum;
-    }
+    // if ((checksum = nmea_valid_checksum(message)) != _EMPTY) {
+    //     return checksum;
+    // }
 
     if (strstr(message, NMEA_GPGGA_STR) != NULL) {
         return NMEA_GPGGA;

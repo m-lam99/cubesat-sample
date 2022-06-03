@@ -14,67 +14,93 @@ AS7263::AS7263(unsigned int I2CBus, unsigned int I2CAddress)
 
     setBulbCurrent(0b00); //Set to 12.5mA (minimum)
 	disableBulb(); //Turn off to avoid heating the sensor
-
-	setIntegrationTime(50); //50 * 2.8ms = 140ms. 0 to 255 is valid.
+    setIntegrationTime(50); //50 * 2.8ms = 140ms. 0 to 255 is valid.
 							//If you use Mode 2 or 3 (all the colors) then integration time is double. 140*2 = 280ms between readings.
 
 	setGain(3); //Set gain to 64x
 
 	setMeasurementMode(3); //One-shot reading of VBGYOR
+
+
+}
+
+void AS7263::initialise(){
+    setBulbCurrent(0b00); //Set to 12.5mA (minimum)
+	disableBulb(); //Turn off to avoid heating the sensor
+    setIntegrationTime(50); //50 * 2.8ms = 140ms. 0 to 255 is valid.
+							//If you use Mode 2 or 3 (all the colors) then integration time is double. 140*2 = 280ms between readings.
+
+	setGain(3); //Set gain to 64x
+
+	setMeasurementMode(3); //One-shot reading of VBGYOR
+
 }
 
 void AS7263::Test() {
     uint8_t device_no = readVirtualReg(VIRTUAL_REG::HW_VERSION);
-    std::cout << (int)device_no << std::endl;
+    std::cout << (int)readVirtualReg(VIRTUAL_REG::HW_VERSION) << std::endl;
 }
 
-void AS7263::writeVirtualReg(unsigned int virtual_reg, uint8_t data) {
-    volatile uint8_t status;
-    while (1) {
-        // Read slave I²C status to see if the write buffer is ready.
-        status = readRegister(REGISTERS::STATUS);
-        if ((status & AS7263_TX_VALID) == 0)
-            // No inbound TX pending at slave.  Okay to write now.
-            break;
-    }
-    // Send the virtual register address (setting bit 7 to indicate a pending
-    // write).
-    writeRegister(REGISTERS::WRITE, (virtual_reg | 0x80));
-    while (1) {
-        // Read the slave I2C status to see if the write buffer is ready.
-        status = readRegister(REGISTERS::STATUS);
-        if ((status & AS7263_TX_VALID) == 0)
-            // No inbound TX pending at slave.  Okay to write data now.
-            break;
-    }
-    // Send the data to complete the operation.
-    writeRegister(REGISTERS::WRITE, data);
+void AS7263::writeVirtualReg(uint8_t virtualAddr, uint8_t data) {
+    
+    uint8_t status;
+
+	//Wait for WRITE register to be empty
+	while (1)
+	{
+		status = readRegister(REGISTERS::STATUS);
+		if ((status & AS7263_TX_VALID) == 0) break; // No inbound TX pending at slave. Okay to write now.
+		usleep(POLLING_DELAY);
+	}
+
+	// Send the virtual register address (setting bit 7 to indicate we are writing to a register).
+	writeRegister(REGISTERS::WRITE, (virtualAddr | 0x80));
+
+	//Wait for WRITE register to be empty
+	while (1)
+	{
+		status = readRegister(REGISTERS::STATUS);
+		if ((status & AS7263_TX_VALID) == 0) break; // No inbound TX pending at slave. Okay to write now.
+		usleep(POLLING_DELAY);
+	}
+
+	// Send the data to complete the operation.
+	writeRegister(REGISTERS::WRITE, data);
+    
 }
 
-uint8_t AS7263::readVirtualReg(unsigned int virtual_reg) {
-    volatile uint8_t status, d;
+uint8_t AS7263::readVirtualReg(uint8_t virtualAddr) {
+    uint8_t status;
 
-    while (1) {
-        // Read slave I2C status to see if the read buffer is ready.
-        status = readRegister(REGISTERS::STATUS);
-        if ((status & AS7263_TX_VALID) == 0)
-            // No inbound TX pending at slave.  Okay to write now.
-            break;
-    }
-    // Send the virtual register address (setting bit 7 to indicate a pending
-    // write).
-    writeRegister(REGISTERS::WRITE, virtual_reg);
-    while (1) {
-        // Read the slave I²C status to see if our read data is available.
-        status = readRegister(REGISTERS::STATUS);
-        if ((status & AS7263_RX_VALID) != 0)
-            // Read data is ready.
-            break;
-    }
+	//Do a prelim check of the read register
+	status = readRegister(REGISTERS::STATUS);
+	if ((status & AS7263_RX_VALID) != 0) //There is data to be read
+	{
+		//Serial.println("Premptive read");
+		uint8_t incoming = readRegister(REGISTERS::READ); //Read the uint8_t but do nothing with it
+	}
 
-    // Read the data to complete the operation.
-    d = readRegister(REGISTERS::READ);
-    return (int)d;
+	//Wait for WRITE flag to clear
+	while (1)
+	{
+		status = readRegister(REGISTERS::STATUS);
+		if ((status & AS7263_TX_VALID) == 0) break; // If TX bit is clear, it is ok to write
+		usleep(POLLING_DELAY);
+	}
+
+	// Send the virtual register address (bit 7 should be 0 to indicate we are reading a register).
+	writeRegister(REGISTERS::WRITE, virtualAddr);
+
+	//Wait for READ flag to be set
+	while (1)
+	{
+		status = readRegister(REGISTERS::STATUS);
+		if ((status & AS7263_RX_VALID) != 0) break; // Read data is ready.
+		usleep(POLLING_DELAY);
+	}
+
+	uint8_t incoming = readRegister(REGISTERS::READ);
+	return (incoming);
 }
 
 void AS7263::enableBulb() {
