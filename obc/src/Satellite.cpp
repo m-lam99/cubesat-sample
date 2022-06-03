@@ -19,7 +19,7 @@ Satellite::Satellite()
       prop_GPIO_(23),
       burn_GPIO_(59),
       transceiver_(),
-      Controller(0, 1.57, 0),
+      Controller(0, 0, 0),
       mag_x(PWM_0A),
       mag_y(PWM_1A),
       mag_z(PWM_0B) // initial pointing direction
@@ -79,7 +79,9 @@ bool Satellite::pointSatellite(double phi, double theta, double psi)
 
     // Display Quaternions
     imu::Quaternion quat = imu_.getQuat();
-    std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t\t";
+    imu::Vector eulers = imu_.getVector(BNO055::VECTOR_EULER);
+    std::cout << " eX: " << (int)eulers.x() << " eY: " << (int)eulers.y() << " eZ: " << (int)eulers.z() << "\t";
+    // std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t\t";
 
     // /* Display Angular Velocities rad/s */
     imu::Vector<3> rps = imu_.getRPS();
@@ -88,14 +90,12 @@ bool Satellite::pointSatellite(double phi, double theta, double psi)
 
     signal = Controller.runControlAlgorithm(quat, rps);
 
-    std::cout << "SIGNALS: " << signal[0] << " " << signal[1] << " " << signal[2] << std::endl;
-
-
     for (int i; i < 3; i++) {
         signal[i] = 100*abs(signal[i])/3.1415;
     }
 
-    std::cout << "SIGNALS: " << signal[0] << " " << signal[1] << " " << signal[2] << std::endl;
+    std::cout << "DUTY CYCLE SIGNALS: " << (int)signal[0] << " " << (int)signal[1] << " " <<(int)signal[2] << std::endl;
+
 
     // ACTUATE THE SIGNAL
     mag_x.setDutyCycle((unsigned int)(signal.x()));
@@ -108,9 +108,7 @@ bool Satellite::pointSatellite(double phi, double theta, double psi)
 
     imu::Vector<3> mags = imu_.getVector(BNO055::VECTOR_MAGNETOMETER);
     std::cout << "Xmag: " << (int)mags.x() <<  " Ymag: " << (int)mags.y() << " Zmag: "
-        << (int)mags.z() << "\t\t" << std::endl;
-
-    std::cout << "SIGNAL ACTUATED" << std::endl;
+        << (int)mags.z() << "\t" << std::endl;
 
     return Controller.getTolerance();
 }
@@ -123,12 +121,12 @@ int Satellite::detumbling()
     //     << mags.z() << "\t\t";
     imu::Vector<3> rps = imu_.getRPS();
     std::cout << "Rad x: " << rps.x() << " Rad y: " << rps.y() << " Rad z: "
-        << rps.z() << "\t\t";
+        << rps.z() << "\t";
 
     // Detumble controller
     imu::Vector<3> directions = Controller.detumble(rps, mags);
 
-    std::cout << "directions: " << directions[2] << std::endl;
+    // std::cout << "directions: " << directions[2] << std::endl;
 
     if (directions[0] == 0 && directions[1] == 0 && directions[2] == 0) {
         mag_x.stop();
@@ -150,7 +148,7 @@ int Satellite::detumbling()
     std::cout << "Mag Duty Cycle: " << mag_z.getDutyCycle() << std::endl;
     /* Display Magnetometer Reading uT */
     std::cout << "Xmag: " << (int)mags.x() <<  " Ymag: " << (int)mags.y() << " Zmag: "
-        << (int)mags.z() << "\t\t";
+        << (int)mags.z() << "\t";
 
     usleep(100000);
 
@@ -158,7 +156,7 @@ int Satellite::detumbling()
 }
 
 int Satellite::runmagtorquer(PWM mag) {
-    unsigned int dc = 100;
+    unsigned int dc = 50;
     mag.setDutyCycle(dc);
     mag.setPolarity(PWM::ACTIVE_HIGH);
     mag.run();
