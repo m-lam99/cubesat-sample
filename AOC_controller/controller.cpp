@@ -8,11 +8,11 @@ CControl::CControl(double references[3])
     eulerToQuat(references);
 
     // set controller gains
-    gainQ = 20;
-    gainW = 4;
+    gainQ = 0.2;
+    gainW = 0.04;
 
     // set tolerance value
-    tolerance = 0.2;
+    tolerance = 0.002;
 }
 
 // Convert Eluer angles to quaternions
@@ -59,7 +59,7 @@ int CControl::runControlAlgorithm(void)
 
     // get current angular velocity measurements and store in variable
     // DUMMY VALUE assuming constant maximum speed required
-    double velocities[3] = {0.02, 0.0017, 0.014};
+    double velocities[3] = {0.02, 0.0017, 0.001};
     for (int i = 0; i < 3; i++)
     {
         angVels[i] = velocities[i];
@@ -119,7 +119,7 @@ void CControl::calcKronecker(double p[4], double q[4])
     c = p[0]*q[2] - p[1]*q[3] + p[2]*q[0] + p[3]*q[1];
 
     // fourth term
-    d = p[0]*q[3] + p[1]*q[2] - p[2]*q[1] - p[3]*q[0];
+    d = p[0]*q[3] + p[1]*q[2] - p[2]*q[1] + p[3]*q[0];
 
     // store Kronecker product quaternion as error value
     qErr[0] = a;
@@ -148,7 +148,7 @@ bool CControl::isClosest(void)
 // calculate control signal and store in object variable
 void CControl::getControlSignal(void)
 {
-    // create temporary variables to store matrxi information
+    // create temporary variables to store matrix information
     double a[3], b[3];
 
     // obtain first term in algorithm
@@ -178,7 +178,7 @@ void CControl::getControlSignal(void)
 // convert control signal from quaternion form to Euler angles
 void CControl::quatToEuler(double q[4])
 {
-    output[0] = atan2(2*(q[0]*q[1] + q[2]*q[3]), pow(q[0],2.0) - pow(q[1],2.0) - pow(q[2],2.0) - pow(q[3],2.0));
+    output[0] = atan2(2*(q[0]*q[1] + q[2]*q[3]), pow(q[0],2.0) - pow(q[1],2.0) - pow(q[2],2.0) + pow(q[3],2.0));
     output[1] = asin(2*(q[0]*q[2] - q[3]*q[1]));
-    output[2] = atan2(2*(q[0]*q[3] + q[1]*q[2]), pow(q[0],2) + pow(q[1],2) + pow(q[2],2) + pow(q[3],2));
+    output[2] = atan2(2*(q[0]*q[3] + q[1]*q[2]), pow(q[0],2) + pow(q[1],2) - pow(q[2],2) - pow(q[3],2));
 }

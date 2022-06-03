@@ -16,7 +16,7 @@ int main(void)
 {
 
     // we receive a target orientation in euler angles
-    double references[3] = {0, 1.5708, 0};
+    double references[3] = {0.1, 0.1, 0.1};
 
     // create controller object and run algorithm
     CControl newController(references);
