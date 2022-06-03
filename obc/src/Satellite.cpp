@@ -161,7 +161,7 @@ int Satellite::detumbling()
     std::cout << "Xmag: " << (int)mags.x() <<  " Ymag: " << (int)mags.y() << " Zmag: "
         << (int)mags.z() << "\t";
 
-    usleep(100000);
+    usleep(1000000);
 
     return 1;
 }

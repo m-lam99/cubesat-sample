@@ -101,7 +101,7 @@ void Test::testPoint() {
     Satellite satellite;
     while(1) {
         satellite.pointSatellite(0.0, 0.0, 0.0);
-        usleep(100000);
+        usleep(1000000);
     }
 }
 
