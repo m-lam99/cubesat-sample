@@ -85,7 +85,7 @@ bool Satellite::pointSatellite(double phi, double theta, double psi)
 
     // Display Quaternions
     imu::Quaternion quat = imu_.getQuat();
-    imu::Vector eulers = imu_.getVector(BNO055::VECTOR_EULER);
+    imu::Vector<3> eulers = imu_.getVector(BNO055::VECTOR_EULER);
     std::cout << " eX: " << (int)eulers.x() << " eY: " << (int)eulers.y() << " eZ: " << (int)eulers.z() << "\t";
     // std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t\t";
 
@@ -177,13 +177,13 @@ int Satellite::runmagtorquer(PWM mag) {
 
 int Satellite::payloadDataCollection()
 {
-    payload_data_.push(payload_.getData());
+    payload_data_.push(payload_.getDataEncoded());
     return 1;
 }
 
 int Satellite::payloadDataTransmission()
 {
-    Payload::payload_data_t data_packet = payload_data_.front();
+    Payload::payload_data_enc_t data_packet = payload_data_.front();
 
     unsigned char data_transmit[sizeof(data_packet)];
     memcpy(data_transmit, &data_packet, sizeof(data_packet));
@@ -201,7 +201,14 @@ int Satellite::payloadDataTransmission()
     encodedMsg_ = ax25::encode(&message_);
     if (encodedMsg_ != NULL)
     {
-        // int success = sendMessage(encodedMsg);
+        std::vector<uint8_t> send_vector;
+        // Transmit message
+        for(int i = 0; i < encodedMsg_->nbytes; ++i){
+           send_vector.push_back(encodedMsg_->bytes[i]);
+           std::cout << (int)send_vector.back() << std::endl;
+        }
+
+        transceiver_.TransmitMessage(send_vector);
 
         wod_data_.pop();
         return 1;

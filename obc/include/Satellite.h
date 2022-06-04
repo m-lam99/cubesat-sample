@@ -77,7 +77,7 @@ class Satellite {
 
     // Data collection
     std::queue<WholeOrbit::wod_t> wod_data_;
-    std::queue<Payload::payload_data_t> payload_data_;
+    std::queue<Payload::payload_data_enc_t> payload_data_;
 
     // AX25
     ax25::Message message_;
