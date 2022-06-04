@@ -2,7 +2,7 @@ import sqlite3
 import datetime
 import pandas as pd
 
-DB_HOST = "db/ground-station.db"
+DB_HOST = "transceiver/db/ground-station.db"
 
 EPOCH_TIME = datetime.datetime(2000, 1, 1)
 

@@ -1,7 +1,9 @@
 from time import sleep
 import serial
+import sys
 import ctypes
 from ax25 import bindings
+from decode import decode_wod, decode_science
 
 from transceiver import (
     setup_transceiver,
@@ -11,8 +13,20 @@ from transceiver import (
     send_command,
 )
 
+MODES = [
+    "Safe",
+    "Idle",
+    "Normal",
+    "Station-keep",
+    "Transmit",
+    "End-of-life",
+    "Ejection",
+    "Orbital Insertion",
+    "Deployment"
+]
 
 def ax_conversion(encoded_msg):
+    # used for ad-hoc testing
     l = len(encoded_msg)
     cmsg = (ctypes.c_ubyte * l)()
     for j in range(l):
@@ -45,6 +59,110 @@ def ax_conversion(encoded_msg):
               """
     )
 
+def demo_run_receive_loop():
+    # Infinitely loops, searching for AX25 messages
+    # Prints decoded AX25 messages and the parsed data contained within
+    def find_start_token_index(msg):
+        token = ["#","R"]
+        for ind in (i for i,e in enumerate(msg) if e==token[0]):
+            if msg[ind:ind+2]==token:
+                return ind
+        return -1
+
+    while True:
+        # sleep for a few seconds then try get 100 bytes
+        sleep(3)
+        data = receive_data(100)
+        try:        
+            ix = find_start_token_index(data)
+            if ix == -1 :
+                print("No start token found")
+                continue
+            data = data[ix+2:]
+            
+            b = bindings.ByteArray([int(d) for d in data])
+            nbytes = bindings.ax25.ByteArray_getnbytes(b)
+            _bytes = bindings.ax25.ByteArray_getbytes(b)
+            decoded_msg = bindings.ax25._searchForMessage(_bytes, nbytes, 0)
+            if decoded_msg == 0:
+                print("Message corrupted")
+                # null ptr, no valid message
+                continue
+            nbytes = bindings.ax25.Message_getnpayload(decoded_msg)
+            _bytes = bindings.ax25.Message_getpayload(decoded_msg)
+            decoded_payload = [_bytes[i] for i in range(nbytes)]
+            src = bindings.ax25.Message_getsource(decoded_msg)
+            dest = bindings.ax25.Message_getdestination(decoded_msg)
+            comresp = bindings.ax25.Message_getcommandresponse(decoded_msg)
+            control = bindings.ax25.Message_getcontroltype(decoded_msg)
+            dtype = bindings.ax25.Message_getdatatype(decoded_msg)
+            sseq = bindings.ax25.Message_getsendsequence(decoded_msg)
+            src = [src[i] for i in range(6)]
+            dest = [dest[i] for i in range(6)]
+            print(
+                f"""
+Message found successfully! 
+    Decoded Payload: {''.join([hex(m) for m in decoded_payload])}
+    Source:          {''.join([chr(m) for m in src])}
+    Destination:     {''.join([chr(m) for m in dest])}
+    Message Type:    {comresp} (0=response, 1=command)
+    Control Type:    {control} (0=info I, 2=unnumbered U)
+    Data Type:       {dtype} (0=WOD, 1=Science. doesn't apply to command msg types)
+    Send Sequence:   {sseq} (-1=unnumbered)
+                    """
+            )      
+
+            # Decode data and insert
+            if dtype == 0:
+                try:
+                    data = decode_wod(decoded_payload)
+                    successes += 1
+                except AssertionError:
+                    continue
+                # strip out time (unsupported in real thing)
+                data = data[4:]
+                print(f"""
+Decoded WOD payload:
+    Offset Time:         {data[0]}
+    Mode:                {MODES[data[1]]}
+    Battery Voltage:     {data[2]}
+    Battery Current:     {data[3]}
+    3v3 Current:         {data[4]}
+    5v Current:          {data[5]}
+    TTC Temperature:     {data[6]}
+    EPS Temperature:     {data[7]}
+    Battery Temperature: {data[8]}
+                      """)
+            else:
+                try:
+                    data = decode_science(decoded_payload)
+                    successes += 1
+                except AssertionError:
+                    continue
+                
+                print(f"""
+Decoded science payload:
+    Channel readings:
+        R:      {data[0]}
+        S:      {data[1]}
+        T:      {data[2]}
+        U:      {data[3]}
+        V:      {data[4]}
+        W:      {data[5]}
+    Latitude:   {data[6]}
+    Longitude:  {data[7]}
+    Altitude:   {data[8]}
+                      """)
+
+        except Exception as e:
+            print(e.with_traceback)
+
+def send_mode_command(mode: int):
+    """Encodes mode command and invokes message transmitter"""
+
+    msg = [0x4D, 0x30 + mode]
+
+    transmit_message(msg)
 
 def main():
     i = 0
@@ -90,7 +208,25 @@ def main():
     #     received_data += _ser.read(data_left)
     #     print(received_data)
     #     sleep(5)
+    
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) == 0:
+        main()
+
+    elif sys.argv[1] == "receive":
+        print("running receive loop")
+        demo_run_receive_loop()
+    
+    elif sys.argv[1] == "SOS":
+        print("sending SOS command")
+        transmit_message([0x53, 0x4F, 0x53, 0x2D, 0x53, 0x4F, 0x53])
+        
+    else:
+        modes = ["safe", "idle", "normal", "station-keep", "transmit", "end-of-life"]
+        if sys.argv[1] not in modes :
+            print("unrecognised command")
+            sys.exit(1)
+        print("sending mode change command ", sys.argv[1])
+        send_mode_command(modes.index(sys.argv[1]))

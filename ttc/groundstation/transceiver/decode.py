@@ -7,17 +7,8 @@ def parse_int(n, a, b):
     return (n-b)/a
 
 
-def decode_wod(msg):
-    # Converts a ctype binary array into WOD data
-
-    # Convert ctype binary array into integer array
-    assert msg != 0  # null ptr check
-
-    nbytes = bindings.ax25.Message_getnpayload(msg)
-    _bytes = bindings.ax25.Message_getpayload(msg)
-    bindings.ax25.Message_del(msg)
-
-    data = [_bytes[i] for i in range(nbytes)]
+def decode_wod(data):
+    # Converts an integer array into WOD data
 
     assert len(data) == 12
     assert min(data) >= 0 and max(data) <= 255
@@ -39,33 +30,28 @@ def decode_wod(msg):
     ]
 
 
-def decode_science(msg):
-    # Converts a ctype binary array into science data
+def decode_science(data):
+    # Converts an integer array into science data
 
-    # Convert ctype binary array into integer array
-    assert msg != 0  # null ptr check
-
-    nbytes = bindings.ax25.Message_getnpayload(msg)
-    _bytes = bindings.ax25.Message_getpayload(msg)
-    bindings.ax25.Message_del(msg)
-
-    data = [_bytes[i] for i in range(nbytes)]
-
-    assert len(data) == 12
+    assert len(data) == 18 or len(data) == 22
     assert min(data) >= 0 and max(data) <= 255
 
+    # Mock data has time, real data does not. add 0 for real data
+    if len(data) == 18:
+        data = [0,0,0,0] + data
+        
     t = int.from_bytes(data[:4], byteorder='big', signed=True)
-    assert t > 0
+    assert t >= 0 and t < 10000000000
 
-    reading = int.from_bytes(data[:2], byteorder='big', signed=False)
-    lat = parse_int(int.from_bytes(data[2:4], byteorder='big', signed=True),32767/90,0)
-    lon = parse_int(int.from_bytes(data[4:6], byteorder='big', signed=True),32767/180,0)
-    alt = parse_int(int.from_bytes(data[6:8], byteorder='big', signed=True),32767/50000,-250000*32767/50000)
+    channel_readings = []
+    for i in range(6):
+        channel_readings.append(int.from_bytes(data[4+2*i:6+2*i], byteorder='big', signed=False))
+    lat = parse_int(int.from_bytes(data[16:18], byteorder='big', signed=True),32767/90,0)
+    lon = parse_int(int.from_bytes(data[18:20], byteorder='big', signed=True),32767/180,0)
+    alt = parse_int(int.from_bytes(data[20:22], byteorder='big', signed=True),32767/50000,-250000*32767/50000)
 
-    return [
-        t,
+    return channel_readings + [
         lat,
         lon,
-        alt,
-        reading
+        alt
     ]

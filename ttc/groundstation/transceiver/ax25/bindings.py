@@ -3,6 +3,7 @@ from random import randint
 
 ax25 = ctypes.cdll.LoadLibrary(
     "/home/pi/Documents/AERO4701-NICE/ttc/groundstation/transceiver/ax25/ax25.so"
+    # r"C:\Users\adamh\Documents\UNI\Y5S1\AERO4701\AERO4701-NICE\ttc\groundstation\transceiver\ax25\ax25.so"
 )
 # N.B: use the below if running standalone
 # ax25 = ctypes.cdll.LoadLibrary('./ax25.so')

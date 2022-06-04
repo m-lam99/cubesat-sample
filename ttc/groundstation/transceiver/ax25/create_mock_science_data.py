@@ -35,6 +35,11 @@ def generate():
         reading = array(float16(math.sin(t/samples_per_orbit))).tobytes()
         for b in reading:
             packet.append(b)
+            packet.append(b)
+            packet.append(b)
+            packet.append(b)
+            packet.append(b)
+            packet.append(b)
 
         lat = array(float16(current_lat)).tobytes()
         for b in lat:
