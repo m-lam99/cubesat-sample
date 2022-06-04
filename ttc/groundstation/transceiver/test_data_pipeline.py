@@ -5,6 +5,9 @@ from transceiver.decode import decode_wod, decode_science
 
 def run():
     db = DB()
+    cursor = db.con.cursor()
+    # cursor.execute("DELETE FROM wod;")
+    # cursor.execute("DELETE FROM science;")
     
     print("Reading in encoded WOD packets...")
     with open('sample-wod.pickle', 'rb') as f:
@@ -29,7 +32,6 @@ def run():
             continue
     
     print(f"Decoded {successes} WOD packets, inserting into DB")
-    cursor = db.con.cursor()
     cursor.executemany("""
         INSERT OR REPLACE INTO wod (offsetTime, mode, batteryVoltage, batteryCurrent, `3V3Current`, `5VCurrent`, commTemperature, epsTemperature, batteryTemperature)
         VALUES (?,?,?,?,?,?,?,?,?)
@@ -64,7 +66,7 @@ def run():
     print(f"Decoded {successes} science packets, inserting into DB")
     cursor = db.con.cursor()
     cursor.executemany("""
-        INSERT OR REPLACE INTO science (offsetTime, latitude, longitude, altitude, reading)
+        INSERT OR REPLACE INTO science (offsetTime, reading, latitude, longitude, altitude)
         VALUES (?,?,?,?,?)
     """, [d[0:2] + d[-3:] for d in decoded_data])
     print(f"Insertion complete of {successes} science entries")

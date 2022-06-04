@@ -45,10 +45,10 @@ def decode_science(data):
 
     channel_readings = []
     for i in range(6):
-        channel_readings.append(int.from_bytes(data[4+2*i:6+2*i], byteorder='big', signed=False))
+        channel_readings.append(int.from_bytes(data[4+2*i:6+2*i], byteorder='big', signed=True))
     lat = parse_int(int.from_bytes(data[16:18], byteorder='big', signed=True),32767/90,0)
     lon = parse_int(int.from_bytes(data[18:20], byteorder='big', signed=True),32767/180,0)
-    alt = parse_int(int.from_bytes(data[20:22], byteorder='big', signed=True),32767/50000,-250000*32767/50000)
+    alt = int.from_bytes(data[20:22], byteorder='big', signed=True)*50000/32767+250000
 
     return channel_readings + [
         lat,

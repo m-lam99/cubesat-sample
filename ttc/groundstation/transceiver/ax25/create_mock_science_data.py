@@ -1,6 +1,5 @@
 import math
 import random
-from numpy import float16, array, frombuffer
 from transceiver.ax25 import bindings
 import pickle
 
@@ -32,26 +31,22 @@ def generate():
             packet.append(b)
         math.sin(t/samples_per_orbit), current_lat, current_long, current_alt
 
-        reading = array(float16(math.sin(t/samples_per_orbit))).tobytes()
-        for b in reading:
-            packet.append(b)
-            packet.append(b)
-            packet.append(b)
-            packet.append(b)
-            packet.append(b)
-            packet.append(b)
+        reading = math.sin(t/samples_per_orbit)*10000
+        packet.extend(bytearray(int(reading).to_bytes(2, byteorder='big', signed=True)))
+        packet.extend(bytearray(int(reading).to_bytes(2, byteorder='big', signed=True)))
+        packet.extend(bytearray(int(reading).to_bytes(2, byteorder='big', signed=True)))
+        packet.extend(bytearray(int(reading).to_bytes(2, byteorder='big', signed=True)))
+        packet.extend(bytearray(int(reading).to_bytes(2, byteorder='big', signed=True)))
+        packet.extend(bytearray(int(reading).to_bytes(2, byteorder='big', signed=True)))
 
-        lat = array(float16(current_lat)).tobytes()
-        for b in lat:
-            packet.append(b)
+        lat = current_lat*32767/90
+        packet.extend(bytearray(int(lat).to_bytes(2, byteorder='big', signed=True)))
 
-        lon = array(float16(current_long)).tobytes()
-        for b in lon:
-            packet.append(b)
+        lon = current_long*32767/180
+        packet.extend(bytearray(int(lon).to_bytes(2, byteorder='big', signed=True)))
 
-        alt = array(float16(current_alt-250000)).tobytes()
-        for b in alt:
-            packet.append(b)
+        alt = (current_alt-250000)*(32767/50000)
+        packet.extend(bytearray(int(alt).to_bytes(2, byteorder='big', signed=True)))
 
         msg = bindings.Message(
             packet,

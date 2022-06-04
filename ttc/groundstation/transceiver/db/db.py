@@ -35,6 +35,7 @@ class DB:
                 altitude REAL,
                 reading REAL
             )""")
+        
         cursor.close()
         self.con.commit()
 
@@ -61,7 +62,7 @@ class DB:
         end = (datetime.datetime.strptime(end_time, '%Y-%m-%dT%H:%M:%S') -
                EPOCH_TIME).total_seconds() if end_time is not None else 1000000000000000
         cursor.execute(
-            f"SELECT offsetTime, latitude, longitude, 250000+altitude AS altitude, reading FROM science WHERE offsetTime BETWEEN :start AND :end;""", {'start': start, 'end': end})
+            f"SELECT offsetTime, latitude, longitude, altitude AS altitude, reading FROM science WHERE offsetTime BETWEEN :start AND :end;""", {'start': start, 'end': end})
         data = cursor.fetchall()
         cursor.close()
 
