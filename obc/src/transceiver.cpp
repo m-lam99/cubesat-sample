@@ -5,6 +5,7 @@ Transceiver::Transceiver():
     UARTDevice(TTC_CHANNEL, TTC_BAUD)
 {
     config();
+    std::cout << "Transceiver Initialised" << std::endl;
 }
 
 Transceiver::~Transceiver()

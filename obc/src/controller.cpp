@@ -18,6 +18,8 @@ CControl::CControl(double phi, double theta, double psi)
 
     // set tolerance value
     tolerance = 0.1;
+
+    std::cout << "Controller Initialised" << std::endl;
 }
 
 void CControl::changeTarget(double phi, double theta, double psi){
