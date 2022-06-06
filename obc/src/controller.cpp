@@ -215,17 +215,34 @@ imu::Vector<3> CControl::detumble(imu::Vector<3> rps, imu::Vector<3> mags) {
     out[1] = 1;
     out[2] = 1;
 
-    // if (abs(rps.x()) > 0.000) {
-    //     out[0] = 1;
-    // }
+    // calculate current values
+    for (int i = 0; i < 3; i++)
+    {
+        double temp;
 
-    // if (abs(rps.y()) > 0.000) {
-    //     out[1] = 1;
-    // }
+        switch (i)
+        {
+        case 0:
+            temp = (rps[1]*mags[2])-(mags[1]*rps[2]);
+            break;
 
-    // if (abs(rps.z()) > 0.000) {
-    //     out[2] = 1;
-    // }
+        case 1:
+            temp = (rps[2]*mags[0])-(mags[2]*rps[0]);
+            break;
+
+        case 2:
+            temp = (rps[0]*mags[1])-(mags[0]*rps[1]);
+            break;
+        }
+
+        temp /= (coils * area);
+
+        // store value in output variable
+        out[i] = temp;
+    }
+
+    // return outputs as array
+    // return outputCurrents;
 
 
     return out;

@@ -33,7 +33,7 @@ class Satellite {
     Satellite();
     int runSatellite();
     int detumbling();
-    int runmagtorquer(PWM mag);
+    int runmagtorquer(PWM mag, unsigned int dc);
     int payloadDataCollection();
     int payloadDataTransmission();
     int checkBattery();
