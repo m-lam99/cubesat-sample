@@ -222,7 +222,7 @@ void Computer::commandHandling(){
     }
     else if (command == CMD_SEND_MODE){
         can_receive = false; 
-        std::vector<uint8_t> message ={(int)mode_};
+        std::vector<uint8_t> message = {(int)mode_};
         satellite.transmitMessage(message);
         can_receive  = true;
         cout << "SEND mode command received" << endl; 

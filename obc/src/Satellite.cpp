@@ -135,7 +135,7 @@ int Satellite::detumbling()
         << rps.z() << "\t";
 
     // Detumble controller
-    imu::Vector<3> currents = Controller.detumble(rps, mags);
+    imu::Vector<3> current = Controller.detumble(rps, mags);
 
     // std::cout << "directions: " << directions[2] << std::endl;
 
@@ -168,7 +168,7 @@ int Satellite::detumbling()
     return 1;
 }
 
-int Satellite::runmagtorquer(PWM mag, unsinged int dc) {
+int Satellite::runmagtorquer(PWM mag, unsigned int dc) {
     mag.setDutyCycle(dc);
     mag.setPolarity(PWM::ACTIVE_HIGH);
     mag.run();
