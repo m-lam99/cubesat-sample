@@ -16,7 +16,7 @@ atomic<bool> can_receive{true};
 
 atomic<bool> still_transmitting{true};
 
-atomic<bool> collect_data{false};
+// atomic<bool> collect_data{false};
 atomic<bool> payload_collection{false};
 atomic<bool> stop_continuousWOD{true};
 atomic<bool> collect_data{false};

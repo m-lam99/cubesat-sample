@@ -59,8 +59,8 @@ class Satellite {
 
    private:
     // ADCS sensors
-    ADS1015 adc1_;
-    ADS1015 adc2_;
+    // ADS1015 adc1_;
+    // ADS1015 adc2_;
 
     BNO055 imu_;
     GPS gps_;

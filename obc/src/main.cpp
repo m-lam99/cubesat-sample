@@ -31,11 +31,11 @@ int main()
     // Satellite satellite;
     // usleep(20000000);
     // beaglebone.mode_=IDLE_MODE;
-    // Test test;
-    // test.runTests();
+    Test test;
+    test.runTests();
     Computer beagle;
-    // beagle.littleRun();
-    beagle.runSatellite();
+    beagle.littleRun();
+    // beagle.runSatellite();
 
     return 0;
 }
