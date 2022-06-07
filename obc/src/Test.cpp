@@ -125,6 +125,8 @@ void Test::testDeployment(){
 void Test::testGPIO(){
     GPIO outGPIO(23), inGPIO(46);
 
+    std::cout << "Start GPIO TEST" << std::endl;
+
     // Basic Output - Flash the LED 10 times, once per second
     outGPIO.setDirection(OUTPUT);
     for (int i = 0; i < 10; i++)
