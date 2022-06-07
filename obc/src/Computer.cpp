@@ -324,9 +324,12 @@ void Computer::detumbling() {
 void Computer::deployment() {
 
     cout << "Deployment mode" << endl; 
+    // deploy things only once 
+    if(!is_deployed){
+        satellite.deployment();
+
+    }
     is_deployed = true; 
-    // deploy things
-    satellite.deployment();
 }
 
 void Computer::idle() {

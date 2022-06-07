@@ -28,7 +28,7 @@ class Test{
         enum TEST_FUNCTIONS
         {
             T_EXIT = 0x60, 
-            
+
             T_GPIO = 0x11,
             T_CURRENT = 0x12, 
             T_ADC = 0x13, 
@@ -42,7 +42,9 @@ class Test{
             T_24V = 0x21, 
             T_BURN = 0x22, 
             T_DETUM = 0x23, 
-            T_PAYLOAD = 0x24
+            T_POINT = 0x24,
+            T_WOD_TRANSMIT = 0x25,
+            T_PAYLOAD = 0x26
         };
 
 };
