@@ -27,9 +27,9 @@ OBJS := $(subst $(SRC)/,$(BUILD)/,$(addsuffix .o,$(basename $(SRCS))))
 DEPS := $(OBJS:.o=.d)
 
 # Run task
-run: build
-	@echo "Executing..."
-	./$(TARGET) $(ARGS)
+#run: build
+#	@echo "Executing..."
+#	./$(TARGET) $(ARGS)
 
 # Build task
 build: clean all
