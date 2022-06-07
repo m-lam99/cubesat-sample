@@ -132,7 +132,6 @@ void Test::testGPIO(){
 
 
     std::cout << "Set direction" << std::endl;
-    usleep(10000000);
 
     for (int i = 0; i < 10; i++)
     {
@@ -145,7 +144,6 @@ void Test::testGPIO(){
     std::cout << "Set direction" << std::endl;
 
     inGPIO.setDirection(INPUT);
-    usleep(10000000);
 
      cout << "The value of the input is: " << inGPIO.getValue()
               <<  endl;
