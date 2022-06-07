@@ -5,6 +5,7 @@
 
 #include "Satellite.h"
 #include "controller.h"
+#include "Test.h"
 
 #include <queue>
 #include <vector>
@@ -27,6 +28,9 @@
 #define CMD_WOD_OFF 0x42 
 #define CMD_SEND_MODE 0x43
 #define SOS 0x44 
+#define CMD_TEST 0x45
+
+#define TEST_MODE 0x50
 
 class Computer {
    public:
@@ -57,8 +61,12 @@ class Computer {
     int payloadTransmit(); 
     void commandReceive(); 
 
-    
+    void runTest(); 
     int command; 
+    
+    // Create Test Object 
+    Test test; 
+    int test_mode; 
 
     // Create a satellite
     Satellite satellite;   

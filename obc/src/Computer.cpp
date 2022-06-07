@@ -24,7 +24,9 @@ atomic<bool> collect_data{false};
 
 Computer::Computer()
     : satellite(),
+      test(),
       mode_(START_MODE),
+      test_mode(Test::T_EXIT),
       orbit_insertion_complete(false),
       is_deployed(false)
     {
@@ -37,23 +39,6 @@ Computer::Computer()
 
 Computer::~Computer() { stop_continuousWOD = true; }
 
-int Computer::payloadTransmit() {
-    // exits function when stop_transmission
-
-    while (!stop_payloadTransmit) {
-        if (payload_collection) {
-            can_receive = false;
-            still_transmitting = satellite.payloadDataTransmission();
-            can_receive= true;
-            // still_transmitting = true;
-            std::cout << "TRANSMITTING" << std::endl;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        // transmit every seconds
-    }
-
-    return 0;
-}
 
 int Computer::runSatellite() {
 
@@ -111,6 +96,8 @@ int Computer::runSatellite() {
             case END_OF_LIFE:
                 endOfLife();
                 break;
+            case TEST_MODE:
+                runTest(); 
             default:
                 break;
         }
@@ -145,6 +132,7 @@ void Computer::littleRun(){
         }
 
         mode_ = satellite.getMode();
+
         switch (mode_) {
             case START_MODE:
                 //
@@ -190,6 +178,73 @@ void Computer::littleRun(){
 
 }
 
+void Computer::runTest(){
+    WOD_transmit = false; 
+    payload_collection = false; 
+    can_receive = true; 
+
+    switch (test_mode)
+    {
+        case Test::T_EXIT:
+            break; 
+        case Test::T_GPIO:
+            test.testGPIO(); 
+            break; 
+        case Test::T_CURRENT:
+            test.testINA219(); 
+            break;
+        case Test::T_ADC:
+            test.testADS1015(); 
+            break;
+        case Test::T_IR:
+            test.testAS7263(); 
+            break;
+        case Test::T_PWM:
+            test.testPWM(); 
+            break;
+        case Test::T_IMU: 
+            test.testPWM(); 
+            break; 
+        case Test::T_WOD:
+            test.wodTest(); 
+            break; 
+        case Test::T_WOD_ENCODE:
+            test.wodTestEncoded(); 
+            break; 
+        case Test::T_PROP:
+            test.testPropulsion(); 
+            break;
+        case Test::T_TTC: 
+            test.testTransceiver(); 
+            break;
+        case Test::T_24V:
+            test.test24V(); 
+            break;
+        case Test::T_BURN:
+            test.testDeployment(); 
+            break;
+        case Test::T_DETUM:
+            test.testDetumble(); 
+            break;
+        case Test::T_POINT:
+            test.testPoint(); 
+            break;
+        case Test::T_WOD_TRANSMIT:
+            test.transmitWOD(); 
+            break;
+        case Test::T_PAYLOAD:
+            test.testPayload(); 
+            break;
+        default:
+            break;
+    }
+
+    if(test_mode == Test::T_EXIT){
+        WOD_transmit = true; 
+        mode_ = IDLE_MODE;
+    }
+}
+
 void Computer::commandHandling(){
 
     if(command <= 0x39 && command >= 0x31){
@@ -231,6 +286,9 @@ void Computer::commandHandling(){
     else if (command == SOS){
         mode_ = SAFE_MODE;
         cout << "SOS received" << endl;
+    }
+    else if(command == CMD_TEST){
+        mode_ = TEST_MODE; 
     }
     return; 
 }
@@ -275,7 +333,7 @@ void Computer::idle() {
     // do nothing
     cout << "Idle mode" << endl; 
     uint32_t operational_time = satellite.getTime() - start_time;
-
+    
     if (operational_time > MAX_LIFETIME) {
         mode_ = END_OF_LIFE;
     } else if (satellite.checkOrbit() == 0) {  // in a bad orbit
@@ -354,7 +412,7 @@ int Computer::continuousWOD() {
             can_receive = true;
             std::cout << "WOD Transmission" << std::endl;
         }
-        
+
         std::this_thread::sleep_for(std::chrono::milliseconds(30000));
 
         // transmit every 30 seconds
@@ -382,7 +440,12 @@ void Computer::commandReceive() {
                     } else {
                         command = CMD_SEND_MODE;
                     }
-                } else if (msg[0] == 0x54 && msg[1] == 0x58) {
+                } 
+                else if(msg[0] == 0x84){
+                    command = CMD_TEST;
+                    test_mode = msg[1];
+                }
+                else if (msg[0] == 0x54 && msg[1] == 0x58) {
                     if (msg[2] == 1) {
                         command = CMD_WOD_ON;
                     } else if (msg[2] == 0) {
@@ -405,4 +468,22 @@ void Computer::commandReceive() {
     }
 
     // return 0;
+}
+
+int Computer::payloadTransmit() {
+    // exits function when stop_transmission
+
+    while (!stop_payloadTransmit) {
+        if (payload_collection) {
+            can_receive = false;
+            still_transmitting = satellite.payloadDataTransmission();
+            can_receive= true;
+            // still_transmitting = true;
+            std::cout << "TRANSMITTING" << std::endl;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        // transmit every seconds
+    }
+
+    return 0;
 }

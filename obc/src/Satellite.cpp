@@ -405,6 +405,13 @@ std::vector<uint8_t> Satellite::checkTransceiver()
 
             break;
         }
+        else if (message[i] == 'Y'){
+            filtered.push_back(message[i]);
+            filtered.push_back(message[i+1]);
+            std::cout << "Testing MODE is" << message[i+1] << std::endl;
+
+            break;
+        }
         else if(message[i] == 0x54 && i+2 < message.size()){
             if(message[i+1] == 0x58){
                 filtered.push_back(message[i]);
