@@ -31,8 +31,8 @@ int main()
     // Satellite satellite;
     // beaglebone.mode_=IDLE_MODE;
     
-    // DO NOT DELETE - GPIO will not initialise without this pause
-    //usleep(10000000); 
+    // can test without this 
+    usleep(10000000); 
     Test test;
 
     test.testGPIO();
