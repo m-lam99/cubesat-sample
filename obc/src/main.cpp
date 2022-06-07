@@ -32,7 +32,7 @@ int main()
     // beaglebone.mode_=IDLE_MODE;
     
     // DO NOT DELETE - GPIO will not initialise without this pause
-    usleep(10000000); 
+    //usleep(10000000); 
     Test test;
 
     test.testGPIO();
