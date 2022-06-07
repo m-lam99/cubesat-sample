@@ -354,7 +354,7 @@ int Computer::continuousWOD() {
             can_receive = true;
             std::cout << "WOD Transmission" << std::endl;
         }
-        //std::this_thread::sleep_for(std::chrono::milliseconds(30000));
+        
         std::this_thread::sleep_for(std::chrono::milliseconds(30000));
 
         // transmit every 30 seconds

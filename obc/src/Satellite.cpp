@@ -85,7 +85,7 @@ bool Satellite::pointSatellite(double phi, double theta, double psi)
 
     // Display Quaternions
     imu::Quaternion quat = imu_.getQuat();
-    imu::Vector eulers = imu_.getVector(BNO055::VECTOR_EULER);
+    imu::Vector<3> eulers = imu_.getVector(BNO055::VECTOR_EULER);
     std::cout << " eX: " << (int)eulers.x() << " eY: " << (int)eulers.y() << " eZ: " << (int)eulers.z() << "\t";
     // std::cout << "qW: " << quat.w() << " qX: " << quat.x() << " qY: " << quat.y() << " qZ: " << quat.z() << "\t\t";
 
