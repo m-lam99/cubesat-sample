@@ -129,6 +129,11 @@ void Test::testGPIO(){
 
     // Basic Output - Flash the LED 10 times, once per second
     outGPIO.setDirection(OUTPUT);
+
+
+    std::cout << "Set direction" << std::endl;
+    usleep(10000000);
+
     for (int i = 0; i < 10; i++)
     {
         outGPIO.setValue(HIGH);
@@ -137,7 +142,11 @@ void Test::testGPIO(){
         usleep(500000);
     }
     // Basic Input example
+    std::cout << "Set direction" << std::endl;
+
     inGPIO.setDirection(INPUT);
+    usleep(10000000);
+
      cout << "The value of the input is: " << inGPIO.getValue()
               <<  endl;
 
