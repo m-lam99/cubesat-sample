@@ -29,9 +29,10 @@ int main()
     // beaglebone.mode_ = TRANSMIT_MODE;
     // beaglebone.runSatellite();
     // Satellite satellite;
-    // usleep(20000000);
     // beaglebone.mode_=IDLE_MODE;
+        usleep(5000000);
     Test test;
+
     test.testGPIO();
     //test.runTests();
 
