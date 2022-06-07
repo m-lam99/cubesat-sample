@@ -32,7 +32,9 @@ int main()
     // usleep(20000000);
     // beaglebone.mode_=IDLE_MODE;
     Test test;
-    test.runTests();
+    test.testGPIO();
+    //test.runTests();
+
     Computer beagle;
     beagle.littleRun();
     // beagle.runSatellite();
