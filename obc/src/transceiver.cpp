@@ -1,6 +1,7 @@
 
 #include "transceiver.h"
-
+#include <cstring>
+ 
 Transceiver::Transceiver():
     UARTDevice(TTC_CHANNEL, TTC_BAUD)
 {
@@ -96,6 +97,53 @@ bool Transceiver::TestTransceiver(void)
     }
     std::cout << std::endl;
     return true;
+}
+
+void Transceiver::TransmitEncodedMessage(std::string message)
+{
+    ax25::Message ax_msg;
+    ax25::ByteArray* encoded_msg;
+
+    // declaring character array : p
+    unsigned char msg_array[message.length()];
+ 
+    for (int i = 0; i < sizeof(msg_array); i++) {
+        msg_array[i] = message[i];
+    }
+
+    unsigned char srcaddr[6] = {
+        'N',
+        'I',
+        'C',
+        'E',
+        ' ',
+        ' '
+    };
+    unsigned char destaddr[6] = {
+        'U',
+        'S',
+        'Y',
+        'D',
+        'G',
+        'S'
+    };
+
+    ax_msg.payload = msg_array; // double check
+    ax_msg.npayload = message.length() * sizeof(unsigned char);
+    ax_msg.source = srcaddr;    
+    ax_msg.destination = destaddr;
+    ax_msg.dataType = 0;
+    ax_msg.commandResponse = 0;
+    ax_msg.controlType = 0;
+    ax_msg.sendSequence = 0;
+    ax_msg.receiveSequence = 0;
+
+    encoded_msg = ax25::encode(&ax_msg);
+    if(encoded_msg != NULL){
+        std::cout << "Transmitted encoded message " << std::endl;  
+    }
+
+    return
 }
 
 void Transceiver::TransmitMessage(std::vector<uint8_t> message)

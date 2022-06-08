@@ -8,6 +8,7 @@
 #include <vector>
 #include <stdint.h>
 #include "UART.h"
+#include "ax25.h"
 
 #define TTC_CHANNEL 2
 #define TTC_BAUD 19200
@@ -26,6 +27,7 @@ public:
     bool TestTransceiver(void);
     void TransmitMessage(std::vector<uint8_t> message);
     std::vector<uint8_t> CMD_RECEIVE_MODE_CONFIG = {0x41, 0x54, 0x52, 0, CMD_MAX_LENGTH};
+    void TransmitEncodedMessage(std::string message); 
 
 private:
     const char CMD_OPERATING_MODE[3] = {0x41, 0x54, 0x4D};
