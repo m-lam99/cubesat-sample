@@ -261,7 +261,7 @@ void Computer::commandHandling(){
     }
     else if (command == CMD_SEND_WOD){
         can_receive= false; 
-        std::vector<uint8_t> message ={(int)WOD_transmit};
+        std::vector<uint8_t> message ={WOD_transmit};
         satellite.transmitMessage(message);
         can_receive= true;
         cout << "Send WOD command received" << endl; 
@@ -278,7 +278,7 @@ void Computer::commandHandling(){
     }
     else if (command == CMD_SEND_MODE){
         can_receive = false; 
-        std::vector<uint8_t> message = {(int)mode_};
+        std::vector<uint8_t> message = {mode_};
         satellite.transmitMessage(message);
         can_receive  = true;
         cout << "SEND mode command received" << endl; 
