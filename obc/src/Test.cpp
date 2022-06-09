@@ -375,6 +375,8 @@ void Test::testTransceiver(){
 void Test::testBNO055()
 {
     BNO055 bno(2, BNO055_ADDRESS_A);
+    Transceiver transceiver;
+    GPS gps;
      cout << "Orientation Sensor Raw Data Test" <<  endl;
     if (!bno.begin())
     {
@@ -413,6 +415,32 @@ void Test::testBNO055()
         imu::Vector<3> euler = bno.getVector(BNO055::VECTOR_EULER);
 	     cout << "eX: " << euler.x() <<  " eY: " << euler.y() << " eZ: "
 	  	<< euler.z() << "\t";
+
+        int eX = euler.x();
+        int eY = euler.y();
+        int eZ = euler.z();
+        
+        std::string eX_string = std::to_string(eX);
+        std::string eY_string = std::to_string(eY);
+        std::string eZ_string = std::to_string(eZ);
+
+        GPS::loc_t location_data;
+        gps.get_location(&location_data);
+
+        std::string string_transmit = eX_string + ' ' + eY_string + ' ' 
+            + eZ_string + ' ' + std::to_string((int)location_data.latitude) + ' ' + 
+            std::to_string((int)location_data.longitude);
+
+        const char *str_transmit = string_transmit.c_str();
+        std::vector<uint8_t> message;
+
+        for (int i = 0; i < 19; i++)
+        {
+            message.push_back(str_transmit[i]);
+        }
+
+        transceiver.TransmitMessage(message);
+        
 
         /* Display Angular Velocities rad/s */
         imu::Vector<3> rps = bno.getRPS();
