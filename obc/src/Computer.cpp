@@ -19,8 +19,6 @@ atomic<bool> still_transmitting{true};
 // atomic<bool> collect_data{false};
 atomic<bool> payload_collection{false};
 atomic<bool> stop_continuousWOD{true};
-atomic<bool> collect_data{false};
-
 
 Computer::Computer()
     : satellite(),
@@ -341,7 +339,7 @@ void Computer::idle() {
         mode_ = END_OF_LIFE;
     } else if (satellite.checkOrbit() == 0) {  // in a bad orbit
         mode_ = STATION_KEEPING_MODE;
-    } else if (collect_data && satellite.checkDayTime()) {
+    } else if (payload_collection && satellite.checkDayTime()) {
         mode_ = NORMAL_MODE;
     }
 }
