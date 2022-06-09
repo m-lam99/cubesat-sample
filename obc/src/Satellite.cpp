@@ -139,7 +139,7 @@ int Satellite::detumbling()
 
     // std::cout << "directions: " << directions[2] << std::endl;
 
-    if (rps[0] < 0.0000001 && rps[1] < 0.0000001 && rps[2] < 0.0000001) {
+    if (rps[0] < 0.001 && rps[1] < 0.001 && rps[2] < 0.001) {
         mag_x.stop();
         mag_y.stop();
         mag_z.stop();
