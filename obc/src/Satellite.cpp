@@ -12,8 +12,8 @@ Satellite::Satellite()
     : current_sensor_batt_(1, INA219_ADDRESS_BATT),
       gps_(),
       wod_(&gps_, mode_, &current_sensor_batt_),
-      adc1_(2, ADC_ADDRESS1),
-      adc2_(2, ADC_ADDRESS2),
+      // adc1_(2, ADC_ADDRESS1),
+      // adc2_(2, ADC_ADDRESS2),
       imu_(2, BNO055_ADDRESS_A),
       payload_(&gps_),
       prop_GPIO_(23),
@@ -135,26 +135,28 @@ int Satellite::detumbling()
         << rps.z() << "\t";
 
     // Detumble controller
-    imu::Vector<3> directions = Controller.detumble(rps, mags);
+    imu::Vector<3> current = Controller.detumble(rps, mags);
 
     // std::cout << "directions: " << directions[2] << std::endl;
 
-    if (directions[0] == 0 && directions[1] == 0 && directions[2] == 0) {
+    if (rps[0] < 0.0000001 && rps[1] < 0.0000001 && rps[2] < 0.0000001) {
         mag_x.stop();
         mag_y.stop();
         mag_z.stop();
         return 0;
     }
+
+    for (int i; i < 2; i++) {
+        current[i] = 100* (abs(current(i)) / 15);
+        if (current[i] > 100) {
+            current[i] = 100;
+        }
+    }
+
+    runmagtorquer(mag_x, current[1]);
+    runmagtorquer(mag_y, current[2]);
+    runmagtorquer(mag_z, current[3]);
     
-    if (directions[0] == 1) {
-        runmagtorquer(mag_x);
-    }
-    if (directions[1] == 1) {
-        runmagtorquer(mag_y);
-    }
-    if (directions[2] == 1) {
-        runmagtorquer(mag_z);
-    }
 
     std::cout << "Mag Duty Cycle: " << mag_z.getDutyCycle() << std::endl;
     /* Display Magnetometer Reading uT */
@@ -166,8 +168,7 @@ int Satellite::detumbling()
     return 1;
 }
 
-int Satellite::runmagtorquer(PWM mag) {
-    unsigned int dc = 75;
+int Satellite::runmagtorquer(PWM mag, unsigned int dc) {
     mag.setDutyCycle(dc);
     mag.setPolarity(PWM::ACTIVE_HIGH);
     mag.run();
@@ -343,26 +344,26 @@ int Satellite::checkDayTime()
 {
     int isDaytime = 1;
 
-    // All channels
-    float max_voltage = 0.0;
+    // // All channels
+    // float max_voltage = 0.0;
 
-    for (int i = 0; i < 3; i++)
-    {
-        if (adc1_.getVoltage(i) > max_voltage)
-        {
-            max_voltage = adc1_.getVoltage(i);
-        }
+    // for (int i = 0; i < 3; i++)
+    // {
+    //     if (adc1_.getVoltage(i) > max_voltage)
+    //     {
+    //         max_voltage = adc1_.getVoltage(i);
+    //     }
 
-        if (adc2_.getVoltage(i) > max_voltage)
-        {
-            max_voltage = adc2_.getVoltage(i);
-        }
-    }
+    //     if (adc2_.getVoltage(i) > max_voltage)
+    //     {
+    //         max_voltage = adc2_.getVoltage(i);
+    //     }
+    // }
 
-    if (max_voltage < SUN_SENOR_THRESHOLD)
-    {
-        isDaytime = 0;
-    }
+    // if (max_voltage < SUN_SENOR_THRESHOLD)
+    // {
+    //     isDaytime = 0;
+    // }
 
     return isDaytime;
 }
@@ -408,6 +409,13 @@ std::vector<uint8_t> Satellite::checkTransceiver()
             filtered.push_back(message[i+1]);
             mode_ = message[i+1];
             std::cout << "mode is" << mode_ << std::endl;
+
+            break;
+        }
+        else if (message[i] == 'Y'){
+            filtered.push_back(message[i]);
+            filtered.push_back(message[i+1]);
+            std::cout << "Testing MODE is" << message[i+1] << std::endl;
 
             break;
         }

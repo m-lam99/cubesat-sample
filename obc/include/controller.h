@@ -13,6 +13,10 @@
     {
         public:
 
+        double gain = 1;
+        int coils = 197;
+        double area = 63.6172512352;
+
         // initiate the controller object using new target orientation
         CControl(double phi, double theta, double psi);
 

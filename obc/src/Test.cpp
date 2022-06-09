@@ -38,7 +38,7 @@ void Test::runTests(){
             testAS7263();
         }
         else if(input == "pwm"){
-            testPWM(PWM_1A);
+            testPWM();
         }
         else if(input == "imu"){
             testBNO055();
@@ -125,8 +125,14 @@ void Test::testDeployment(){
 void Test::testGPIO(){
     GPIO outGPIO(23), inGPIO(46);
 
+    std::cout << "Start GPIO TEST" << std::endl;
+
     // Basic Output - Flash the LED 10 times, once per second
     outGPIO.setDirection(OUTPUT);
+
+
+    std::cout << "Set direction" << std::endl;
+
     for (int i = 0; i < 10; i++)
     {
         outGPIO.setValue(HIGH);
@@ -135,7 +141,10 @@ void Test::testGPIO(){
         usleep(500000);
     }
     // Basic Input example
+    std::cout << "Set direction" << std::endl;
+
     inGPIO.setDirection(INPUT);
+
      cout << "The value of the input is: " << inGPIO.getValue()
               <<  endl;
 
@@ -224,9 +233,10 @@ void Test::testAS7263()
     }
 }
 
-void Test::testPWM(string pwm_channel){
-   // 
-    PWM pwm(pwm_channel);  // P9_42 MUST be loaded as a slot before use
+void Test::testPWM()
+{
+
+    PWM pwm(PWM_1A);  // P9_42 MUST be loaded as a slot before use
     pwm.setPeriod(3345678);         // Set the period in ns
     pwm.setDutyCycle(50.0f);       // Set the duty cycle as a percentage
 

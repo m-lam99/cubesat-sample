@@ -33,7 +33,7 @@ class Satellite {
     Satellite();
     int runSatellite();
     int detumbling();
-    int runmagtorquer(PWM mag);
+    int runmagtorquer(PWM mag, unsigned int dc);
     int payloadDataCollection();
     int payloadDataTransmission();
     int checkBattery();
@@ -59,8 +59,8 @@ class Satellite {
 
    private:
     // ADCS sensors
-    ADS1015 adc1_;
-    ADS1015 adc2_;
+    // ADS1015 adc1_;
+    // ADS1015 adc2_;
 
     BNO055 imu_;
     GPS gps_;

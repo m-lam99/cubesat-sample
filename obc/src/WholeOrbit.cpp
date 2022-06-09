@@ -13,6 +13,8 @@ WholeOrbit::WholeOrbit(GPS* gps, int mode, INA219* current_sensor_batt)
       thermistor_comms_(1),
       thermistor_eps_(2),
       thermistor_batt_(0) {
+
+    std::cout << "Beginning WOD initialise"<< std::endl;
     if (current_sensor_batt_->open() == 1) {
         current_sensor_batt_valid_ = 0;
     } else {

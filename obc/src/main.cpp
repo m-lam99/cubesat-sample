@@ -29,13 +29,18 @@ int main()
     // beaglebone.mode_ = TRANSMIT_MODE;
     // beaglebone.runSatellite();
     // Satellite satellite;
-    // usleep(20000000);
     // beaglebone.mode_=IDLE_MODE;
-    // Test test;
-    // test.runTests();
-    Computer beagle;
+    
+    // can test without this 
+    usleep(10000000); 
+    Test test;
+
+    test.testGPIO();
+    //test.runTests();
+
+    // Computer beagle;
     // beagle.littleRun();
-    beagle.runSatellite();
+    // beagle.runSatellite();
 
     return 0;
 }
