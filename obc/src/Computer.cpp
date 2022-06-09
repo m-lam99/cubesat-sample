@@ -19,11 +19,6 @@ atomic<bool> still_transmitting{true};
 // atomic<bool> collect_data{false};
 atomic<bool> payload_collection{false};
 atomic<bool> stop_continuousWOD{true};
-<<<<<<< HEAD
-// atomic<bool> collect_data{false};
-
-=======
->>>>>>> 1be21315db756aa0c423fee2b29492f40d1ec740
 
 Computer::Computer()
     : satellite(),
@@ -103,6 +98,9 @@ int Computer::runSatellite() {
                 runTest(); 
             default:
                 break;
+        }
+        if(mode_ = END_OF_LIFE){
+            break;
         }
     }
     stop_continuousWOD = true;
@@ -440,13 +438,13 @@ void Computer::commandReceive() {
                 new_command = true;
                 // Check if theres a new command and update flag
                 std::cout << "Command: " << command << std::endl;
-                if (msg[0] == 0x4D) {
-                    if (msg[1] <= 0x38 && msg[1] >= 0x30) {
-                        command = msg[1];
+                if (msg[0] == 0x4D && msg[1] == 0x4D) {
+                    if (msg[2] <= 0x38 && msg[2] >= 0x30) {
+                        command = msg[2];
                     } else {
                         command = CMD_SEND_MODE;
                     }
-                } 
+                }
                 else if(msg[0] == 0x84){
                     command = CMD_TEST;
                     test_mode = msg[1];
