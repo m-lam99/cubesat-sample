@@ -24,7 +24,7 @@ Computer::Computer()
     : satellite(),
       test(),
       mode_(START_MODE),
-      test_mode(Test::T_EXIT),
+      test_mode(Test::T_WOD_TRANSMIT),
       orbit_insertion_complete(false),
       is_deployed(false)
     {
