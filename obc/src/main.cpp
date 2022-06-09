@@ -33,9 +33,9 @@ int main()
     
     // can test without this 
     usleep(10000000); 
-    Test test;
+    // Test test;
 
-    test.testGPIO();
+    // test.testGPIO();
     //test.runTests();
 
     // Computer beagle;
