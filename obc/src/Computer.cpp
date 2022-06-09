@@ -444,14 +444,14 @@ void Computer::commandReceive() {
                 new_command = true;
                 // Check if theres a new command and update flag
                 std::cout << "Command: " << command << std::endl;
-                if (msg[0] == 0x4D && msg[1] == 0x4D) {
-                    if (msg[2] <= 0x38 && msg[2] >= 0x30) {
-                        command = msg[2];
+                if (msg[0] == 0x4D) {
+                    if (msg[1] <= 0x38 && msg[1] >= 0x30) {
+                        command = msg[1];
                     } else {
                         command = CMD_SEND_MODE;
                     }
                 }
-                else if(msg[0] == 0x84){
+                else if(msg[0] == 0x54){
                     command = CMD_TEST;
                     test_mode = msg[1];
                 }
