@@ -39,6 +39,7 @@ class Computer {
     int runSatellite();
     ~Computer();
     void littleRun(); 
+    void runTest();
 
    private:
 
@@ -61,7 +62,7 @@ class Computer {
     int payloadTransmit(); 
     void commandReceive(); 
 
-    void runTest(); 
+     
     int command; 
     
     // Create Test Object 
