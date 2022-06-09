@@ -39,9 +39,9 @@ int main()
     // test.runTests();
 
     Computer beagle;
-    beagle.runTest();
+    // beagle.runTest();
     // beagle.littleRun();
-    // beagle.runSatellite();
+    beagle.runSatellite();
 
     return 0;
 }
