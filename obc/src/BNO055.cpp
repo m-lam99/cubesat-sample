@@ -88,6 +88,11 @@ bool BNO055::begin(adafruit_bno055_opmode_t mode)
   {
     usleep(100000*5);
       std::cout << "Read Chip addr id : " << BNO055_CHIP_ID_ADDR <<  std::endl; 
+    if (read8(BNO055_CHIP_ID_ADDR) != BNO055_ID)
+    {
+      break;
+    }
+  
   }
   usleep(1000*50); 
 
