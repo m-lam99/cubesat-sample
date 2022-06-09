@@ -139,7 +139,7 @@ int Satellite::detumbling()
 
     // std::cout << "directions: " << directions[2] << std::endl;
 
-    if (rps[0] < 0.0000001 && rps[1] < 0.0000001 && rps[2] < 0.0000001) {
+    if (rps[0] < 0.001 && rps[1] < 0.001 && rps[2] < 0.001) {
         mag_x.stop();
         mag_y.stop();
         mag_z.stop();
@@ -178,13 +178,13 @@ int Satellite::runmagtorquer(PWM mag, unsigned int dc) {
 
 int Satellite::payloadDataCollection()
 {
-    payload_data_.push(payload_.getData());
+    payload_data_.push(payload_.getDataEncoded());
     return 1;
 }
 
 int Satellite::payloadDataTransmission()
 {
-    Payload::payload_data_t data_packet = payload_data_.front();
+    Payload::payload_data_enc_t data_packet = payload_data_.front();
 
     unsigned char data_transmit[sizeof(data_packet)];
     memcpy(data_transmit, &data_packet, sizeof(data_packet));
@@ -202,7 +202,14 @@ int Satellite::payloadDataTransmission()
     encodedMsg_ = ax25::encode(&message_);
     if (encodedMsg_ != NULL)
     {
-        // int success = sendMessage(encodedMsg);
+        std::vector<uint8_t> send_vector;
+        // Transmit message
+        for(int i = 0; i < encodedMsg_->nbytes; ++i){
+           send_vector.push_back(encodedMsg_->bytes[i]);
+           std::cout << (int)send_vector.back() << std::endl;
+        }
+
+        transceiver_.TransmitMessage(send_vector);
 
         wod_data_.pop();
         return 1;
@@ -405,7 +412,7 @@ std::vector<uint8_t> Satellite::checkTransceiver()
 
             break;
         }
-        else if (message[i] == 'Y'){
+        else if (message[i] == 'T'){
             filtered.push_back(message[i]);
             filtered.push_back(message[i+1]);
             std::cout << "Testing MODE is" << message[i+1] << std::endl;

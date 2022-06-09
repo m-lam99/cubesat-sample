@@ -41,4 +41,27 @@ Payload::payload_data_t Payload::getData() {
     return data_buf_;
 }
 
+Payload::payload_data_enc_t Payload::getDataEncoded() {
+    if (valid_) {
+        sensor_.takeMeasurements();
+        // Automatically returns 0 if particular channel is not working
+        data_buf_encoded_.R = sensor_.getCalibratedR();
+        data_buf_encoded_.S = sensor_.getCalibratedS();
+        data_buf_encoded_.T = sensor_.getCalibratedT();
+        data_buf_encoded_.U = sensor_.getCalibratedU();
+        data_buf_encoded_.V = sensor_.getCalibratedV();
+        data_buf_encoded_.W = sensor_.getCalibratedW();
+        valid_ = sensor_.getR();
+    }
+
+    GPS::loc_t loc_data;
+    gps_->get_location(&loc_data);
+    
+    data_buf_encoded_.lat = (int16_t)(loc_data.latitude * 32767 / 90);
+    data_buf_encoded_.lon = (int16_t)(loc_data.longitude * 32767 / 180);
+    data_buf_encoded_.alt = ((int16_t)(loc_data.altitude - 250000) * (32767 / 50000));
+    
+    return data_buf_encoded_;
+}
+
 Payload::~Payload() {}

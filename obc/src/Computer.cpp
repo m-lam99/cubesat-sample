@@ -24,7 +24,7 @@ Computer::Computer()
     : satellite(),
       test(),
       mode_(START_MODE),
-      test_mode(Test::T_EXIT),
+      test_mode(Test::T_IMU),
       orbit_insertion_complete(false),
       is_deployed(false)
     {
@@ -98,6 +98,9 @@ int Computer::runSatellite() {
                 runTest(); 
             default:
                 break;
+        }
+        if(mode_ = END_OF_LIFE){
+            break;
         }
     }
     stop_continuousWOD = true;
@@ -201,7 +204,7 @@ void Computer::runTest(){
             test.testPWM(); 
             break;
         case Test::T_IMU: 
-            test.testPWM(); 
+            test.testBNO055(); 
             break; 
         case Test::T_WOD:
             test.wodTest(); 
@@ -258,7 +261,7 @@ void Computer::commandHandling(){
     }
     else if (command == CMD_SEND_WOD){
         can_receive= false; 
-        std::vector<uint8_t> message ={(int)WOD_transmit};
+        std::vector<uint8_t> message ={WOD_transmit};
         satellite.transmitMessage(message);
         can_receive= true;
         cout << "Send WOD command received" << endl; 
@@ -275,7 +278,7 @@ void Computer::commandHandling(){
     }
     else if (command == CMD_SEND_MODE){
         can_receive = false; 
-        std::vector<uint8_t> message = {(int)mode_};
+        std::vector<uint8_t> message = {mode_};
         satellite.transmitMessage(message);
         can_receive  = true;
         cout << "SEND mode command received" << endl; 
@@ -301,6 +304,9 @@ void Computer::detumbling() {
 
     // POLL DETUMBLING ALGO UNTIL AT REST
     while (satellite.detumbling() == 1) {
+        if(new_command){
+            break;
+        }
         continue;
     }
     
@@ -363,6 +369,9 @@ void Computer::stationKeeping() {
     double psi = -1.57;
 
     while (!satellite.pointSatellite(phi, theta, psi)) {
+        if(new_command){
+            break;
+        }
         continue;
     }
     
@@ -441,8 +450,8 @@ void Computer::commandReceive() {
                     } else {
                         command = CMD_SEND_MODE;
                     }
-                } 
-                else if(msg[0] == 0x84){
+                }
+                else if(msg[0] == 0x54){
                     command = CMD_TEST;
                     test_mode = msg[1];
                 }

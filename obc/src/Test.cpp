@@ -375,6 +375,8 @@ void Test::testTransceiver(){
 void Test::testBNO055()
 {
     BNO055 bno(2, BNO055_ADDRESS_A);
+    Transceiver transceiver;
+    GPS gps;
      cout << "Orientation Sensor Raw Data Test" <<  endl;
     if (!bno.begin())
     {
@@ -414,6 +416,31 @@ void Test::testBNO055()
 	     cout << "eX: " << euler.x() <<  " eY: " << euler.y() << " eZ: "
 	  	<< euler.z() << "\t";
 
+        int eX = euler.x();
+        int eY = euler.y();
+        int eZ = euler.z();
+        
+        std::string eX_string = std::to_string(eX);
+        std::string eY_string = std::to_string(eY);
+        std::string eZ_string = std::to_string(eZ);
+
+        GPS::loc_t location_data;
+        gps.get_location(&location_data);
+
+        std::string string_transmit = eX_string + ' ' + eY_string + ' ' 
+            + eZ_string + ' ' + std::to_string((int)location_data.latitude) + ' ' + 
+            std::to_string((int)location_data.longitude);
+
+        const char *str_transmit = string_transmit.c_str();
+        std::vector<uint8_t> message;
+
+        for (int i = 0; i < 19; i++)
+        {
+            message.push_back(str_transmit[i]);
+        }
+
+        transceiver.TransmitMessage(message);
+
         /* Display Angular Velocities rad/s */
         imu::Vector<3> rps = bno.getRPS();
          cout << "rX: " << rps.x() <<  " rY: " << rps.y() << " rZ: "
@@ -429,15 +456,6 @@ void Test::testBNO055()
         bno.getCalibration(&system, &gyro, &accel, &mag);
          cout << "CALIBRATION: Sys=" << (int)system << " Gyro=" << (int)gyro
                   << " Accel=" << (int)accel << " Mag=" << (int)mag <<  endl;
-
-        // signal = Controller.runControlAlgorithm(quat, rps);
-        // if (Controller.getTolerance()) {
-        //     break;
-        // }
-        // double out[3] = convertToCurrent(signal)
-        // testPWM(PWM_0A);
-        // testPWM(PWM_1A);
-        // testPWM(PWM_2B);
         
         usleep(10000 * BNO055_SAMPLERATE_DELAY_MS);
     }

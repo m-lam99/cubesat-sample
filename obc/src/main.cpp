@@ -38,9 +38,10 @@ int main()
     // test.testGPIO();
     //test.runTests();
 
-    // Computer beagle;
+    Computer beagle;
+    // beagle.runTest();
     // beagle.littleRun();
-    // beagle.runSatellite();
+    beagle.runSatellite();
 
     return 0;
 }
