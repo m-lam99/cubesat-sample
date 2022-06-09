@@ -143,7 +143,7 @@ void Transceiver::TransmitEncodedMessage(std::string message)
         std::cout << "Transmitted encoded message " << std::endl;  
     }
 
-    return
+    return;
 }
 
 void Transceiver::TransmitMessage(std::vector<uint8_t> message)

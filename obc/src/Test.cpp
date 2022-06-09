@@ -440,7 +440,6 @@ void Test::testBNO055()
         }
 
         transceiver.TransmitMessage(message);
-        
 
         /* Display Angular Velocities rad/s */
         imu::Vector<3> rps = bno.getRPS();
@@ -457,15 +456,6 @@ void Test::testBNO055()
         bno.getCalibration(&system, &gyro, &accel, &mag);
          cout << "CALIBRATION: Sys=" << (int)system << " Gyro=" << (int)gyro
                   << " Accel=" << (int)accel << " Mag=" << (int)mag <<  endl;
-
-        // signal = Controller.runControlAlgorithm(quat, rps);
-        // if (Controller.getTolerance()) {
-        //     break;
-        // }
-        // double out[3] = convertToCurrent(signal)
-        // testPWM(PWM_0A);
-        // testPWM(PWM_1A);
-        // testPWM(PWM_2B);
         
         usleep(10000 * BNO055_SAMPLERATE_DELAY_MS);
     }
