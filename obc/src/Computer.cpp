@@ -204,7 +204,7 @@ void Computer::runTest(){
             test.testPWM(); 
             break;
         case Test::T_IMU: 
-            test.testPWM(); 
+            test.testBNO055(); 
             break; 
         case Test::T_WOD:
             test.wodTest(); 
@@ -304,6 +304,9 @@ void Computer::detumbling() {
 
     // POLL DETUMBLING ALGO UNTIL AT REST
     while (satellite.detumbling() == 1) {
+        if(new_command){
+            break;
+        }
         continue;
     }
     
@@ -366,6 +369,9 @@ void Computer::stationKeeping() {
     double psi = -1.57;
 
     while (!satellite.pointSatellite(phi, theta, psi)) {
+        if(new_command){
+            break;
+        }
         continue;
     }
     
