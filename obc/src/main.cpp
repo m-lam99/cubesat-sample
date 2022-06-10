@@ -33,15 +33,15 @@ int main()
     
     // can test without this 
     usleep(10000000); 
-    // Test test;
+    Test test;
 
     // test.testGPIO();
-    //test.runTests();
+    test.runTests();
 
-    Computer beagle;
-    // beagle.runTest();
-    // beagle.littleRun();
-    beagle.runSatellite();
+    // Computer beagle;
+    // // beagle.runTest();
+    // // beagle.littleRun();
+    // beagle.runSatellite();
 
     return 0;
 }
