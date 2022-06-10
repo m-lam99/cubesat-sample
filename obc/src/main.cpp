@@ -32,7 +32,7 @@ int main()
     // beaglebone.mode_=IDLE_MODE;
     
     // can test without this 
-    usleep(10000000); 
+   // usleep(10000000); 
     Test test;
 
     // test.testGPIO();
