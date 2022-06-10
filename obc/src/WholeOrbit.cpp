@@ -113,7 +113,10 @@ WholeOrbit::wod_t WholeOrbit::GetData() {
 WholeOrbit::wod_float_t WholeOrbit::GetDataFloat() {
     // Time
     GPS::loc_t location_data;
+    std::cout << "getting data" << std::endl;
     gps_->get_location(&location_data);
+    std::cout << "got gps data" << std::endl;
+
     uint32_t time = location_data.epoch;
     wod_float_.time = (int)time;
 
