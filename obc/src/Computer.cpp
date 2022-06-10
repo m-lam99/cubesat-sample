@@ -26,7 +26,7 @@ Computer::Computer()
       mode_(START_MODE),
       test_mode(Test::T_IMU),
       orbit_insertion_complete(false),
-      is_deployed(false)
+      is_deployed(true)
     {
     cout << "constructing" << endl;
     // Dummy time
